@@ -356,13 +356,13 @@ html{ scroll-snap-type:y proximity; scroll-padding-top:0; }
   .hero{ grid-template-rows:50% 50%; gap:0; }
   .hero__title{ width:100%; max-width:100%; font-size:clamp(2.4rem,15vw,5.5rem); }
   .hero__main{ align-items:flex-end; }
-  /* mobile: quote (left) on top, featuring (right) below — featuring slides up on scroll */
+  /* mobile: quote (left) sits just above featuring (right) — both grouped near the footer */
   .hero__bottom{
-    grid-template-columns:1fr; gap:1.25rem;
+    grid-template-columns:1fr; gap:1.5rem;
     padding-right:clamp(1.25rem,4vw,2rem);
-    align-content:space-between;
+    align-content:end;          /* group both toward the hero footer */
   }
-  .hero__right{ grid-column:1; order:1; align-items:flex-start; text-align:left; padding:0; justify-content:flex-start; }
+  .hero__right{ grid-column:1; order:1; align-items:flex-start; text-align:left; padding:0; justify-content:flex-end; }
   .hero__quote{ text-align:left; }
   .hero__feat{ grid-column:1; order:2; align-items:flex-end; justify-content:flex-end; } /* right-aligned */
   .hero__feat .featwrap{ text-align:right; }
