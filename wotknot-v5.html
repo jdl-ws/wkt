@@ -358,74 +358,81 @@ h2,h3,h4{ letter-spacing:-5px; }
 .eyebrow[data-hover]:hover, .cap[data-hover]:hover{ color:var(--accent); letter-spacing:0.26em; }
 .feat-card .nm{ pointer-events:none; }
 
-/* ===================== FEATURING v5 — puzzle grid, scroll-driven ===================== */
+/* ===================== FEATURING v5 — puzzle + ticker ===================== */
 .feature{
-  position:relative; height:700vh;
+  position:relative; height:400vh;
   background:linear-gradient(168deg, #0d0d12 0%, #1a1a22 38%, #12121a 100%);
   display:block; padding:0; min-height:0; scroll-snap-align:none;
 }
 .feature__pin{
-  position:sticky; top:0; height:100vh; overflow:hidden;
+  position:sticky; top:0; height:100vh;
   display:flex; align-items:center;
   padding:0 clamp(1.25rem,4vw,4rem);
+  overflow:hidden;
 }
 .feature__inner{
-  display:flex; gap:clamp(2rem,3.5vw,3.5rem);
+  display:flex; gap:clamp(2rem,3vw,3rem);
   width:100%; max-width:1400px; margin:0 auto;
-  align-items:center; height:84vh;
+  align-items:center; height:80vh;
 }
 
-/* LEFT — names */
-.feature__names{
-  flex:0 0 26%; list-style:none; margin:0; padding:0;
-  display:flex; flex-direction:column; gap:0;
-  position:relative;
+/* LEFT — vertical ticker (one name at a time) */
+.feature__left{
+  flex:0 0 30%; display:flex; flex-direction:column; justify-content:center; gap:1.5rem;
 }
-.feature__names li{ border-bottom:1px solid rgba(244,239,230,0.06); }
-.feature__names li:first-child{ border-top:1px solid rgba(244,239,230,0.06); }
-.feature__names a{
+.feature__eyebrow{ margin-bottom:0.5rem; }
+.feature__ticker{
+  position:relative; height:clamp(3.5rem,5.5vw,5rem);
+  overflow:hidden;
+}
+.feature__name{
+  position:absolute; inset:0;
   display:flex; align-items:center; justify-content:space-between;
-  padding:clamp(0.65rem,1.1vw,1rem) 0;
-  font-family:var(--heading-font); font-weight:500;
-  font-size:clamp(1.15rem,2vw,2rem); letter-spacing:-2px; line-height:1.1;
-  color:var(--paper); text-decoration:none; opacity:0.2;
-  transition:opacity .5s ease, color .5s ease, padding-left .5s ease;
+  font-family:var(--heading-font); font-weight:600;
+  font-size:clamp(1.6rem,3vw,3.2rem); letter-spacing:-3px; line-height:1;
+  color:var(--orange); text-decoration:none;
+  transform:translateY(110%); opacity:0;
+  transition:transform .65s cubic-bezier(0.16,1,0.3,1), opacity .5s ease;
 }
-.feature__names a .arr{
-  width:22px; height:22px; border-radius:50%; border:1px solid rgba(244,239,230,0.12);
+.feature__name.is-active{
+  transform:translateY(0); opacity:1;
+}
+.feature__name.is-above{
+  transform:translateY(-110%); opacity:0;
+}
+.feature__name .arr{
+  width:28px; height:28px; border-radius:50%;
+  background:var(--orange); color:var(--ink);
   display:grid; place-items:center; flex-shrink:0;
-  opacity:0; transform:scale(0.5);
-  transition:opacity .4s ease, transform .45s cubic-bezier(0.34,1.56,0.64,1), background .3s ease, border-color .3s ease;
 }
-.feature__names a .arr svg{ width:10px; height:10px; }
-.feature__names a.is-active{
-  opacity:1; color:var(--orange); padding-left:clamp(0.3rem,0.6vw,0.6rem);
+.feature__name .arr svg{ width:12px; height:12px; }
+/* counter */
+.feature__counter{
+  font-family:'JetBrains Mono',monospace; font-size:var(--t-tiny);
+  letter-spacing:0.22em; color:var(--muted);
 }
-.feature__names a.is-active .arr{
-  opacity:1; transform:scale(1);
-  background:var(--orange); border-color:var(--orange); color:var(--ink);
-}
+/* progress */
 .feature__progress{
-  height:2px; background:var(--orange); width:0%;
-  margin-top:clamp(0.6rem,1vw,0.8rem);
-  transition:width .25s ease;
+  height:1px; background:rgba(244,239,230,0.08); position:relative; margin-top:0.5rem;
+}
+.feature__progress span{
+  position:absolute; left:0; top:0; height:100%; background:var(--orange);
+  width:0%; transition:width .3s ease;
 }
 
-/* RIGHT — puzzle grid (irregular, no gaps, varied sizes) */
+/* RIGHT — puzzle grid */
 .feature__images{
-  flex:1; height:84vh;
+  flex:1; height:72vh;
   display:grid;
   grid-template-columns:1.1fr 0.9fr 1fr;
-  grid-template-rows:1fr 0.6fr 1fr;
+  grid-template-rows:1.1fr 0.8fr 1fr;
   gap:3px;
 }
 .feat-pz{
   position:relative; overflow:hidden;
-  will-change:transform, opacity;
-  transition:box-shadow .5s ease;
-  cursor:pointer;
+  will-change:transform;
+  transition:box-shadow .5s ease, transform .5s ease;
 }
-/* puzzle piece placement */
 .feat-pz:nth-child(1){ grid-column:1; grid-row:1/3; }
 .feat-pz:nth-child(2){ grid-column:2; grid-row:1; }
 .feat-pz:nth-child(3){ grid-column:3; grid-row:1; }
@@ -433,56 +440,55 @@ h2,h3,h4{ letter-spacing:-5px; }
 .feat-pz:nth-child(5){ grid-column:1/3; grid-row:3; }
 .feat-pz:nth-child(6){ grid-column:3; grid-row:3; }
 
-/* image layers */
+/* B&W base */
 .feat-pz__img{
-  position:absolute; inset:-10px;
+  position:absolute; inset:-6px;
   background-size:cover; background-position:center;
   filter:grayscale(100%) contrast(1.05) brightness(0.7);
   transition:filter .6s ease, transform .5s ease;
 }
-/* color layer — curtain mask: left edge slides right */
+/* color overlay — curtain mask left→right */
 .feat-pz__color{
-  position:absolute; inset:-10px;
+  position:absolute; inset:-6px;
   background-size:cover; background-position:center;
   clip-path:inset(0 100% 0 0);
   transition:clip-path .85s cubic-bezier(0.16,1,0.3,1);
   z-index:1;
 }
+/* active state */
+.feat-pz.is-active{
+  box-shadow:0 12px 40px -8px rgba(255,106,26,0.12);
+  z-index:2;
+}
 .feat-pz.is-active .feat-pz__color{
   clip-path:inset(0 0 0 0);
 }
 .feat-pz.is-active .feat-pz__img{
-  filter:grayscale(40%) brightness(0.8);
+  filter:grayscale(40%) brightness(0.85);
+  transform:scale(1.03);
 }
 /* magnetic hover */
 .feat-pz:hover{
-  box-shadow:0 16px 40px -8px rgba(255,106,26,0.15);
-  z-index:2;
-}
-.feat-pz:hover .feat-pz__img,
-.feat-pz:hover .feat-pz__color{
-  transform:scale(1.03);
+  box-shadow:0 16px 44px -8px rgba(255,106,26,0.18);
 }
 
 /* MOBILE */
 @media (max-width:820px){
-  .feature{ height:500vh; }
-  .feature__pin{ align-items:flex-start; padding-top:clamp(3.5rem,7vw,4.5rem); }
-  .feature__inner{ flex-direction:column; height:auto; gap:1.2rem; }
-  .feature__names{ flex:none; width:100%; flex-direction:row; flex-wrap:wrap; gap:0; }
-  .feature__names li{ border:none; flex:0 0 50%; }
-  .feature__names li:first-child{ border:none; }
-  .feature__names a{ font-size:clamp(0.95rem,4vw,1.2rem); letter-spacing:-1px; padding:0.45rem 0.3rem; }
-  .feature__names a .arr{ width:18px; height:18px; }
-  .feature__names a .arr svg{ width:9px; height:9px; }
-  .feature__images{ flex:none; width:100%; height:52vh; grid-template-columns:1fr 1fr; grid-template-rows:1fr 0.7fr 1fr; }
+  .feature{ height:350vh; }
+  .feature__pin{ padding:0 clamp(1rem,3vw,1.5rem); }
+  .feature__inner{ flex-direction:column; height:auto; gap:1.5rem; padding-top:clamp(4rem,8vw,5rem); }
+  .feature__left{ flex:none; width:100%; gap:1rem; }
+  .feature__ticker{ height:clamp(2.2rem,7vw,3rem); }
+  .feature__name{ font-size:clamp(1.2rem,5.5vw,1.8rem); letter-spacing:-1px; }
+  .feature__name .arr{ width:22px; height:22px; }
+  .feature__name .arr svg{ width:10px; height:10px; }
+  .feature__images{ flex:none; width:100%; height:48vh; grid-template-columns:1fr 1fr; grid-template-rows:1fr 0.7fr 1fr; }
   .feat-pz:nth-child(1){ grid-column:1; grid-row:1; }
   .feat-pz:nth-child(2){ grid-column:2; grid-row:1; }
   .feat-pz:nth-child(3){ grid-column:1/3; grid-row:2; }
   .feat-pz:nth-child(4){ grid-column:1; grid-row:3; }
   .feat-pz:nth-child(5){ grid-column:2; grid-row:3; }
   .feat-pz:nth-child(6){ display:none; }
-  .feature__progress{ display:none; }
 }
 
 
@@ -694,21 +700,25 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
     </div>
   </section>
 
-          <!-- 02 — FEATURING v5: puzzle grid, scroll-driven -->
+            <!-- 02 — FEATURING v5: puzzle + ticker -->
   <section id="featuring" class="section feature" data-pillar="default" data-section>
     <div class="feature__pin">
       <div class="feature__inner">
-        <ul class="feature__names">
-          <li><a href="/featuring/artist-1" data-feat-name="0">Artist One<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
-          <li><a href="/featuring/artist-2" data-feat-name="1">Artist Two<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
-          <li><a href="/featuring/artist-3" data-feat-name="2">Artist Three<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
-          <li><a href="/featuring/artist-4" data-feat-name="3">Artist Four<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
-          <li><a href="/featuring/artist-5" data-feat-name="4">Artist Five<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
-          <li><a href="/featuring/artist-6" data-feat-name="5">Artist Six<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
-          <div class="feature__progress"></div>
-        </ul>
+        <div class="feature__left">
+          <div class="eyebrow feature__eyebrow">Featuring · This Quarter</div>
+          <div class="feature__ticker">
+            <a href="/featuring/artist-1" class="feature__name is-active" data-feat-name="0">Artist One<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
+            <a href="/featuring/artist-2" class="feature__name" data-feat-name="1">Artist Two<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
+            <a href="/featuring/artist-3" class="feature__name" data-feat-name="2">Artist Three<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
+            <a href="/featuring/artist-4" class="feature__name" data-feat-name="3">Artist Four<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
+            <a href="/featuring/artist-5" class="feature__name" data-feat-name="4">Artist Five<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
+            <a href="/featuring/artist-6" class="feature__name" data-feat-name="5">Artist Six<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
+          </div>
+          <div class="feature__counter"><span data-feat-counter>01</span> / 06</div>
+          <div class="feature__progress"><span data-feat-bar></span></div>
+        </div>
         <div class="feature__images">
-          <div class="feat-pz" data-feat-img="0" data-scroll-y="60">
+          <div class="feat-pz is-active" data-feat-img="0" data-scroll-y="60">
             <div class="feat-pz__img" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
             <div class="feat-pz__color" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
           </div>
@@ -1101,25 +1111,27 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
      name list reveals; hover a name => its image colorizes and
      zooms OUT 3%, all others zoom IN 3% (and dim).
      ============================================================ */
-  /* FEATURING v5 — puzzle scroll-driven + magnetic hover + parallax stagger */
+  /* FEATURING v5 — puzzle + vertical ticker, scroll-driven */
   const featNames = Array.from(document.querySelectorAll('[data-feat-name]'));
   const featImgs = Array.from(document.querySelectorAll('[data-feat-img]'));
   const featSection = document.getElementById('featuring');
-  const featProgress = document.querySelector('.feature__progress');
-  let activeFeat = -1;
+  const featBar = document.querySelector('[data-feat-bar]');
+  const featCounter = document.querySelector('[data-feat-counter]');
+  let activeFeat = 0;
 
   function setFeatActive(idx){
-    if(idx === activeFeat) return;
+    if(idx === activeFeat && featNames[idx]?.classList.contains('is-active')) return;
     activeFeat = idx;
-    featNames.forEach((a,i) => a.classList.toggle('is-active', i === idx));
+    // ticker: active name at 0, above names at -110%, below names at +110%
+    featNames.forEach((a,i) => {
+      a.classList.remove('is-active','is-above');
+      if(i < idx) a.classList.add('is-above');       // exited upward
+      else if(i === idx) a.classList.add('is-active'); // visible
+      // else: default (below, translateY 110%)
+    });
     featImgs.forEach((el,i) => el.classList.toggle('is-active', i === idx));
+    if(featCounter) featCounter.textContent = String(idx + 1).padStart(2,'0');
   }
-
-  // hover override on names
-  featNames.forEach((a,i) => {
-    a.addEventListener('mouseenter', () => setFeatActive(i));
-    a.addEventListener('mouseleave', () => updateFeaturing());
-  });
 
   // magnetic hover on puzzle pieces
   if(!isTouch){
@@ -1151,23 +1163,11 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
     const progress = Math.min(1, scrolled / scrollable);
 
     // progress bar
-    if(featProgress) featProgress.style.width = (progress * 100) + '%';
+    if(featBar) featBar.style.width = (progress * 100) + '%';
 
     // scroll selects names: 6 equal zones
-    const step = Math.min(5, Math.floor(progress * 6));
+    const step = Math.min(5, Math.floor(progress * 5.999));
     setFeatActive(step);
-
-    // parallax staggered entry — each piece rises from below at its own speed
-    featImgs.forEach(pz => {
-      const cr = pz.getBoundingClientRect();
-      const center = cr.top + cr.height / 2;
-      const p = (vh - center) / vh;
-      const speed = parseFloat(pz.dataset.scrollY || '80');
-      const drift = speed * Math.max(0, 1 - p * 1.4);
-      const op = Math.min(1, Math.max(0, p * 2.2));
-      pz.style.transform = 'translateY(' + drift.toFixed(1) + 'px)';
-      pz.style.opacity = op.toFixed(2);
-    });
   }
 
   /* FADE OBSERVER */
