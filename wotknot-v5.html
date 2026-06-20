@@ -358,11 +358,11 @@ h2,h3,h4{ letter-spacing:-5px; }
 .eyebrow[data-hover]:hover, .cap[data-hover]:hover{ color:var(--accent); letter-spacing:0.26em; }
 .feat-card .nm{ pointer-events:none; }
 
-/* ===================== FEATURING v5 — scroll-driven spotlight ===================== */
+/* ===================== FEATURING v5 — puzzle grid, scroll-driven ===================== */
 .feature{
-  position:relative;
-  height:700vh;  /* 6 scroll stops + entry/exit room */
+  position:relative; height:700vh;
   background:linear-gradient(168deg, #0d0d12 0%, #1a1a22 38%, #12121a 100%);
+  display:block; padding:0; min-height:0; scroll-snap-align:none;
 }
 .feature__pin{
   position:sticky; top:0; height:100vh; overflow:hidden;
@@ -370,90 +370,121 @@ h2,h3,h4{ letter-spacing:-5px; }
   padding:0 clamp(1.25rem,4vw,4rem);
 }
 .feature__inner{
-  display:flex; gap:clamp(2rem,4vw,4rem);
+  display:flex; gap:clamp(2rem,3.5vw,3.5rem);
   width:100%; max-width:1400px; margin:0 auto;
-  align-items:center; height:80vh;
+  align-items:center; height:84vh;
 }
 
-/* LEFT — names with arrow */
+/* LEFT — names */
 .feature__names{
-  flex:0 0 30%; list-style:none; margin:0; padding:0;
+  flex:0 0 26%; list-style:none; margin:0; padding:0;
   display:flex; flex-direction:column; gap:0;
+  position:relative;
 }
 .feature__names li{ border-bottom:1px solid rgba(244,239,230,0.06); }
 .feature__names li:first-child{ border-top:1px solid rgba(244,239,230,0.06); }
 .feature__names a{
   display:flex; align-items:center; justify-content:space-between;
-  padding:clamp(0.7rem,1.3vw,1.1rem) 0;
+  padding:clamp(0.65rem,1.1vw,1rem) 0;
   font-family:var(--heading-font); font-weight:500;
-  font-size:clamp(1.3rem,2.4vw,2.4rem); letter-spacing:-2px; line-height:1.1;
+  font-size:clamp(1.15rem,2vw,2rem); letter-spacing:-2px; line-height:1.1;
   color:var(--paper); text-decoration:none; opacity:0.2;
   transition:opacity .5s ease, color .5s ease, padding-left .5s ease;
 }
 .feature__names a .arr{
-  width:26px; height:26px; border-radius:50%; border:1px solid rgba(244,239,230,0.12);
+  width:22px; height:22px; border-radius:50%; border:1px solid rgba(244,239,230,0.12);
   display:grid; place-items:center; flex-shrink:0;
-  opacity:0; transform:scale(0.6);
+  opacity:0; transform:scale(0.5);
   transition:opacity .4s ease, transform .45s cubic-bezier(0.34,1.56,0.64,1), background .3s ease, border-color .3s ease;
 }
-.feature__names a .arr svg{ width:12px; height:12px; }
+.feature__names a .arr svg{ width:10px; height:10px; }
 .feature__names a.is-active{
-  opacity:1; color:var(--orange); padding-left:clamp(0.4rem,0.8vw,0.8rem);
+  opacity:1; color:var(--orange); padding-left:clamp(0.3rem,0.6vw,0.6rem);
 }
 .feature__names a.is-active .arr{
   opacity:1; transform:scale(1);
   background:var(--orange); border-color:var(--orange); color:var(--ink);
 }
-
-/* RIGHT — scattered images, creative placement */
-.feature__images{
-  flex:1; position:relative; height:80vh;
-}
-.feat-img{
-  position:absolute; overflow:hidden; border-radius:5px;
-  background-size:cover; background-position:center;
-  filter:grayscale(100%) contrast(1.05) brightness(0.75);
-  will-change:transform, opacity, filter;
-  transition:filter .7s ease, box-shadow .6s ease;
-}
-.feat-img.is-active{
-  filter:grayscale(0%) brightness(1) saturate(1.08);
-  box-shadow:0 20px 50px -12px rgba(255,106,26,0.18);
-}
-/* creative scattered positions — editorial art-wall feel */
-.feat-img:nth-child(1){ top:2%;  left:0;    width:38%; aspect-ratio:3/4; }
-.feat-img:nth-child(2){ top:0;   left:42%;  width:34%; aspect-ratio:4/5; }
-.feat-img:nth-child(3){ top:22%; left:68%;  width:32%; aspect-ratio:3/4; }
-.feat-img:nth-child(4){ top:52%; left:5%;   width:30%; aspect-ratio:1/1; }
-.feat-img:nth-child(5){ top:48%; left:38%;  width:36%; aspect-ratio:4/5; }
-.feat-img:nth-child(6){ top:62%; left:66%;  width:34%; aspect-ratio:3/4; }
-
-/* scroll progress indicator (thin line under names) */
 .feature__progress{
-  position:absolute; bottom:0; left:0; height:2px; background:var(--orange);
-  width:0%; transition:width .3s ease;
+  height:2px; background:var(--orange); width:0%;
+  margin-top:clamp(0.6rem,1vw,0.8rem);
+  transition:width .25s ease;
+}
+
+/* RIGHT — puzzle grid (irregular, no gaps, varied sizes) */
+.feature__images{
+  flex:1; height:84vh;
+  display:grid;
+  grid-template-columns:1.1fr 0.9fr 1fr;
+  grid-template-rows:1fr 0.6fr 1fr;
+  gap:3px;
+}
+.feat-pz{
+  position:relative; overflow:hidden;
+  will-change:transform, opacity;
+  transition:box-shadow .5s ease;
+  cursor:pointer;
+}
+/* puzzle piece placement */
+.feat-pz:nth-child(1){ grid-column:1; grid-row:1/3; }
+.feat-pz:nth-child(2){ grid-column:2; grid-row:1; }
+.feat-pz:nth-child(3){ grid-column:3; grid-row:1; }
+.feat-pz:nth-child(4){ grid-column:2/4; grid-row:2; }
+.feat-pz:nth-child(5){ grid-column:1/3; grid-row:3; }
+.feat-pz:nth-child(6){ grid-column:3; grid-row:3; }
+
+/* image layers */
+.feat-pz__img{
+  position:absolute; inset:-10px;
+  background-size:cover; background-position:center;
+  filter:grayscale(100%) contrast(1.05) brightness(0.7);
+  transition:filter .6s ease, transform .5s ease;
+}
+/* color layer — curtain mask: left edge slides right */
+.feat-pz__color{
+  position:absolute; inset:-10px;
+  background-size:cover; background-position:center;
+  clip-path:inset(0 100% 0 0);
+  transition:clip-path .85s cubic-bezier(0.16,1,0.3,1);
+  z-index:1;
+}
+.feat-pz.is-active .feat-pz__color{
+  clip-path:inset(0 0 0 0);
+}
+.feat-pz.is-active .feat-pz__img{
+  filter:grayscale(40%) brightness(0.8);
+}
+/* magnetic hover */
+.feat-pz:hover{
+  box-shadow:0 16px 40px -8px rgba(255,106,26,0.15);
+  z-index:2;
+}
+.feat-pz:hover .feat-pz__img,
+.feat-pz:hover .feat-pz__color{
+  transform:scale(1.03);
 }
 
 /* MOBILE */
 @media (max-width:820px){
   .feature{ height:500vh; }
-  .feature__pin{ align-items:flex-start; padding-top:clamp(4rem,8vw,5rem); }
-  .feature__inner{ flex-direction:column; height:auto; gap:1.5rem; }
-  .feature__names{ flex:none; width:100%; flex-direction:row; flex-wrap:wrap; gap:0; border:none; position:relative; }
-  .feature__names li{ border:none; }
+  .feature__pin{ align-items:flex-start; padding-top:clamp(3.5rem,7vw,4.5rem); }
+  .feature__inner{ flex-direction:column; height:auto; gap:1.2rem; }
+  .feature__names{ flex:none; width:100%; flex-direction:row; flex-wrap:wrap; gap:0; }
+  .feature__names li{ border:none; flex:0 0 50%; }
   .feature__names li:first-child{ border:none; }
-  .feature__names a{ font-size:clamp(1rem,4.5vw,1.3rem); letter-spacing:-1px; padding:0.5rem 0.8rem; }
-  .feature__names a .arr{ width:20px; height:20px; }
-  .feature__names a .arr svg{ width:10px; height:10px; }
-  .feature__images{ flex:none; width:100%; height:55vh; position:relative; }
-  .feat-img:nth-child(1){ top:0;    left:0;    width:48%; }
-  .feat-img:nth-child(2){ top:0;    left:52%;  width:46%; }
-  .feat-img:nth-child(3){ top:35%;  left:54%;  width:44%; }
-  .feat-img:nth-child(4){ top:40%;  left:2%;   width:40%; }
-  .feat-img:nth-child(5){ top:60%;  left:30%;  width:42%; }
-  .feat-img:nth-child(6){ top:68%;  left:56%;  width:40%; }
+  .feature__names a{ font-size:clamp(0.95rem,4vw,1.2rem); letter-spacing:-1px; padding:0.45rem 0.3rem; }
+  .feature__names a .arr{ width:18px; height:18px; }
+  .feature__names a .arr svg{ width:9px; height:9px; }
+  .feature__images{ flex:none; width:100%; height:52vh; grid-template-columns:1fr 1fr; grid-template-rows:1fr 0.7fr 1fr; }
+  .feat-pz:nth-child(1){ grid-column:1; grid-row:1; }
+  .feat-pz:nth-child(2){ grid-column:2; grid-row:1; }
+  .feat-pz:nth-child(3){ grid-column:1/3; grid-row:2; }
+  .feat-pz:nth-child(4){ grid-column:1; grid-row:3; }
+  .feat-pz:nth-child(5){ grid-column:2; grid-row:3; }
+  .feat-pz:nth-child(6){ display:none; }
   .feature__progress{ display:none; }
 }
+
 
 /* ===================== MAGAZINE ===================== */
 .magazine{ grid-template-rows:auto 1fr; gap:clamp(2rem,4vw,3.5rem); position:relative; }
@@ -663,7 +694,7 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
     </div>
   </section>
 
-  <!-- 02 — FEATURING v5: scroll-driven spotlight -->
+          <!-- 02 — FEATURING v5: puzzle grid, scroll-driven -->
   <section id="featuring" class="section feature" data-pillar="default" data-section>
     <div class="feature__pin">
       <div class="feature__inner">
@@ -677,17 +708,34 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
           <div class="feature__progress"></div>
         </ul>
         <div class="feature__images">
-          <div class="feat-img" data-feat-img="0" data-scroll-y="70" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
-          <div class="feat-img" data-feat-img="1" data-scroll-y="110" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
-          <div class="feat-img" data-feat-img="2" data-scroll-y="50" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
-          <div class="feat-img" data-feat-img="3" data-scroll-y="90" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
-          <div class="feat-img" data-feat-img="4" data-scroll-y="65" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
-          <div class="feat-img" data-feat-img="5" data-scroll-y="130" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+          <div class="feat-pz" data-feat-img="0" data-scroll-y="60">
+            <div class="feat-pz__img" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+            <div class="feat-pz__color" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+          </div>
+          <div class="feat-pz" data-feat-img="1" data-scroll-y="100">
+            <div class="feat-pz__img" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+            <div class="feat-pz__color" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+          </div>
+          <div class="feat-pz" data-feat-img="2" data-scroll-y="45">
+            <div class="feat-pz__img" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+            <div class="feat-pz__color" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+          </div>
+          <div class="feat-pz" data-feat-img="3" data-scroll-y="85">
+            <div class="feat-pz__img" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+            <div class="feat-pz__color" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+          </div>
+          <div class="feat-pz" data-feat-img="4" data-scroll-y="70">
+            <div class="feat-pz__img" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+            <div class="feat-pz__color" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+          </div>
+          <div class="feat-pz" data-feat-img="5" data-scroll-y="120">
+            <div class="feat-pz__img" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+            <div class="feat-pz__color" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+          </div>
         </div>
       </div>
     </div>
   </section>
-
 
   <!-- 03 — MAGAZINE -->
   <section id="magazine" class="section magazine" data-pillar="default" data-section>
@@ -1053,8 +1101,7 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
      name list reveals; hover a name => its image colorizes and
      zooms OUT 3%, all others zoom IN 3% (and dim).
      ============================================================ */
-
-  /* FEATURING v5 — scroll-driven spotlight: scroll steps through names, images enter staggered */
+  /* FEATURING v5 — puzzle scroll-driven + magnetic hover + parallax stagger */
   const featNames = Array.from(document.querySelectorAll('[data-feat-name]'));
   const featImgs = Array.from(document.querySelectorAll('[data-feat-img]'));
   const featSection = document.getElementById('featuring');
@@ -1065,46 +1112,61 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
     if(idx === activeFeat) return;
     activeFeat = idx;
     featNames.forEach((a,i) => a.classList.toggle('is-active', i === idx));
-    featImgs.forEach((img,i) => img.classList.toggle('is-active', i === idx));
+    featImgs.forEach((el,i) => el.classList.toggle('is-active', i === idx));
   }
 
-  // also allow hover to override scroll selection
+  // hover override on names
   featNames.forEach((a,i) => {
     a.addEventListener('mouseenter', () => setFeatActive(i));
-    a.addEventListener('mouseleave', () => {
-      // restore scroll-driven selection
-      if(featSection) updateFeaturing();
-    });
+    a.addEventListener('mouseleave', () => updateFeaturing());
   });
+
+  // magnetic hover on puzzle pieces
+  if(!isTouch){
+    featImgs.forEach(pz => {
+      const img = pz.querySelector('.feat-pz__img');
+      const clr = pz.querySelector('.feat-pz__color');
+      pz.addEventListener('mousemove', e => {
+        const r = pz.getBoundingClientRect();
+        const mx = ((e.clientX - r.left) / r.width - 0.5) * 10;
+        const my = ((e.clientY - r.top) / r.height - 0.5) * 10;
+        const t = 'translate(' + mx.toFixed(1) + 'px,' + my.toFixed(1) + 'px) scale(1.03)';
+        if(img) img.style.transform = t;
+        if(clr) clr.style.transform = t;
+      });
+      pz.addEventListener('mouseleave', () => {
+        if(img) img.style.transform = '';
+        if(clr) clr.style.transform = '';
+      });
+    });
+  }
 
   function updateFeaturing(){
     if(!featSection) return;
-    const r = featSection.getBoundingClientRect();
+    const rect = featSection.getBoundingClientRect();
     const sectionH = featSection.offsetHeight;
     const vh = window.innerHeight;
-
-    // scroll progress through the section (0 at entry, 1 at exit)
-    const scrolled = -r.top;
-    const scrollable = sectionH - vh;
-    const progress = Math.max(0, Math.min(1, scrolled / scrollable));
+    const scrolled = Math.max(0, -rect.top);
+    const scrollable = Math.max(1, sectionH - vh);
+    const progress = Math.min(1, scrolled / scrollable);
 
     // progress bar
     if(featProgress) featProgress.style.width = (progress * 100) + '%';
 
-    // which name is active? divide scroll into 6 equal zones
+    // scroll selects names: 6 equal zones
     const step = Math.min(5, Math.floor(progress * 6));
     setFeatActive(step);
 
-    // per-image staggered scroll-in (each image enters from below at its own speed)
-    featImgs.forEach(img => {
-      const cr = img.getBoundingClientRect();
-      const imgCenter = cr.top + cr.height / 2;
-      const imgProgress = (vh - imgCenter) / vh;
-      const speed = parseFloat(img.dataset.scrollY || '80');
-      const drift = speed * Math.max(0, 1 - imgProgress * 1.5);
-      const op = Math.min(1, Math.max(0, imgProgress * 2.5));
-      img.style.transform = 'translateY(' + drift.toFixed(1) + 'px)';
-      img.style.opacity = String(op.toFixed(2));
+    // parallax staggered entry — each piece rises from below at its own speed
+    featImgs.forEach(pz => {
+      const cr = pz.getBoundingClientRect();
+      const center = cr.top + cr.height / 2;
+      const p = (vh - center) / vh;
+      const speed = parseFloat(pz.dataset.scrollY || '80');
+      const drift = speed * Math.max(0, 1 - p * 1.4);
+      const op = Math.min(1, Math.max(0, p * 2.2));
+      pz.style.transform = 'translateY(' + drift.toFixed(1) + 'px)';
+      pz.style.opacity = op.toFixed(2);
     });
   }
 
