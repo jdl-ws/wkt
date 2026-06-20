@@ -361,7 +361,7 @@ h2,h3,h4{ letter-spacing:-5px; }
 /* ===================== FEATURING v5 — puzzle + wheel-driven ticker ===================== */
 .feature{
   position:relative; height:100vh;
-  background:linear-gradient(168deg, #0d0d12 0%, #1a1a22 38%, #12121a 100%);
+  background:transparent;
   display:flex; align-items:center; padding:0 clamp(1.25rem,4vw,4rem);
   min-height:0; scroll-snap-align:start;
   overflow:hidden;
@@ -385,16 +385,22 @@ h2,h3,h4{ letter-spacing:-5px; }
   display:flex; align-items:center; justify-content:space-between;
   font-family:var(--heading-font); font-weight:600;
   font-size:clamp(1.5rem,2.8vw,3rem); letter-spacing:-3px; line-height:1;
-  color:var(--orange); text-decoration:none;
+  color:var(--paper); text-decoration:none;
   transform:translateY(110%); opacity:0;
   transition:transform .6s cubic-bezier(0.16,1,0.3,1), opacity .45s ease;
 }
-.feature__name.is-active{ transform:translateY(0); opacity:1; }
+.feature__name.is-active{ transform:translateY(0); opacity:1; color:var(--paper); }
 .feature__name.is-above{ transform:translateY(-110%); opacity:0; }
 .feature__name .arr{
   width:26px; height:26px; border-radius:50%;
-  background:var(--orange); color:var(--ink);
+  border:1px solid rgba(244,239,230,0.2); color:var(--paper);
   display:grid; place-items:center; flex-shrink:0;
+  opacity:0; transform:scale(0.6);
+  transition:opacity .35s ease, transform .4s cubic-bezier(0.34,1.56,0.64,1), background .3s ease;
+}
+.feature__name:hover .arr{
+  opacity:1; transform:scale(1);
+  background:var(--paper); color:var(--ink); border-color:var(--paper);
 }
 .feature__name .arr svg{ width:11px; height:11px; }
 .feature__counter{
@@ -405,7 +411,7 @@ h2,h3,h4{ letter-spacing:-5px; }
   height:1px; background:rgba(244,239,230,0.08); position:relative;
 }
 .feature__progress span{
-  position:absolute; left:0; top:0; height:100%; background:var(--orange);
+  position:absolute; left:0; top:0; height:100%; background:var(--paper);
   width:0%; transition:width .4s ease;
 }
 
@@ -467,6 +473,23 @@ h2,h3,h4{ letter-spacing:-5px; }
 }
 
 
+
+/* Magazine reveal animations */
+.mag-the{
+  display:inline-block; opacity:0; transform:translateX(80px);
+  transition:opacity .7s cubic-bezier(0.16,1,0.3,1), transform .8s cubic-bezier(0.16,1,0.3,1);
+}
+.mag-the.is-revealed{ opacity:1; transform:translateX(0); }
+.mag-letter{
+  display:inline-block; opacity:0; transform:translateY(18px);
+  transition:opacity .5s cubic-bezier(0.16,1,0.3,1), transform .6s cubic-bezier(0.16,1,0.3,1);
+}
+.mag-letter.is-revealed{ opacity:1; transform:translateY(0); }
+.mag-line{
+  display:block; opacity:0; transform:translateY(16px);
+  transition:opacity .6s cubic-bezier(0.16,1,0.3,1), transform .7s cubic-bezier(0.16,1,0.3,1);
+}
+.mag-line.is-revealed{ opacity:1; transform:translateY(0); }
 /* ===================== MAGAZINE ===================== */
 .magazine{ grid-template-rows:auto 1fr; gap:clamp(2rem,4vw,3.5rem); position:relative; }
 .magazine__head{ display:grid; grid-template-columns:1fr; gap:1rem; max-width:70ch; }
@@ -569,7 +592,7 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
 <!-- LOADER -->
 <div class="loader" aria-hidden="true">
   <div class="loader__top">
-    <div class="loader__mark">WOTKNOT</div>
+    <div class="loader__mark" style="opacity:0;height:0;overflow:hidden;">WOTKNOT</div>
     <div class="loader__meta">Vol. III<br/>Lagos / London / Houston</div>
   </div>
   <div class="loader__center">
@@ -724,12 +747,12 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
   <section id="magazine" class="section magazine" data-pillar="default" data-section>
     <div class="magazine__head">
       <div class="eyebrow" data-hover="Four pillars">The Magazine · Four Pillars</div>
-      <h2 data-split>THE <em>MAGAZINE</em></h2>
-      <p class="magazine__lead" data-fade-in>
+      <h2 class="mag-h2"><span class="mag-the" data-mag-the>THE</span> <em><span class="mag-word" data-mag-word>MAGAZINE</span></em></h2>
+      <p class="magazine__lead">
         A magazine is not a feed. It is a room. We make rooms for the music we love,
         the art we argue with, the clothes we live in, and the lives we are still becoming.
       </p>
-      <div class="magazine__cta" data-fade-in>
+      <div class="magazine__cta">
         <a href="/magazine" class="cta-btn" data-hover="Magazine" aria-label="Explore Issues — WOTKNOT MAG">
           <span class="cta-btn__face cta-btn__face--default">
             <span class="cta-btn__label">Explore Issues</span>
@@ -841,8 +864,8 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
         if(n%18<4&&si<statuses.length-1){ si++; statusEl.textContent=statuses[si]; }
         if(n<100) setTimeout(tick,60+Math.random()*60);
         else{ statusEl.textContent='Welcome.';
-          setTimeout(()=>{ loader.style.transition='opacity .8s var(--ease-editorial),transform 1s var(--ease-editorial)';
-            loader.style.opacity='0'; loader.style.transform='translateY(-3%)'; document.body.classList.add('is-loaded');
+          setTimeout(()=>{ loader.style.transition='transform 1s cubic-bezier(0.77,0,0.18,1), opacity 0.6s ease';
+            loader.style.transform='translateY(-100%)'; loader.style.opacity='0'; document.body.classList.add('is-loaded');
             setTimeout(()=>{ loader.style.display='none'; resolve(); },700); },350); }
       }; tick();
     });
@@ -1084,14 +1107,14 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
      name list reveals; hover a name => its image colorizes and
      zooms OUT 3%, all others zoom IN 3% (and dim).
      ============================================================ */
-  /* FEATURING v5 — wheel-driven ticker + puzzle + magnetic hover */
+  /* FEATURING v5 — wheel + touch driven ticker + puzzle + magnetic hover */
   const featNames = Array.from(document.querySelectorAll('[data-feat-name]'));
   const featImgs = Array.from(document.querySelectorAll('[data-feat-img]'));
   const featSection = document.getElementById('featuring');
   const featBar = document.querySelector('[data-feat-bar]');
   const featCounter = document.querySelector('[data-feat-counter]');
   let featStep = 0;
-  let featWheelCooldown = false;
+  let featCooldown = false;
 
   function setFeatActive(idx){
     featStep = idx;
@@ -1105,33 +1128,46 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
     if(featBar) featBar.style.width = ((idx + 1) / 6 * 100) + '%';
   }
 
-  // wheel capture: step through names while section is in view
+  function featAdvance(dir){
+    if(featCooldown) return false;
+    if(dir > 0 && featStep < 5){ featStep++; setFeatActive(featStep); }
+    else if(dir < 0 && featStep > 0){ featStep--; setFeatActive(featStep); }
+    else return false; // at boundary — let scroll pass
+    featCooldown = true;
+    setTimeout(() => { featCooldown = false; }, 550);
+    return true; // consumed
+  }
+
+  // wheel capture
   if(featSection){
     featSection.addEventListener('wheel', function(e){
       const r = featSection.getBoundingClientRect();
       const vh = window.innerHeight;
-      // only capture when section is mostly in view
       const inView = r.top < vh * 0.3 && r.bottom > vh * 0.7;
       if(!inView) return;
-
-      // cooldown prevents firing too fast
-      if(featWheelCooldown) { e.preventDefault(); return; }
-
-      if(e.deltaY > 0 && featStep < 5){
-        e.preventDefault();
-        featStep++;
-        setFeatActive(featStep);
-        featWheelCooldown = true;
-        setTimeout(() => { featWheelCooldown = false; }, 500);
-      } else if(e.deltaY < 0 && featStep > 0){
-        e.preventDefault();
-        featStep--;
-        setFeatActive(featStep);
-        featWheelCooldown = true;
-        setTimeout(() => { featWheelCooldown = false; }, 500);
-      }
-      // else: at boundaries (step 0 up, step 5 down) — let scroll pass through
+      if(featCooldown){ e.preventDefault(); return; }
+      const dir = e.deltaY > 0 ? 1 : -1;
+      if(featAdvance(dir)) e.preventDefault();
     }, {passive:false});
+
+    // touch/swipe support
+    let touchY = 0;
+    featSection.addEventListener('touchstart', function(e){
+      const r = featSection.getBoundingClientRect();
+      const vh = window.innerHeight;
+      if(r.top < vh * 0.3 && r.bottom > vh * 0.7) touchY = e.touches[0].clientY;
+    }, {passive:true});
+    featSection.addEventListener('touchmove', function(e){
+      if(!touchY) return;
+      const dy = touchY - e.touches[0].clientY;
+      if(Math.abs(dy) > 40){
+        if(featAdvance(dy > 0 ? 1 : -1)){
+          e.preventDefault();
+          touchY = e.touches[0].clientY;
+        } else { touchY = 0; }
+      }
+    }, {passive:false});
+    featSection.addEventListener('touchend', () => { touchY = 0; });
   }
 
   // magnetic hover on puzzle pieces
@@ -1154,8 +1190,87 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
     });
   }
 
-  // no-op — no scroll-based parallax needed
   function updateFeaturing(){}
+
+
+  /* MAGAZINE — luxury editorial reveal */
+  function revealMagazine(){
+    const theEl = document.querySelector('[data-mag-the]');
+    const wordEl = document.querySelector('[data-mag-word]');
+    const lead = document.querySelector('.magazine__lead');
+    const cta = document.querySelector('.magazine__cta');
+
+    // split MAGAZINE into letters
+    if(wordEl && !wordEl.dataset._split){
+      wordEl.dataset._split = '1';
+      const text = wordEl.textContent;
+      wordEl.textContent = '';
+      text.split('').forEach(ch => {
+        const s = document.createElement('span');
+        s.className = 'mag-letter';
+        s.textContent = ch;
+        wordEl.appendChild(s);
+      });
+    }
+    const letters = wordEl ? Array.from(wordEl.querySelectorAll('.mag-letter')) : [];
+
+    // split lead into lines (sentences)
+    if(lead && !lead.dataset._split){
+      lead.dataset._split = '1';
+      const text = lead.textContent.trim();
+      const sentences = text.split(/(?<=[.!?,])\s+/);
+      lead.textContent = '';
+      sentences.forEach(s => {
+        const span = document.createElement('span');
+        span.className = 'mag-line';
+        span.textContent = s + ' ';
+        lead.appendChild(span);
+      });
+    }
+    const lines = lead ? Array.from(lead.querySelectorAll('.mag-line')) : [];
+
+    // choreography: THE first, MAGAZINE at 60%, body after, CTA last
+    let t = 0;
+    // THE — slides from right
+    if(theEl) setTimeout(() => theEl.classList.add('is-revealed'), t);
+    // MAGAZINE letters — stagger starting at 60% of THE's duration (~480ms)
+    t = 480;
+    letters.forEach((l,i) => {
+      setTimeout(() => l.classList.add('is-revealed'), t + i * 55);
+    });
+    // body lines — after headline is mostly done
+    t = 480 + letters.length * 55 + 100;
+    lines.forEach((l,i) => {
+      setTimeout(() => l.classList.add('is-revealed'), t + i * 120);
+    });
+    // CTA — last
+    if(cta){
+      cta.style.opacity = '0';
+      cta.style.transform = 'translateY(14px)';
+      cta.style.transition = 'opacity .6s cubic-bezier(0.16,1,0.3,1), transform .7s cubic-bezier(0.16,1,0.3,1)';
+      const ctaDelay = t + lines.length * 120 + 80;
+      setTimeout(() => { cta.style.opacity = '1'; cta.style.transform = 'translateY(0)'; }, ctaDelay);
+    }
+  }
+
+  // trigger when magazine section enters view
+  let magRevealed = false;
+  const magObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting && e.intersectionRatio > 0.25 && !magRevealed){
+        magRevealed = true;
+        if(reduce){ // skip animation for reduced motion
+          document.querySelectorAll('.mag-the,.mag-letter,.mag-line,.magazine__cta').forEach(el => {
+            el.style.opacity = '1'; el.style.transform = 'none';
+            el.classList.add('is-revealed');
+          });
+        } else { revealMagazine(); }
+        magObs.disconnect();
+      }
+    });
+  }, {threshold:[0.25,0.5]});
+  const magSection = document.getElementById('magazine');
+  if(magSection) magObs.observe(magSection);
 
   /* FADE OBSERVER */
   function observeFade(){
