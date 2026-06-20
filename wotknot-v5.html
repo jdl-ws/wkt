@@ -358,74 +358,92 @@ h2,h3,h4{ letter-spacing:-5px; }
 .eyebrow[data-hover]:hover, .cap[data-hover]:hover{ color:var(--accent); letter-spacing:0.26em; }
 .feat-card .nm{ pointer-events:none; }
 
-/* ===================== FEATURING (matches Desktop_-_3 layout) ===================== */
+/* ===================== FEATURING v5 — split layout, interactive cards ===================== */
 .feature{
-  display:block; overflow:hidden;
-  padding:0;
+  display:block; overflow:hidden; padding:clamp(5rem,9vw,8rem) clamp(1.25rem,4vw,4rem);
+  min-height:100vh;
 }
-.feature__stage{
-  position:relative; width:100%;
-  height:130vh; min-height:760px;
+.feature__split{
+  display:flex; gap:clamp(2rem,5vw,5rem);
+  max-width:1400px; margin:0 auto;
+  min-height:75vh; align-items:center;
 }
-
-/* Repeated name list — overlaps img1's right edge, sits in the left/centre gap */
+/* LEFT — artist names */
 .feature__names{
-  position:absolute; z-index:6; margin:0; padding:0; list-style:none;
-  left:19%; top:15%;
-  display:flex; flex-direction:column; gap:0; pointer-events:auto;
+  flex:0 0 38%; display:flex; flex-direction:column;
+  gap:clamp(0.6rem,1.2vw,1rem); list-style:none; margin:0; padding:0;
+  position:sticky; top:30vh;
 }
 .feature__names li{ overflow:hidden; }
-.feature__names button{
-  all:unset; display:inline-block;
-  font-family:var(--heading-font); font-weight:600;
-  font-size:clamp(1.6rem,3.4vw,3.4rem); line-height:1.18; letter-spacing:-0.01em;
-  color:var(--paper); transform:translateY(110%);
-  transition:color .35s var(--ease-out), opacity .35s var(--ease-out);
+.feature__names a{
+  display:block; font-family:var(--heading-font); font-weight:600;
+  font-size:clamp(2rem,4.5vw,4.5rem); line-height:1.05; letter-spacing:-3px;
+  color:var(--paper); text-decoration:none; opacity:0.4;
+  transition:opacity .4s ease, color .4s ease, transform .4s ease;
 }
-.feature__names button:hover{ color:var(--orange); }
-.feature__stage.has-active .feature__names button{ opacity:0.3; }
-.feature__stage.has-active .feature__names button.is-active{ opacity:1; color:var(--orange); }
+.feature__names a:hover,
+.feature__names a.is-active{ opacity:1; color:var(--orange); transform:translateX(8px); }
 
-/* Portrait layers — always present; parallax-drift on scroll (OVO mechanic) */
-.feature__collage{ position:absolute; inset:0; z-index:1; }
+/* RIGHT — card grid, 2×2 staggered */
+.feature__cards{
+  flex:1; display:grid; grid-template-columns:1fr 1fr;
+  gap:clamp(1rem,1.8vw,1.5rem);
+}
+/* Each card */
 .feat-card{
-  position:absolute; overflow:hidden;
-  background:var(--ink-soft);
+  position:relative; overflow:hidden; border-radius:4px;
+  aspect-ratio:4/5; display:block; text-decoration:none; color:var(--paper);
   will-change:transform;
 }
+.feat-card:nth-child(2){ margin-top:clamp(2rem,5vw,4rem); }   /* stagger row 1 */
+.feat-card:nth-child(3){ margin-top:clamp(-2rem,-5vw,-4rem); }
 .feat-card .ph{
-  position:absolute; inset:-2px;
-  background-size:cover; background-position:center;
+  position:absolute; inset:0; background-size:cover; background-position:center;
   filter:grayscale(100%) contrast(1.04);
-  transform:scale(1.0);
-  transition:filter .55s var(--ease-out), transform .55s var(--ease-out);
+  transition:filter .6s ease, transform .6s ease;
 }
-.feat-card.is-color .ph{ filter:grayscale(0%) saturate(1.04) contrast(1.02); }
-.feat-card.zoom-out .ph{ transform:scale(0.97); }   /* active zooms OUT 3% */
-.feat-card.zoom-in  .ph{ transform:scale(1.03); }   /* others zoom IN 3% */
+.feat-card:hover .ph,
+.feat-card.is-active .ph{
+  filter:grayscale(0%) saturate(1.05) contrast(1.02);
+  transform:scale(1.04);
+}
+/* Card name overlay — bottom-left */
+.feat-card__info{
+  position:absolute; bottom:0; left:0; right:0; padding:1.2rem 1.4rem;
+  background:linear-gradient(to top, rgba(7,7,10,0.75), transparent);
+  z-index:2;
+}
+.feat-card__name{
+  font-family:var(--heading-font); font-weight:600;
+  font-size:clamp(1rem,1.6vw,1.4rem); letter-spacing:-1px;
+  opacity:0.9;
+}
+/* Corner CTA arrow — slides in from bottom-right on hover */
+.feat-card__cta{
+  position:absolute; bottom:1rem; right:1rem; z-index:3;
+  width:42px; height:42px; border-radius:50%;
+  background:var(--paper); color:var(--ink);
+  display:grid; place-items:center;
+  transform:translateY(20px) scale(0.7); opacity:0;
+  transition:transform .5s cubic-bezier(0.34,1.56,0.64,1), opacity .4s ease;
+}
+.feat-card__cta svg{ width:18px; height:18px; }
+.feat-card:hover .feat-card__cta,
+.feat-card.is-active .feat-card__cta{
+  transform:translateY(0) scale(1); opacity:1;
+}
 
-/* positions (% of stage) read from Desktop_-_3.jpg */
-.feat-card.c1{ left:0%;   top:7%;  width:21%; aspect-ratio:5/6; z-index:2; }  /* top-left (behind names) */
-.feat-card.c2{ left:51%;  top:0%;  width:22%; aspect-ratio:3/4; }            /* top-centre */
-.feat-card.c3{ left:76%;  top:19%; width:21%; aspect-ratio:5/6; }            /* right */
-.feat-card.c4{ left:52%;  top:38%; width:22%; aspect-ratio:3/4; }            /* centre */
-.feat-card.c5{ left:3%;   top:51%; width:21%; aspect-ratio:5/6; }            /* lower-left */
-.feat-card.c6{ left:29%;  top:57%; width:21%; aspect-ratio:3/4; }            /* lower-centre */
-
+/* Mobile */
 @media (max-width:820px){
-  .feature__stage{ height:100vh; min-height:600px; padding:0; }
-  /* names centred, overlaid on the tight collage */
-  .feature__names{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); padding:0; z-index:6; text-align:center; }
-  .feature__names button{ font-size:clamp(1.05rem,5vw,1.5rem); line-height:1.14; text-shadow:0 2px 20px rgba(0,0,0,0.75); }
-  .feature__collage{ position:absolute; inset:0; height:auto; }
-  /* tight gallery-wall: images packed edge-to-edge, minimal gaps, all six in one viewport */
-  .feat-card.c1{ left:0%;   top:2%;  width:42%; aspect-ratio:3/4; }   /* upper-left */
-  .feat-card.c2{ left:43%;  top:0%;  width:40%; aspect-ratio:4/5; }   /* upper-mid */
-  .feat-card.c3{ left:60%;  top:24%; width:40%; aspect-ratio:3/4; }   /* upper-right */
-  .feat-card.c4{ left:2%;   top:40%; width:44%; aspect-ratio:4/5; }   /* lower-left */
-  .feat-card.c5{ left:47%;  top:58%; width:42%; aspect-ratio:3/4; }   /* lower-right */
-  .feat-card.c6{ left:8%;   top:74%; width:40%; aspect-ratio:4/5; }   /* bottom-left */
-}/* ===================== MAGAZINE ===================== */
+  .feature__split{ flex-direction:column; gap:2rem; min-height:auto; }
+  .feature__names{ flex:none; position:static; flex-direction:row; flex-wrap:wrap; gap:0.5rem 1rem; }
+  .feature__names a{ font-size:clamp(1.4rem,7vw,2rem); }
+  .feature__cards{ grid-template-columns:1fr 1fr; gap:0.75rem; }
+  .feat-card:nth-child(2){ margin-top:1.5rem; }
+  .feat-card:nth-child(3){ margin-top:-1.5rem; }
+}
+
+/* ===================== MAGAZINE ===================== */
 .magazine{ grid-template-rows:auto 1fr; gap:clamp(2rem,4vw,3.5rem); position:relative; }
 .magazine__head{ display:grid; grid-template-columns:1fr; gap:1rem; max-width:70ch; }
 .magazine__head .eyebrow{ margin-bottom:0.4rem; }
@@ -508,7 +526,7 @@ h2,h3,h4{ letter-spacing:-5px; }
   .aurora{ transition:none !important; }
   *{ transition-duration:0.001ms !important; animation-duration:0.001ms !important; animation-iteration-count:1 !important; }
   /* ensure JS-revealed content is always visible when motion is reduced */
-  [data-fade-in], .feature__names button, .menu-overlay a{ opacity:1 !important; transform:none !important; }
+  [data-fade-in], .feature__names a, .menu-overlay a{ opacity:1 !important; transform:none !important; }
 }
 
 /* Keyboard accessibility — the UI hides the system cursor, so visible focus is essential */
@@ -633,37 +651,36 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
     </div>
   </section>
 
-  <!-- 02 — FEATURING (Desktop_-_3; portrait layers parallax on scroll, OVO mechanic) -->
+    <!-- 02 — FEATURING v5: split layout, interactive cards -->
   <section id="featuring" class="section feature" data-pillar="default" data-section>
-    <div class="feature__stage" data-feat-stage>
+    <div class="feature__split">
       <ul class="feature__names" data-feat-names>
-        <li><button data-name="f1" data-hover>PARTYNEXTDOOR</button></li>
-        <li><button data-name="f2" data-hover>PARTYNEXTDOOR</button></li>
-        <li><button data-name="f3" data-hover>PARTYNEXTDOOR</button></li>
-        <li><button data-name="f4" data-hover>PARTYNEXTDOOR</button></li>
-        <li><button data-name="f5" data-hover>PARTYNEXTDOOR</button></li>
-        <li><button data-name="f6" data-hover>PARTYNEXTDOOR</button></li>
+        <li><a href="/featuring/mike" data-feat-name="mike" data-hover>Mike</a></li>
+        <li><a href="/featuring/tosin-tee" data-feat-name="tosin-tee" data-hover>Tosin Tee</a></li>
+        <li><a href="/featuring/anthony-azekwoh" data-feat-name="anthony-azekwoh" data-hover>Anthony Azekwoh</a></li>
+        <li><a href="/featuring/anthony-a" data-feat-name="anthony-a" data-hover>Anthony A.</a></li>
       </ul>
-
-      <div class="feature__collage">
-        <div class="feat-card c1" data-feat data-name="f1" data-speed="0.92">
+      <div class="feature__cards" data-feat-cards>
+        <a href="/featuring/mike" class="feat-card" data-feat-card="mike" data-scroll-y="60">
           <div class="ph" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLs2Jkaq1FFzfL0DTEuF6IiBVHDWLkBYh5o2WH2F_iU9XDB3L7gztryJji-0_CS2QQLZSZPv0Il4jqDEQOQCBTJAshqTBKvVsHBagpcAqVXCe7wQNQ29nH6Z4VZc9J56HsfFLdUqlRLiGCalm2s_iasdnmAQSpBCUJasW19-t5ZTWj6pnNrpNOQelktY52THXLBhXgl9CBTxFkXNk1RsElcGfv8NrA61WfBERU_Vgbf5oq-37j4G8k8AaDzZ');"></div>
-        </div>
-        <div class="feat-card c2" data-feat data-name="f2" data-speed="0.20">
+          <div class="feat-card__info"><span class="feat-card__name">Mike</span></div>
+          <div class="feat-card__cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+        </a>
+        <a href="/featuring/tosin-tee" class="feat-card" data-feat-card="tosin-tee" data-scroll-y="90">
           <div class="ph" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLu36SeFU_M7HHugqfEQn79DOrtF_ZEdrs0KXiPSrhRfDRAMau4r9R292BdonSGSTaacbsXzItwbY2i7nRFNjpk1GIm7Y29Tpt90EoAlm2iLsrpJmhPqRSDtL32pdy5zMMH0wzLVOR80pYnqMfhSikJ-OYZQc_yo_EMFoP1YslxP89Oql56iZwZ4jkggkGQH1ONA2rDP5xfGWGL0YWbBqAblBV2IqG01tQ9JsNdSww70FiQ0dO9-dsfK-jfR');"></div>
-        </div>
-        <div class="feat-card c3" data-feat data-name="f3" data-speed="0.94">
+          <div class="feat-card__info"><span class="feat-card__name">Tosin Tee</span></div>
+          <div class="feat-card__cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+        </a>
+        <a href="/featuring/anthony-azekwoh" class="feat-card" data-feat-card="anthony-azekwoh" data-scroll-y="45">
           <div class="ph" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
-        </div>
-        <div class="feat-card c4" data-feat data-name="f4" data-speed="0.55">
+          <div class="feat-card__info"><span class="feat-card__name">Anthony Azekwoh</span></div>
+          <div class="feat-card__cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+        </a>
+        <a href="/featuring/anthony-a" class="feat-card" data-feat-card="anthony-a" data-scroll-y="75">
           <div class="ph" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvB6YRMwYhCoSQIBoF414tPyRrbZIWHFJhSEoPs98xa3X7MpIaUXoRO5324NOh-dlNnwB7WpVf5lTF71mbpgZmNbgjSY4hzThh_o6lDi2YVYrFgYmpl3fr7gwpfX3o3LQ8dL8EE63Lt-YfvTdvaT7hNAwgcixu1MpINoYO10Cyhx0pluX8jElAFimgkliR30gzEmtgqbGkCLE7ce2XVtB3hFSUMsag8CUuEB-ATY2_oG51Ju14ndwCMpO0');"></div>
-        </div>
-        <div class="feat-card c5" data-feat data-name="f5" data-speed="0.85">
-          <div class="ph" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLs2Jkaq1FFzfL0DTEuF6IiBVHDWLkBYh5o2WH2F_iU9XDB3L7gztryJji-0_CS2QQLZSZPv0Il4jqDEQOQCBTJAshqTBKvVsHBagpcAqVXCe7wQNQ29nH6Z4VZc9J56HsfFLdUqlRLiGCalm2s_iasdnmAQSpBCUJasW19-t5ZTWj6pnNrpNOQelktY52THXLBhXgl9CBTxFkXNk1RsElcGfv8NrA61WfBERU_Vgbf5oq-37j4G8k8AaDzZ');"></div>
-        </div>
-        <div class="feat-card c6" data-feat data-name="f6" data-speed="0.72">
-          <div class="ph" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLu36SeFU_M7HHugqfEQn79DOrtF_ZEdrs0KXiPSrhRfDRAMau4r9R292BdonSGSTaacbsXzItwbY2i7nRFNjpk1GIm7Y29Tpt90EoAlm2iLsrpJmhPqRSDtL32pdy5zMMH0wzLVOR80pYnqMfhSikJ-OYZQc_yo_EMFoP1YslxP89Oql56iZwZ4jkggkGQH1ONA2rDP5xfGWGL0YWbBqAblBV2IqG01tQ9JsNdSww70FiQ0dO9-dsfK-jfR');"></div>
-        </div>
+          <div class="feat-card__info"><span class="feat-card__name">Anthony A.</span></div>
+          <div class="feat-card__cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+        </a>
       </div>
     </div>
   </section>
@@ -1017,7 +1034,7 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
       if(reduce) spans.forEach(s=>s.style.transform='translateY(0)');
       else reveal(spans,{stagger:60,dur:1100,delay:80});
     });
-    if(section.id==='featuring') revealFeatNames();
+
   }
   const io=new IntersectionObserver(entries=>{
     let best=null,bestR=0; entries.forEach(e=>{ if(e.intersectionRatio>bestR){ bestR=e.intersectionRatio; best=e.target; } });
@@ -1032,76 +1049,42 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
      name list reveals; hover a name => its image colorizes and
      zooms OUT 3%, all others zoom IN 3% (and dim).
      ============================================================ */
-  const featStage=document.querySelector('[data-feat-stage]');
-  const featSection=document.getElementById('featuring');
-  const featCards=Array.from(document.querySelectorAll('[data-feat]'));
-  const featNameBtns=Array.from(document.querySelectorAll('[data-feat-names] button'));
-  const featNameItems=featNameBtns;
+  /* FEATURING v5 — split names/cards, scroll-in, hover cross-highlight */
+  const featCards = Array.from(document.querySelectorAll('[data-feat-card]'));
+  const featNameLinks = Array.from(document.querySelectorAll('[data-feat-name]'));
+  const featSection = document.getElementById('featuring');
 
-  // Parallax: each portrait drifts vertically at its own speed relative to how
-  // far the section has travelled through the viewport. Always present; tied to
-  // scroll velocity (the OVO mechanic — no fly-in).
+  // Scroll-in: each card enters from below at different speeds
   function updateFeaturing(){
     if(!featSection) return;
-    const r=featSection.getBoundingClientRect();
-    const vh=window.innerHeight;
-    // enter-progress: 0 when section top is at viewport bottom, 1 once fully scrolled in
-    // (continues past 1 as it leaves — we let it keep rising gently)
-    const enter = (vh - r.top) / (vh + r.height);   // ~0 entering -> ~1 leaving
+    const r = featSection.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const enter = (vh - r.top) / (vh + r.height);
     const e = Math.max(0, enter);
-    if(reduce){ featCards.forEach(c=> c.style.transform='none'); return; }
-    featCards.forEach(card=>{
-      const speed=parseFloat(card.dataset.speed||'0.6');
-      // each image starts pushed DOWN, then rises to 0 as the section reaches centre,
-      // then drifts gently up further as it leaves — never pushed above its slot on entry.
-      // amount scales with (1-speed): slow images travel more.
-      const amount = (1-speed) * vh * 0.6;
-      const drift = amount * (1 - e*2);   // +amount at entry -> 0 mid -> -amount leaving
-      card.style.transform=`translate3d(0, ${drift.toFixed(1)}px, 0)`;
+    featCards.forEach(card => {
+      const offset = parseFloat(card.dataset.scrollY || '60');
+      const drift = offset * (1 - e * 2.2);
+      const clamped = Math.max(0, drift);
+      card.style.transform = `translateY(${clamped}px)`;
     });
   }
 
-  // Names rise in ONCE when the section first enters (independent of parallax)
-  let namesRevealed=false;
-  function revealFeatNames(){
-    if(namesRevealed) return; namesRevealed=true;
-    featNameItems.forEach((b,i)=>{
-      if(reduce){ b.style.transform='translateY(0)'; return; }
-      b.animate([{transform:'translateY(110%)'},{transform:'translateY(0%)'}],
-        {duration:780,delay:90+i*70,easing:'cubic-bezier(0.34,1.56,0.64,1)',fill:'forwards'});
-      // clear inline transform after settle so CSS :hover works
-      setTimeout(()=>{ b.style.transform=''; }, 90+i*70+820);
-    });
+  // Hover cross-highlight: name ↔ card
+  function setActive(slug){
+    featNameLinks.forEach(a => a.classList.toggle('is-active', a.dataset.featName === slug));
+    featCards.forEach(c => c.classList.toggle('is-active', c.dataset.featCard === slug));
   }
-
-  // hover-name interactions
-  function setActiveName(name){
-    if(!featStage) return;
-    featStage.classList.add('has-active');
-    featNameBtns.forEach(b=> b.classList.toggle('is-active', b.dataset.name===name));
-    featCards.forEach(c=>{
-      const active = c.dataset.name===name;
-      c.classList.toggle('is-color', active);
-      c.classList.toggle('zoom-out', active);    // active image zooms OUT 3%
-      c.classList.toggle('zoom-in', !active);    // others zoom IN 3%
-    });
+  function clearActive(){
+    featNameLinks.forEach(a => a.classList.remove('is-active'));
+    featCards.forEach(c => c.classList.remove('is-active'));
   }
-  function clearActiveName(){
-    if(!featStage) return;
-    featStage.classList.remove('has-active');
-    featNameBtns.forEach(b=> b.classList.remove('is-active'));
-    featCards.forEach(c=> c.classList.remove('is-color','zoom-out','zoom-in'));
-  }
-  featNameBtns.forEach(b=>{
-    b.addEventListener('mouseenter', ()=> setActiveName(b.dataset.name));
-    b.addEventListener('mouseleave', clearActiveName);
-    b.addEventListener('focus', ()=> setActiveName(b.dataset.name));
-    b.addEventListener('blur', clearActiveName);
+  featNameLinks.forEach(a => {
+    a.addEventListener('mouseenter', () => setActive(a.dataset.featName));
+    a.addEventListener('mouseleave', clearActive);
   });
-  featCards.forEach(c=>{
-    if(isTouch) return;
-    c.addEventListener('mouseenter', ()=> setActiveName(c.dataset.name));
-    c.addEventListener('mouseleave', clearActiveName);
+  featCards.forEach(c => {
+    c.addEventListener('mouseenter', () => setActive(c.dataset.featCard));
+    c.addEventListener('mouseleave', clearActive);
   });
 
   /* FADE OBSERVER */
