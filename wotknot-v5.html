@@ -358,16 +358,12 @@ h2,h3,h4{ letter-spacing:-5px; }
 .eyebrow[data-hover]:hover, .cap[data-hover]:hover{ color:var(--accent); letter-spacing:0.26em; }
 .feat-card .nm{ pointer-events:none; }
 
-/* ===================== FEATURING v5 — puzzle + ticker ===================== */
+/* ===================== FEATURING v5 — puzzle + wheel-driven ticker ===================== */
 .feature{
-  position:relative; height:400vh;
+  position:relative; height:100vh;
   background:linear-gradient(168deg, #0d0d12 0%, #1a1a22 38%, #12121a 100%);
-  display:block; padding:0; min-height:0; scroll-snap-align:none;
-}
-.feature__pin{
-  position:sticky; top:0; height:100vh;
-  display:flex; align-items:center;
-  padding:0 clamp(1.25rem,4vw,4rem);
+  display:flex; align-items:center; padding:0 clamp(1.25rem,4vw,4rem);
+  min-height:0; scroll-snap-align:start;
   overflow:hidden;
 }
 .feature__inner{
@@ -376,53 +372,46 @@ h2,h3,h4{ letter-spacing:-5px; }
   align-items:center; height:80vh;
 }
 
-/* LEFT — vertical ticker (one name at a time) */
+/* LEFT — ticker */
 .feature__left{
-  flex:0 0 30%; display:flex; flex-direction:column; justify-content:center; gap:1.5rem;
+  flex:0 0 30%; display:flex; flex-direction:column; justify-content:center; gap:1.2rem;
 }
-.feature__eyebrow{ margin-bottom:0.5rem; }
 .feature__ticker{
-  position:relative; height:clamp(3.5rem,5.5vw,5rem);
+  position:relative; height:clamp(3.2rem,5vw,4.5rem);
   overflow:hidden;
 }
 .feature__name{
   position:absolute; inset:0;
   display:flex; align-items:center; justify-content:space-between;
   font-family:var(--heading-font); font-weight:600;
-  font-size:clamp(1.6rem,3vw,3.2rem); letter-spacing:-3px; line-height:1;
+  font-size:clamp(1.5rem,2.8vw,3rem); letter-spacing:-3px; line-height:1;
   color:var(--orange); text-decoration:none;
   transform:translateY(110%); opacity:0;
-  transition:transform .65s cubic-bezier(0.16,1,0.3,1), opacity .5s ease;
+  transition:transform .6s cubic-bezier(0.16,1,0.3,1), opacity .45s ease;
 }
-.feature__name.is-active{
-  transform:translateY(0); opacity:1;
-}
-.feature__name.is-above{
-  transform:translateY(-110%); opacity:0;
-}
+.feature__name.is-active{ transform:translateY(0); opacity:1; }
+.feature__name.is-above{ transform:translateY(-110%); opacity:0; }
 .feature__name .arr{
-  width:28px; height:28px; border-radius:50%;
+  width:26px; height:26px; border-radius:50%;
   background:var(--orange); color:var(--ink);
   display:grid; place-items:center; flex-shrink:0;
 }
-.feature__name .arr svg{ width:12px; height:12px; }
-/* counter */
+.feature__name .arr svg{ width:11px; height:11px; }
 .feature__counter{
   font-family:'JetBrains Mono',monospace; font-size:var(--t-tiny);
   letter-spacing:0.22em; color:var(--muted);
 }
-/* progress */
 .feature__progress{
-  height:1px; background:rgba(244,239,230,0.08); position:relative; margin-top:0.5rem;
+  height:1px; background:rgba(244,239,230,0.08); position:relative;
 }
 .feature__progress span{
   position:absolute; left:0; top:0; height:100%; background:var(--orange);
-  width:0%; transition:width .3s ease;
+  width:0%; transition:width .4s ease;
 }
 
 /* RIGHT — puzzle grid */
 .feature__images{
-  flex:1; height:72vh;
+  flex:1; height:74vh;
   display:grid;
   grid-template-columns:1.1fr 0.9fr 1fr;
   grid-template-rows:1.1fr 0.8fr 1fr;
@@ -439,15 +428,12 @@ h2,h3,h4{ letter-spacing:-5px; }
 .feat-pz:nth-child(4){ grid-column:2/4; grid-row:2; }
 .feat-pz:nth-child(5){ grid-column:1/3; grid-row:3; }
 .feat-pz:nth-child(6){ grid-column:3; grid-row:3; }
-
-/* B&W base */
 .feat-pz__img{
   position:absolute; inset:-6px;
   background-size:cover; background-position:center;
   filter:grayscale(100%) contrast(1.05) brightness(0.7);
   transition:filter .6s ease, transform .5s ease;
 }
-/* color overlay — curtain mask left→right */
 .feat-pz__color{
   position:absolute; inset:-6px;
   background-size:cover; background-position:center;
@@ -455,34 +441,23 @@ h2,h3,h4{ letter-spacing:-5px; }
   transition:clip-path .85s cubic-bezier(0.16,1,0.3,1);
   z-index:1;
 }
-/* active state */
 .feat-pz.is-active{
-  box-shadow:0 12px 40px -8px rgba(255,106,26,0.12);
-  z-index:2;
+  box-shadow:0 12px 40px -8px rgba(255,106,26,0.12); z-index:2;
 }
-.feat-pz.is-active .feat-pz__color{
-  clip-path:inset(0 0 0 0);
-}
-.feat-pz.is-active .feat-pz__img{
-  filter:grayscale(40%) brightness(0.85);
-  transform:scale(1.03);
-}
-/* magnetic hover */
-.feat-pz:hover{
-  box-shadow:0 16px 44px -8px rgba(255,106,26,0.18);
-}
+.feat-pz.is-active .feat-pz__color{ clip-path:inset(0 0 0 0); }
+.feat-pz.is-active .feat-pz__img{ filter:grayscale(40%) brightness(0.85); transform:scale(1.03); }
+.feat-pz:hover{ box-shadow:0 16px 44px -8px rgba(255,106,26,0.18); }
 
 /* MOBILE */
 @media (max-width:820px){
-  .feature{ height:350vh; }
-  .feature__pin{ padding:0 clamp(1rem,3vw,1.5rem); }
-  .feature__inner{ flex-direction:column; height:auto; gap:1.5rem; padding-top:clamp(4rem,8vw,5rem); }
-  .feature__left{ flex:none; width:100%; gap:1rem; }
-  .feature__ticker{ height:clamp(2.2rem,7vw,3rem); }
-  .feature__name{ font-size:clamp(1.2rem,5.5vw,1.8rem); letter-spacing:-1px; }
-  .feature__name .arr{ width:22px; height:22px; }
-  .feature__name .arr svg{ width:10px; height:10px; }
-  .feature__images{ flex:none; width:100%; height:48vh; grid-template-columns:1fr 1fr; grid-template-rows:1fr 0.7fr 1fr; }
+  .feature{ height:auto; min-height:100vh; flex-direction:column; padding:clamp(4rem,8vw,5rem) clamp(1rem,3vw,1.5rem); }
+  .feature__inner{ flex-direction:column; height:auto; gap:1.5rem; }
+  .feature__left{ flex:none; width:100%; gap:0.8rem; }
+  .feature__ticker{ height:clamp(2rem,6vw,2.8rem); }
+  .feature__name{ font-size:clamp(1.1rem,5vw,1.6rem); letter-spacing:-1px; }
+  .feature__name .arr{ width:20px; height:20px; }
+  .feature__name .arr svg{ width:9px; height:9px; }
+  .feature__images{ flex:none; width:100%; height:50vh; grid-template-columns:1fr 1fr; grid-template-rows:1fr 0.7fr 1fr; }
   .feat-pz:nth-child(1){ grid-column:1; grid-row:1; }
   .feat-pz:nth-child(2){ grid-column:2; grid-row:1; }
   .feat-pz:nth-child(3){ grid-column:1/3; grid-row:2; }
@@ -700,49 +675,47 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
     </div>
   </section>
 
-            <!-- 02 — FEATURING v5: puzzle + ticker -->
+              <!-- 02 — FEATURING v5: puzzle + wheel-driven ticker -->
   <section id="featuring" class="section feature" data-pillar="default" data-section>
-    <div class="feature__pin">
-      <div class="feature__inner">
-        <div class="feature__left">
-          <div class="eyebrow feature__eyebrow">Featuring · This Quarter</div>
-          <div class="feature__ticker">
+    <div class="feature__inner">
+      <div class="feature__left">
+        <div class="eyebrow">Featuring · This Quarter</div>
+        <div class="feature__ticker">
             <a href="/featuring/artist-1" class="feature__name is-active" data-feat-name="0">Artist One<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
             <a href="/featuring/artist-2" class="feature__name" data-feat-name="1">Artist Two<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
             <a href="/featuring/artist-3" class="feature__name" data-feat-name="2">Artist Three<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
             <a href="/featuring/artist-4" class="feature__name" data-feat-name="3">Artist Four<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
             <a href="/featuring/artist-5" class="feature__name" data-feat-name="4">Artist Five<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
             <a href="/featuring/artist-6" class="feature__name" data-feat-name="5">Artist Six<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
-          </div>
-          <div class="feature__counter"><span data-feat-counter>01</span> / 06</div>
-          <div class="feature__progress"><span data-feat-bar></span></div>
         </div>
-        <div class="feature__images">
-          <div class="feat-pz is-active" data-feat-img="0" data-scroll-y="60">
+        <div class="feature__counter"><span data-feat-counter>01</span> / 06</div>
+        <div class="feature__progress"><span data-feat-bar></span></div>
+      </div>
+      <div class="feature__images">
+          <div class="feat-pz is-active" data-feat-img="0">
             <div class="feat-pz__img" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
             <div class="feat-pz__color" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
           </div>
-          <div class="feat-pz" data-feat-img="1" data-scroll-y="100">
+          <div class="feat-pz" data-feat-img="1">
             <div class="feat-pz__img" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
             <div class="feat-pz__color" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
           </div>
-          <div class="feat-pz" data-feat-img="2" data-scroll-y="45">
+          <div class="feat-pz" data-feat-img="2">
             <div class="feat-pz__img" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
             <div class="feat-pz__color" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
           </div>
-          <div class="feat-pz" data-feat-img="3" data-scroll-y="85">
+          <div class="feat-pz" data-feat-img="3">
             <div class="feat-pz__img" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
             <div class="feat-pz__color" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
           </div>
-          <div class="feat-pz" data-feat-img="4" data-scroll-y="70">
+          <div class="feat-pz" data-feat-img="4">
             <div class="feat-pz__img" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
             <div class="feat-pz__color" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
           </div>
-          <div class="feat-pz" data-feat-img="5" data-scroll-y="120">
+          <div class="feat-pz" data-feat-img="5">
             <div class="feat-pz__img" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
             <div class="feat-pz__color" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
           </div>
-        </div>
       </div>
     </div>
   </section>
@@ -1111,26 +1084,54 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
      name list reveals; hover a name => its image colorizes and
      zooms OUT 3%, all others zoom IN 3% (and dim).
      ============================================================ */
-  /* FEATURING v5 — puzzle + vertical ticker, scroll-driven */
+  /* FEATURING v5 — wheel-driven ticker + puzzle + magnetic hover */
   const featNames = Array.from(document.querySelectorAll('[data-feat-name]'));
   const featImgs = Array.from(document.querySelectorAll('[data-feat-img]'));
   const featSection = document.getElementById('featuring');
   const featBar = document.querySelector('[data-feat-bar]');
   const featCounter = document.querySelector('[data-feat-counter]');
-  let activeFeat = 0;
+  let featStep = 0;
+  let featWheelCooldown = false;
 
   function setFeatActive(idx){
-    if(idx === activeFeat && featNames[idx]?.classList.contains('is-active')) return;
-    activeFeat = idx;
-    // ticker: active name at 0, above names at -110%, below names at +110%
+    featStep = idx;
     featNames.forEach((a,i) => {
       a.classList.remove('is-active','is-above');
-      if(i < idx) a.classList.add('is-above');       // exited upward
-      else if(i === idx) a.classList.add('is-active'); // visible
-      // else: default (below, translateY 110%)
+      if(i < idx) a.classList.add('is-above');
+      else if(i === idx) a.classList.add('is-active');
     });
     featImgs.forEach((el,i) => el.classList.toggle('is-active', i === idx));
     if(featCounter) featCounter.textContent = String(idx + 1).padStart(2,'0');
+    if(featBar) featBar.style.width = ((idx + 1) / 6 * 100) + '%';
+  }
+
+  // wheel capture: step through names while section is in view
+  if(featSection){
+    featSection.addEventListener('wheel', function(e){
+      const r = featSection.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // only capture when section is mostly in view
+      const inView = r.top < vh * 0.3 && r.bottom > vh * 0.7;
+      if(!inView) return;
+
+      // cooldown prevents firing too fast
+      if(featWheelCooldown) { e.preventDefault(); return; }
+
+      if(e.deltaY > 0 && featStep < 5){
+        e.preventDefault();
+        featStep++;
+        setFeatActive(featStep);
+        featWheelCooldown = true;
+        setTimeout(() => { featWheelCooldown = false; }, 500);
+      } else if(e.deltaY < 0 && featStep > 0){
+        e.preventDefault();
+        featStep--;
+        setFeatActive(featStep);
+        featWheelCooldown = true;
+        setTimeout(() => { featWheelCooldown = false; }, 500);
+      }
+      // else: at boundaries (step 0 up, step 5 down) — let scroll pass through
+    }, {passive:false});
   }
 
   // magnetic hover on puzzle pieces
@@ -1153,22 +1154,8 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
     });
   }
 
-  function updateFeaturing(){
-    if(!featSection) return;
-    const rect = featSection.getBoundingClientRect();
-    const sectionH = featSection.offsetHeight;
-    const vh = window.innerHeight;
-    const scrolled = Math.max(0, -rect.top);
-    const scrollable = Math.max(1, sectionH - vh);
-    const progress = Math.min(1, scrolled / scrollable);
-
-    // progress bar
-    if(featBar) featBar.style.width = (progress * 100) + '%';
-
-    // scroll selects names: 6 equal zones
-    const step = Math.min(5, Math.floor(progress * 5.999));
-    setFeatActive(step);
-  }
+  // no-op — no scroll-based parallax needed
+  function updateFeaturing(){}
 
   /* FADE OBSERVER */
   function observeFade(){
