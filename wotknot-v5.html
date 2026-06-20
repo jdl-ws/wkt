@@ -358,90 +358,127 @@ h2,h3,h4{ letter-spacing:-5px; }
 .eyebrow[data-hover]:hover, .cap[data-hover]:hover{ color:var(--accent); letter-spacing:0.26em; }
 .feat-card .nm{ pointer-events:none; }
 
-/* ===================== FEATURING v5 — split layout, interactive cards ===================== */
+/* ===================== FEATURING v5 — premium split, scroll-stagger, hover reveal ===================== */
 .feature{
-  display:block; overflow:hidden; padding:clamp(5rem,9vw,8rem) clamp(1.25rem,4vw,4rem);
+  display:block; overflow:hidden;
+  padding:clamp(6rem,10vw,9rem) clamp(1.25rem,4vw,4rem);
   min-height:100vh;
+  background:linear-gradient(168deg, #0d0d12 0%, #1a1a22 40%, #141418 100%);
 }
 .feature__split{
-  display:flex; gap:clamp(2rem,5vw,5rem);
+  display:flex; gap:clamp(3rem,6vw,6rem);
   max-width:1400px; margin:0 auto;
-  min-height:75vh; align-items:center;
+  min-height:70vh; align-items:flex-start;
 }
-/* LEFT — artist names */
+
+/* LEFT — artist names, sticky while cards scroll */
 .feature__names{
-  flex:0 0 38%; display:flex; flex-direction:column;
-  gap:clamp(0.6rem,1.2vw,1rem); list-style:none; margin:0; padding:0;
-  position:sticky; top:30vh;
+  flex:0 0 34%; display:flex; flex-direction:column;
+  gap:clamp(0.8rem,1.5vw,1.2rem); list-style:none; margin:0; padding:0;
+  position:sticky; top:28vh;
 }
 .feature__names li{ overflow:hidden; }
 .feature__names a{
-  display:block; font-family:var(--heading-font); font-weight:600;
-  font-size:clamp(2rem,4.5vw,4.5rem); line-height:1.05; letter-spacing:-3px;
-  color:var(--paper); text-decoration:none; opacity:0.4;
-  transition:opacity .4s ease, color .4s ease, transform .4s ease;
+  display:flex; align-items:center; gap:1rem;
+  font-family:var(--heading-font); font-weight:600;
+  font-size:clamp(2.2rem,4.8vw,4.8rem); line-height:1.05; letter-spacing:-3px;
+  color:var(--paper); text-decoration:none; opacity:0.25;
+  transition:opacity .5s ease, color .5s ease, transform .5s ease;
 }
+/* number index — subtle, appears on hover */
+.feature__names .idx{
+  font-family:var(--nav-font); font-size:11px; font-weight:500;
+  letter-spacing:0.2em; opacity:0; transform:translateX(-10px);
+  transition:opacity .4s ease, transform .4s ease;
+  color:var(--orange); min-width:2ch;
+}
+.feature__names a:hover .idx,
+.feature__names a.is-active .idx{ opacity:1; transform:translateX(0); }
 .feature__names a:hover,
-.feature__names a.is-active{ opacity:1; color:var(--orange); transform:translateX(8px); }
+.feature__names a.is-active{ opacity:1; color:var(--orange); transform:translateX(6px); }
 
 /* RIGHT — card grid, 2×2 staggered */
 .feature__cards{
   flex:1; display:grid; grid-template-columns:1fr 1fr;
-  gap:clamp(1rem,1.8vw,1.5rem);
+  gap:clamp(1.2rem,2vw,1.8rem);
 }
-/* Each card */
+
+/* CARD — premium minimal: image + top-left arrow on hover */
 .feat-card{
-  position:relative; overflow:hidden; border-radius:4px;
+  position:relative; overflow:hidden; border-radius:6px;
   aspect-ratio:4/5; display:block; text-decoration:none; color:var(--paper);
-  will-change:transform;
+  will-change:transform, opacity;
+  box-shadow:0 8px 40px -12px rgba(0,0,0,0.5);
+  transition:box-shadow .6s ease, transform .5s ease;
 }
-.feat-card:nth-child(2){ margin-top:clamp(2rem,5vw,4rem); }   /* stagger row 1 */
-.feat-card:nth-child(3){ margin-top:clamp(-2rem,-5vw,-4rem); }
+.feat-card:nth-child(2){ margin-top:clamp(3rem,6vw,5rem); }
+.feat-card:nth-child(3){ margin-top:clamp(-3rem,-6vw,-5rem); }
+.feat-card:hover{
+  box-shadow:0 20px 60px -10px rgba(255,106,26,0.15), 0 8px 30px -8px rgba(0,0,0,0.6);
+  transform:translateY(-6px);
+}
+
+/* Image layer */
 .feat-card .ph{
   position:absolute; inset:0; background-size:cover; background-position:center;
-  filter:grayscale(100%) contrast(1.04);
-  transition:filter .6s ease, transform .6s ease;
+  filter:grayscale(100%) contrast(1.05) brightness(0.85);
+  transform:scale(1.0);
+  transition:filter .7s ease, transform .7s ease;
 }
 .feat-card:hover .ph,
 .feat-card.is-active .ph{
-  filter:grayscale(0%) saturate(1.05) contrast(1.02);
-  transform:scale(1.04);
-}
-/* Card name overlay — bottom-left */
-.feat-card__info{
-  position:absolute; bottom:0; left:0; right:0; padding:1.2rem 1.4rem;
-  background:linear-gradient(to top, rgba(7,7,10,0.75), transparent);
-  z-index:2;
-}
-.feat-card__name{
-  font-family:var(--heading-font); font-weight:600;
-  font-size:clamp(1rem,1.6vw,1.4rem); letter-spacing:-1px;
-  opacity:0.9;
-}
-/* Corner CTA arrow — slides in from bottom-right on hover */
-.feat-card__cta{
-  position:absolute; bottom:1rem; right:1rem; z-index:3;
-  width:42px; height:42px; border-radius:50%;
-  background:var(--paper); color:var(--ink);
-  display:grid; place-items:center;
-  transform:translateY(20px) scale(0.7); opacity:0;
-  transition:transform .5s cubic-bezier(0.34,1.56,0.64,1), opacity .4s ease;
-}
-.feat-card__cta svg{ width:18px; height:18px; }
-.feat-card:hover .feat-card__cta,
-.feat-card.is-active .feat-card__cta{
-  transform:translateY(0) scale(1); opacity:1;
+  filter:grayscale(0%) saturate(1.1) contrast(1.02) brightness(1);
+  transform:scale(1.06);
 }
 
-/* Mobile */
+/* Luminous border on hover */
+.feat-card::after{
+  content:""; position:absolute; inset:0; border-radius:6px;
+  border:1px solid rgba(244,239,230,0); z-index:2; pointer-events:none;
+  transition:border-color .5s ease;
+}
+.feat-card:hover::after,
+.feat-card.is-active::after{
+  border-color:rgba(244,239,230,0.2);
+}
+
+/* Top-LEFT arrow CTA — slides in on hover */
+.feat-card__cta{
+  position:absolute; top:1rem; left:1rem; z-index:3;
+  width:40px; height:40px; border-radius:50%;
+  background:rgba(244,239,230,0.95); color:var(--ink);
+  display:grid; place-items:center;
+  transform:translate(-16px, -16px) scale(0.5); opacity:0;
+  transition:transform .55s cubic-bezier(0.34,1.56,0.64,1), opacity .4s ease;
+  backdrop-filter:blur(4px);
+}
+.feat-card__cta svg{ width:16px; height:16px; }
+.feat-card:hover .feat-card__cta,
+.feat-card.is-active .feat-card__cta{
+  transform:translate(0,0) scale(1); opacity:1;
+}
+
+/* Subtle bottom gradient for depth */
+.feat-card__depth{
+  position:absolute; bottom:0; left:0; right:0; height:40%;
+  background:linear-gradient(to top, rgba(7,7,10,0.4), transparent);
+  z-index:1; pointer-events:none;
+}
+
+/* MOBILE */
 @media (max-width:820px){
-  .feature__split{ flex-direction:column; gap:2rem; min-height:auto; }
-  .feature__names{ flex:none; position:static; flex-direction:row; flex-wrap:wrap; gap:0.5rem 1rem; }
-  .feature__names a{ font-size:clamp(1.4rem,7vw,2rem); }
-  .feature__cards{ grid-template-columns:1fr 1fr; gap:0.75rem; }
+  .feature{ padding:clamp(4rem,8vw,6rem) clamp(1rem,4vw,2rem); }
+  .feature__split{ flex-direction:column; gap:2.5rem; min-height:auto; }
+  .feature__names{ flex:none; position:static; flex-direction:row; flex-wrap:wrap; gap:0.4rem 1.2rem; }
+  .feature__names a{ font-size:clamp(1.3rem,6.5vw,1.8rem); letter-spacing:-1px; }
+  .feature__names .idx{ display:none; }
+  .feature__cards{ grid-template-columns:1fr 1fr; gap:0.6rem; }
+  .feat-card{ border-radius:4px; }
   .feat-card:nth-child(2){ margin-top:1.5rem; }
   .feat-card:nth-child(3){ margin-top:-1.5rem; }
+  .feat-card__cta{ width:32px; height:32px; top:0.6rem; left:0.6rem; }
 }
+
 
 /* ===================== MAGAZINE ===================== */
 .magazine{ grid-template-rows:auto 1fr; gap:clamp(2rem,4vw,3.5rem); position:relative; }
@@ -651,34 +688,34 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
     </div>
   </section>
 
-    <!-- 02 — FEATURING v5: split layout, interactive cards -->
+      <!-- 02 — FEATURING v5: premium split layout -->
   <section id="featuring" class="section feature" data-pillar="default" data-section>
     <div class="feature__split">
       <ul class="feature__names" data-feat-names>
-        <li><a href="/featuring/mike" data-feat-name="mike" data-hover>Mike</a></li>
-        <li><a href="/featuring/tosin-tee" data-feat-name="tosin-tee" data-hover>Tosin Tee</a></li>
-        <li><a href="/featuring/anthony-azekwoh" data-feat-name="anthony-azekwoh" data-hover>Anthony Azekwoh</a></li>
-        <li><a href="/featuring/anthony-a" data-feat-name="anthony-a" data-hover>Anthony A.</a></li>
+        <li><a href="/featuring/mike" data-feat-name="mike" data-hover><span class="idx">01</span>Mike</a></li>
+        <li><a href="/featuring/tosin-tee" data-feat-name="tosin-tee" data-hover><span class="idx">02</span>Tosin Tee</a></li>
+        <li><a href="/featuring/anthony-azekwoh" data-feat-name="anthony-azekwoh" data-hover><span class="idx">03</span>Anthony Azekwoh</a></li>
+        <li><a href="/featuring/anthony-a" data-feat-name="anthony-a" data-hover><span class="idx">04</span>Anthony A.</a></li>
       </ul>
       <div class="feature__cards" data-feat-cards>
-        <a href="/featuring/mike" class="feat-card" data-feat-card="mike" data-scroll-y="60">
+        <a href="/featuring/mike" class="feat-card" data-feat-card="mike" data-scroll-y="80">
           <div class="ph" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLs2Jkaq1FFzfL0DTEuF6IiBVHDWLkBYh5o2WH2F_iU9XDB3L7gztryJji-0_CS2QQLZSZPv0Il4jqDEQOQCBTJAshqTBKvVsHBagpcAqVXCe7wQNQ29nH6Z4VZc9J56HsfFLdUqlRLiGCalm2s_iasdnmAQSpBCUJasW19-t5ZTWj6pnNrpNOQelktY52THXLBhXgl9CBTxFkXNk1RsElcGfv8NrA61WfBERU_Vgbf5oq-37j4G8k8AaDzZ');"></div>
-          <div class="feat-card__info"><span class="feat-card__name">Mike</span></div>
+          <div class="feat-card__depth"></div>
           <div class="feat-card__cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
         </a>
-        <a href="/featuring/tosin-tee" class="feat-card" data-feat-card="tosin-tee" data-scroll-y="90">
+        <a href="/featuring/tosin-tee" class="feat-card" data-feat-card="tosin-tee" data-scroll-y="120">
           <div class="ph" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLu36SeFU_M7HHugqfEQn79DOrtF_ZEdrs0KXiPSrhRfDRAMau4r9R292BdonSGSTaacbsXzItwbY2i7nRFNjpk1GIm7Y29Tpt90EoAlm2iLsrpJmhPqRSDtL32pdy5zMMH0wzLVOR80pYnqMfhSikJ-OYZQc_yo_EMFoP1YslxP89Oql56iZwZ4jkggkGQH1ONA2rDP5xfGWGL0YWbBqAblBV2IqG01tQ9JsNdSww70FiQ0dO9-dsfK-jfR');"></div>
-          <div class="feat-card__info"><span class="feat-card__name">Tosin Tee</span></div>
+          <div class="feat-card__depth"></div>
           <div class="feat-card__cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
         </a>
-        <a href="/featuring/anthony-azekwoh" class="feat-card" data-feat-card="anthony-azekwoh" data-scroll-y="45">
+        <a href="/featuring/anthony-azekwoh" class="feat-card" data-feat-card="anthony-azekwoh" data-scroll-y="55">
           <div class="ph" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
-          <div class="feat-card__info"><span class="feat-card__name">Anthony Azekwoh</span></div>
+          <div class="feat-card__depth"></div>
           <div class="feat-card__cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
         </a>
-        <a href="/featuring/anthony-a" class="feat-card" data-feat-card="anthony-a" data-scroll-y="75">
+        <a href="/featuring/anthony-a" class="feat-card" data-feat-card="anthony-a" data-scroll-y="95">
           <div class="ph" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvB6YRMwYhCoSQIBoF414tPyRrbZIWHFJhSEoPs98xa3X7MpIaUXoRO5324NOh-dlNnwB7WpVf5lTF71mbpgZmNbgjSY4hzThh_o6lDi2YVYrFgYmpl3fr7gwpfX3o3LQ8dL8EE63Lt-YfvTdvaT7hNAwgcixu1MpINoYO10Cyhx0pluX8jElAFimgkliR30gzEmtgqbGkCLE7ce2XVtB3hFSUMsag8CUuEB-ATY2_oG51Ju14ndwCMpO0');"></div>
-          <div class="feat-card__info"><span class="feat-card__name">Anthony A.</span></div>
+          <div class="feat-card__depth"></div>
           <div class="feat-card__cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
         </a>
       </div>
@@ -1054,18 +1091,20 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
   const featNameLinks = Array.from(document.querySelectorAll('[data-feat-name]'));
   const featSection = document.getElementById('featuring');
 
-  // Scroll-in: each card enters from below at different speeds
+  // Scroll-in: each card enters from below at its OWN speed (staggered, not simultaneous)
   function updateFeaturing(){
     if(!featSection) return;
     const r = featSection.getBoundingClientRect();
     const vh = window.innerHeight;
-    const enter = (vh - r.top) / (vh + r.height);
-    const e = Math.max(0, enter);
+    // per-card progress: each card calculates based on its own position
     featCards.forEach(card => {
-      const offset = parseFloat(card.dataset.scrollY || '60');
-      const drift = offset * (1 - e * 2.2);
-      const clamped = Math.max(0, drift);
-      card.style.transform = `translateY(${clamped}px)`;
+      const cr = card.getBoundingClientRect();
+      const cardCenter = cr.top + cr.height / 2;
+      const progress = (vh - cardCenter) / vh;       // 0 at bottom edge, 1 at top
+      const speed = parseFloat(card.dataset.scrollY || '80');
+      const drift = speed * Math.max(0, 1 - progress * 1.8);
+      card.style.transform = `translateY(${drift.toFixed(1)}px)`;
+      card.style.opacity = String(Math.min(1, Math.max(0, progress * 2.5)));
     });
   }
 
