@@ -358,125 +358,100 @@ h2,h3,h4{ letter-spacing:-5px; }
 .eyebrow[data-hover]:hover, .cap[data-hover]:hover{ color:var(--accent); letter-spacing:0.26em; }
 .feat-card .nm{ pointer-events:none; }
 
-/* ===================== FEATURING v5 — premium split, scroll-stagger, hover reveal ===================== */
+/* ===================== FEATURING v5 — spotlight reveal ===================== */
 .feature{
   display:block; overflow:hidden;
   padding:clamp(6rem,10vw,9rem) clamp(1.25rem,4vw,4rem);
   min-height:100vh;
-  background:linear-gradient(168deg, #0d0d12 0%, #1a1a22 40%, #141418 100%);
+  background:linear-gradient(168deg, #0d0d12 0%, #1a1a22 38%, #12121a 100%);
+}
+.feature__head{
+  max-width:1400px; margin:0 auto clamp(3rem,5vw,4.5rem);
 }
 .feature__split{
   display:flex; gap:clamp(3rem,6vw,6rem);
   max-width:1400px; margin:0 auto;
-  min-height:70vh; align-items:flex-start;
+  align-items:center; min-height:65vh;
 }
 
-/* LEFT — artist names, sticky while cards scroll */
+/* LEFT — name list */
 .feature__names{
-  flex:0 0 34%; display:flex; flex-direction:column;
-  gap:clamp(0.8rem,1.5vw,1.2rem); list-style:none; margin:0; padding:0;
-  position:sticky; top:28vh;
+  flex:0 0 42%; list-style:none; margin:0; padding:0;
+  display:flex; flex-direction:column; gap:0;
 }
-.feature__names li{ overflow:hidden; }
+.feature__names li{
+  border-bottom:1px solid rgba(244,239,230,0.06);
+}
+.feature__names li:first-child{ border-top:1px solid rgba(244,239,230,0.06); }
 .feature__names a{
-  display:flex; align-items:center; gap:1rem;
-  font-family:var(--heading-font); font-weight:600;
-  font-size:clamp(2.2rem,4.8vw,4.8rem); line-height:1.05; letter-spacing:-3px;
-  color:var(--paper); text-decoration:none; opacity:0.25;
-  transition:opacity .5s ease, color .5s ease, transform .5s ease;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:clamp(0.9rem,1.6vw,1.4rem) 0;
+  font-family:var(--heading-font); font-weight:500;
+  font-size:clamp(1.6rem,3vw,3rem); letter-spacing:-2px; line-height:1.1;
+  color:var(--paper); text-decoration:none; opacity:0.35;
+  transition:opacity .4s ease, color .4s ease, padding-left .4s ease;
+  position:relative;
 }
-/* number index — subtle, appears on hover */
-.feature__names .idx{
-  font-family:var(--nav-font); font-size:11px; font-weight:500;
-  letter-spacing:0.2em; opacity:0; transform:translateX(-10px);
-  transition:opacity .4s ease, transform .4s ease;
-  color:var(--orange); min-width:2ch;
+.feature__names a .arr{
+  width:28px; height:28px; border-radius:50%; border:1px solid rgba(244,239,230,0.15);
+  display:grid; place-items:center; flex-shrink:0;
+  opacity:0; transform:translateX(-8px);
+  transition:opacity .35s ease, transform .4s ease, background .3s ease, border-color .3s ease;
 }
-.feature__names a:hover .idx,
-.feature__names a.is-active .idx{ opacity:1; transform:translateX(0); }
+.feature__names a .arr svg{ width:13px; height:13px; }
 .feature__names a:hover,
-.feature__names a.is-active{ opacity:1; color:var(--orange); transform:translateX(6px); }
-
-/* RIGHT — card grid, 2×2 staggered */
-.feature__cards{
-  flex:1; display:grid; grid-template-columns:1fr 1fr;
-  gap:clamp(1.2rem,2vw,1.8rem);
+.feature__names a.is-active{
+  opacity:1; color:var(--orange); padding-left:clamp(0.5rem,1vw,1rem);
+}
+.feature__names a:hover .arr,
+.feature__names a.is-active .arr{
+  opacity:1; transform:translateX(0);
+  background:var(--orange); border-color:var(--orange); color:var(--ink);
 }
 
-/* CARD — premium minimal: image + top-left arrow on hover */
-.feat-card{
-  position:relative; overflow:hidden; border-radius:6px;
-  aspect-ratio:4/5; display:block; text-decoration:none; color:var(--paper);
-  will-change:transform, opacity;
-  box-shadow:0 8px 40px -12px rgba(0,0,0,0.5);
-  transition:box-shadow .6s ease, transform .5s ease;
+/* RIGHT — single large showcase, images stacked */
+.feature__showcase{
+  flex:1; position:relative; aspect-ratio:3/4;
+  border-radius:8px; overflow:hidden;
+  box-shadow:0 30px 80px -20px rgba(0,0,0,0.6);
 }
-.feat-card:nth-child(2){ margin-top:clamp(3rem,6vw,5rem); }
-.feat-card:nth-child(3){ margin-top:clamp(-3rem,-6vw,-5rem); }
-.feat-card:hover{
-  box-shadow:0 20px 60px -10px rgba(255,106,26,0.15), 0 8px 30px -8px rgba(0,0,0,0.6);
-  transform:translateY(-6px);
-}
-
-/* Image layer */
-.feat-card .ph{
-  position:absolute; inset:0; background-size:cover; background-position:center;
+.feature__showcase .feat-img{
+  position:absolute; inset:0;
+  background-size:cover; background-position:center;
   filter:grayscale(100%) contrast(1.05) brightness(0.85);
+  opacity:0; transform:scale(1.02);
+  transition:opacity .7s ease, filter .7s ease, transform 4s ease;
+}
+.feature__showcase .feat-img.is-active{
+  opacity:1; filter:grayscale(0%) brightness(1) saturate(1.05);
   transform:scale(1.0);
-  transition:filter .7s ease, transform .7s ease;
 }
-.feat-card:hover .ph,
-.feat-card.is-active .ph{
-  filter:grayscale(0%) saturate(1.1) contrast(1.02) brightness(1);
-  transform:scale(1.06);
-}
-
-/* Luminous border on hover */
-.feat-card::after{
-  content:""; position:absolute; inset:0; border-radius:6px;
-  border:1px solid rgba(244,239,230,0); z-index:2; pointer-events:none;
-  transition:border-color .5s ease;
-}
-.feat-card:hover::after,
-.feat-card.is-active::after{
-  border-color:rgba(244,239,230,0.2);
-}
-
-/* Top-LEFT arrow CTA — slides in on hover */
-.feat-card__cta{
-  position:absolute; top:1rem; left:1rem; z-index:3;
-  width:40px; height:40px; border-radius:50%;
-  background:rgba(244,239,230,0.95); color:var(--ink);
+/* top-right arrow */
+.feature__showcase .showcase-cta{
+  position:absolute; top:1.2rem; right:1.2rem; z-index:3;
+  width:42px; height:42px; border-radius:50%;
+  background:rgba(244,239,230,0.92); color:var(--ink);
   display:grid; place-items:center;
-  transform:translate(-16px, -16px) scale(0.5); opacity:0;
-  transition:transform .55s cubic-bezier(0.34,1.56,0.64,1), opacity .4s ease;
-  backdrop-filter:blur(4px);
+  transition:transform .4s ease, box-shadow .4s ease;
 }
-.feat-card__cta svg{ width:16px; height:16px; }
-.feat-card:hover .feat-card__cta,
-.feat-card.is-active .feat-card__cta{
-  transform:translate(0,0) scale(1); opacity:1;
-}
-
-/* Subtle bottom gradient for depth */
-.feat-card__depth{
-  position:absolute; bottom:0; left:0; right:0; height:40%;
-  background:linear-gradient(to top, rgba(7,7,10,0.4), transparent);
-  z-index:1; pointer-events:none;
+.feature__showcase .showcase-cta svg{ width:16px; height:16px; }
+.feature__showcase:hover .showcase-cta{
+  transform:scale(1.1);
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
 }
 
 /* MOBILE */
 @media (max-width:820px){
-  .feature{ padding:clamp(4rem,8vw,6rem) clamp(1rem,4vw,2rem); }
-  .feature__split{ flex-direction:column; gap:2.5rem; min-height:auto; }
-  .feature__names{ flex:none; position:static; flex-direction:row; flex-wrap:wrap; gap:0.4rem 1.2rem; }
-  .feature__names a{ font-size:clamp(1.3rem,6.5vw,1.8rem); letter-spacing:-1px; }
-  .feature__names .idx{ display:none; }
-  .feature__cards{ grid-template-columns:1fr 1fr; gap:0.6rem; }
-  .feat-card{ border-radius:4px; }
-  .feat-card:nth-child(2){ margin-top:1.5rem; }
-  .feat-card:nth-child(3){ margin-top:-1.5rem; }
-  .feat-card__cta{ width:32px; height:32px; top:0.6rem; left:0.6rem; }
+  .feature{ padding:clamp(4rem,8vw,6rem) clamp(1rem,3vw,1.5rem); }
+  .feature__split{ flex-direction:column; gap:2rem; min-height:auto; }
+  .feature__names{ flex:none; width:100%; }
+  .feature__names a{ font-size:clamp(1.2rem,5.5vw,1.6rem); letter-spacing:-1px; padding:clamp(0.7rem,2.5vw,1rem) 0; }
+  .feature__names a .arr{ width:24px; height:24px; }
+  .feature__names a .arr svg{ width:11px; height:11px; }
+  .feature__showcase{ flex:none; width:100%; aspect-ratio:4/5; }
+  .feature__showcase .showcase-cta{ width:34px; height:34px; top:0.8rem; right:0.8rem; }
+  .feature__showcase .showcase-cta svg{ width:14px; height:14px; }
+  .feature__names a.is-active{ padding-left:0.5rem; }
 }
 
 
@@ -688,39 +663,34 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
     </div>
   </section>
 
-      <!-- 02 — FEATURING v5: premium split layout -->
+<!-- 02 — FEATURING v5: spotlight reveal -->
   <section id="featuring" class="section feature" data-pillar="default" data-section>
+    <div class="feature__head">
+      <div class="eyebrow">Featuring · This Quarter</div>
+    </div>
     <div class="feature__split">
-      <ul class="feature__names" data-feat-names>
-        <li><a href="/featuring/mike" data-feat-name="mike" data-hover><span class="idx">01</span>Mike</a></li>
-        <li><a href="/featuring/tosin-tee" data-feat-name="tosin-tee" data-hover><span class="idx">02</span>Tosin Tee</a></li>
-        <li><a href="/featuring/anthony-azekwoh" data-feat-name="anthony-azekwoh" data-hover><span class="idx">03</span>Anthony Azekwoh</a></li>
-        <li><a href="/featuring/anthony-a" data-feat-name="anthony-a" data-hover><span class="idx">04</span>Anthony A.</a></li>
+      <ul class="feature__names">
+        <li><a href="/featuring/artist-1" data-feat-name="0">Artist One<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
+        <li><a href="/featuring/artist-2" data-feat-name="1">Artist Two<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
+        <li><a href="/featuring/artist-3" data-feat-name="2">Artist Three<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
+        <li><a href="/featuring/artist-4" data-feat-name="3">Artist Four<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
+        <li><a href="/featuring/artist-5" data-feat-name="4">Artist Five<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
+        <li><a href="/featuring/artist-6" data-feat-name="5">Artist Six<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
       </ul>
-      <div class="feature__cards" data-feat-cards>
-        <a href="/featuring/mike" class="feat-card" data-feat-card="mike" data-scroll-y="80">
-          <div class="ph" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLs2Jkaq1FFzfL0DTEuF6IiBVHDWLkBYh5o2WH2F_iU9XDB3L7gztryJji-0_CS2QQLZSZPv0Il4jqDEQOQCBTJAshqTBKvVsHBagpcAqVXCe7wQNQ29nH6Z4VZc9J56HsfFLdUqlRLiGCalm2s_iasdnmAQSpBCUJasW19-t5ZTWj6pnNrpNOQelktY52THXLBhXgl9CBTxFkXNk1RsElcGfv8NrA61WfBERU_Vgbf5oq-37j4G8k8AaDzZ');"></div>
-          <div class="feat-card__depth"></div>
-          <div class="feat-card__cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
-        </a>
-        <a href="/featuring/tosin-tee" class="feat-card" data-feat-card="tosin-tee" data-scroll-y="120">
-          <div class="ph" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLu36SeFU_M7HHugqfEQn79DOrtF_ZEdrs0KXiPSrhRfDRAMau4r9R292BdonSGSTaacbsXzItwbY2i7nRFNjpk1GIm7Y29Tpt90EoAlm2iLsrpJmhPqRSDtL32pdy5zMMH0wzLVOR80pYnqMfhSikJ-OYZQc_yo_EMFoP1YslxP89Oql56iZwZ4jkggkGQH1ONA2rDP5xfGWGL0YWbBqAblBV2IqG01tQ9JsNdSww70FiQ0dO9-dsfK-jfR');"></div>
-          <div class="feat-card__depth"></div>
-          <div class="feat-card__cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
-        </a>
-        <a href="/featuring/anthony-azekwoh" class="feat-card" data-feat-card="anthony-azekwoh" data-scroll-y="55">
-          <div class="ph" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
-          <div class="feat-card__depth"></div>
-          <div class="feat-card__cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
-        </a>
-        <a href="/featuring/anthony-a" class="feat-card" data-feat-card="anthony-a" data-scroll-y="95">
-          <div class="ph" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvB6YRMwYhCoSQIBoF414tPyRrbZIWHFJhSEoPs98xa3X7MpIaUXoRO5324NOh-dlNnwB7WpVf5lTF71mbpgZmNbgjSY4hzThh_o6lDi2YVYrFgYmpl3fr7gwpfX3o3LQ8dL8EE63Lt-YfvTdvaT7hNAwgcixu1MpINoYO10Cyhx0pluX8jElAFimgkliR30gzEmtgqbGkCLE7ce2XVtB3hFSUMsag8CUuEB-ATY2_oG51Ju14ndwCMpO0');"></div>
-          <div class="feat-card__depth"></div>
-          <div class="feat-card__cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+      <div class="feature__showcase">
+        <div class="feat-img is-active" data-feat-img="0" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+        <div class="feat-img" data-feat-img="1" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+        <div class="feat-img" data-feat-img="2" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+        <div class="feat-img" data-feat-img="3" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+        <div class="feat-img" data-feat-img="4" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+        <div class="feat-img" data-feat-img="5" style="background-image:url('https://lh3.googleusercontent.com/aida/AP1WRLvoDnzph7h-ryc_XsDXq08tXdb7dFJMEGwUHWsKIhs84-zeNq956HLLAMLPVoIL21q_X6F4nXJNbE_xvNZJ2yB5jctmQ7OvWJ7eA2IqdCidKZvnwsblqxJOYYz2e0rWEUSixTc7L8o_CciSynaNeT53tkcuO2x91s-rGhEmUnZnmHKXnbAgQcuCsFFbEu8Kz2tROEUVNj_SOv9SqEALfd7tSIOZmzP-GBdIlGcg2PPykVxFUvW332TYRnA6');"></div>
+        <a href="#" class="showcase-cta" aria-label="View artist">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
         </a>
       </div>
     </div>
   </section>
+
 
   <!-- 03 — MAGAZINE -->
   <section id="magazine" class="section magazine" data-pillar="default" data-section>
@@ -1086,45 +1056,31 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
      name list reveals; hover a name => its image colorizes and
      zooms OUT 3%, all others zoom IN 3% (and dim).
      ============================================================ */
-  /* FEATURING v5 — split names/cards, scroll-in, hover cross-highlight */
-  const featCards = Array.from(document.querySelectorAll('[data-feat-card]'));
-  const featNameLinks = Array.from(document.querySelectorAll('[data-feat-name]'));
+
+/* FEATURING v5 — spotlight: hover name → crossfade showcase image */
+  const featNames = Array.from(document.querySelectorAll('[data-feat-name]'));
+  const featImgs = Array.from(document.querySelectorAll('[data-feat-img]'));
   const featSection = document.getElementById('featuring');
+  const showcaseCta = document.querySelector('.showcase-cta');
+  let activeFeat = 0;
 
-  // Scroll-in: each card enters from below at its OWN speed (staggered, not simultaneous)
-  function updateFeaturing(){
-    if(!featSection) return;
-    const r = featSection.getBoundingClientRect();
-    const vh = window.innerHeight;
-    // per-card progress: each card calculates based on its own position
-    featCards.forEach(card => {
-      const cr = card.getBoundingClientRect();
-      const cardCenter = cr.top + cr.height / 2;
-      const progress = (vh - cardCenter) / vh;       // 0 at bottom edge, 1 at top
-      const speed = parseFloat(card.dataset.scrollY || '80');
-      const drift = speed * Math.max(0, 1 - progress * 1.8);
-      card.style.transform = `translateY(${drift.toFixed(1)}px)`;
-      card.style.opacity = String(Math.min(1, Math.max(0, progress * 2.5)));
-    });
+  function setFeatActive(idx){
+    if(idx === activeFeat) return;
+    activeFeat = idx;
+    featNames.forEach((a,i) => a.classList.toggle('is-active', i === idx));
+    featImgs.forEach((img,i) => img.classList.toggle('is-active', i === idx));
+    if(showcaseCta) showcaseCta.href = featNames[idx]?.href || '#';
   }
+  // init first as active
+  if(featNames[0]) featNames[0].classList.add('is-active');
+  if(showcaseCta && featNames[0]) showcaseCta.href = featNames[0].href;
 
-  // Hover cross-highlight: name ↔ card
-  function setActive(slug){
-    featNameLinks.forEach(a => a.classList.toggle('is-active', a.dataset.featName === slug));
-    featCards.forEach(c => c.classList.toggle('is-active', c.dataset.featCard === slug));
-  }
-  function clearActive(){
-    featNameLinks.forEach(a => a.classList.remove('is-active'));
-    featCards.forEach(c => c.classList.remove('is-active'));
-  }
-  featNameLinks.forEach(a => {
-    a.addEventListener('mouseenter', () => setActive(a.dataset.featName));
-    a.addEventListener('mouseleave', clearActive);
+  featNames.forEach((a,i) => {
+    a.addEventListener('mouseenter', () => setFeatActive(i));
   });
-  featCards.forEach(c => {
-    c.addEventListener('mouseenter', () => setActive(c.dataset.featCard));
-    c.addEventListener('mouseleave', clearActive);
-  });
+
+  // no per-card scroll parallax needed (single showcase)
+  function updateFeaturing(){}
 
   /* FADE OBSERVER */
   function observeFade(){
