@@ -421,6 +421,17 @@ h2,h3,h4{ letter-spacing:-5px; }
 .feat-pz:nth-child(5){ grid-column:1/3; grid-row:3; }
 .feat-pz:nth-child(6){ grid-column:3; grid-row:3; }
 
+/* Name overlay on images */
+.feat-pz__name{
+  position:absolute; bottom:clamp(0.6rem,1.2vw,1rem); left:clamp(0.6rem,1.2vw,1rem); z-index:3;
+  font-family:var(--heading-font); font-weight:600;
+  font-size:clamp(0.85rem,1.2vw,1.15rem); letter-spacing:-1px; line-height:1;
+  color:var(--paper); opacity:0.7;
+  transition:opacity .35s ease;
+  pointer-events:none;
+}
+.feat-pz:hover .feat-pz__name,
+.feat-pz.is-active .feat-pz__name{ opacity:1; }
 /* B&W base */
 .feat-pz__img{
   position:absolute; inset:-6px;
@@ -688,39 +699,51 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
     <div class="feature__inner">
       <div class="feature__left">
         <ul class="feature__names">
-          <li><a href="/featuring/artist-1" data-feat-name="0">Artist One<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
-          <li><a href="/featuring/artist-2" data-feat-name="1">Artist Two<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
-          <li><a href="/featuring/artist-3" data-feat-name="2">Artist Three<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
-          <li><a href="/featuring/artist-4" data-feat-name="3">Artist Four<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
-          <li><a href="/featuring/artist-5" data-feat-name="4">Artist Five<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
-          <li><a href="/featuring/artist-6" data-feat-name="5">Artist Six<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
+          <li><a href="#" data-feat-name="0">Artist One<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
+          <li><a href="#" data-feat-name="1">Artist Two<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
+          <li><a href="#" data-feat-name="2">Artist Three<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
+          <li><a href="#" data-feat-name="3">Artist Four<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
+          <li><a href="#" data-feat-name="4">Artist Five<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
+          <li><a href="#" data-feat-name="5">Artist Six<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a></li>
         </ul>
       </div>
       <div class="feature__images">
-        <div class="feat-pz" data-feat-img="0">
+        <a href="#" class="feat-pz" data-feat-img="0">
           <div class="feat-pz__img" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');"></div>
           <div class="feat-pz__color" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');"></div>
-        </div>
-        <div class="feat-pz" data-feat-img="1">
+        
+          <span class="feat-pz__name">Artist One</span>
+        </a>
+        <a href="#" class="feat-pz" data-feat-img="1">
           <div class="feat-pz__img" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');"></div>
           <div class="feat-pz__color" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');"></div>
-        </div>
-        <div class="feat-pz" data-feat-img="2">
+        
+          <span class="feat-pz__name">Artist Two</span>
+        </a>
+        <a href="#" class="feat-pz" data-feat-img="2">
           <div class="feat-pz__img" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');"></div>
           <div class="feat-pz__color" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');"></div>
-        </div>
-        <div class="feat-pz" data-feat-img="3">
+        
+          <span class="feat-pz__name">Artist Three</span>
+        </a>
+        <a href="#" class="feat-pz" data-feat-img="3">
           <div class="feat-pz__img" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');"></div>
           <div class="feat-pz__color" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');"></div>
-        </div>
-        <div class="feat-pz" data-feat-img="4">
+        
+          <span class="feat-pz__name">Artist Four</span>
+        </a>
+        <a href="#" class="feat-pz" data-feat-img="4">
           <div class="feat-pz__img" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');"></div>
           <div class="feat-pz__color" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');"></div>
-        </div>
-        <div class="feat-pz" data-feat-img="5">
+        
+          <span class="feat-pz__name">Artist Five</span>
+        </a>
+        <a href="#" class="feat-pz" data-feat-img="5">
           <div class="feat-pz__img" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');"></div>
           <div class="feat-pz__color" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');"></div>
-        </div>
+        
+          <span class="feat-pz__name">Artist Six</span>
+        </a>
       </div>
     </div>
   </section>
@@ -1107,10 +1130,19 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
     a.addEventListener('mouseenter', () => featActivate(i));
     a.addEventListener('mouseleave', featClear);
   });
-  // image hover → activate matching name
+  // image hover → activate matching name + show arrow
   featImgs.forEach((pz,i) => {
-    pz.addEventListener('mouseenter', () => featActivate(i));
-    pz.addEventListener('mouseleave', featClear);
+    pz.addEventListener('mouseenter', () => {
+      featActivate(i);
+      // also show arrow on matching name
+      const arr = featNames[i]?.querySelector('.arr');
+      if(arr){ arr.style.opacity='1'; arr.style.transform='scale(1)'; arr.style.background='var(--orange)'; arr.style.color='var(--ink)'; arr.style.borderColor='var(--orange)'; }
+    });
+    pz.addEventListener('mouseleave', () => {
+      featClear();
+      // reset all arrows
+      featNames.forEach(a => { const arr = a.querySelector('.arr'); if(arr){ arr.style.opacity=''; arr.style.transform=''; arr.style.background=''; arr.style.color=''; arr.style.borderColor=''; } });
+    });
   });
 
   // magnetic hover on images
