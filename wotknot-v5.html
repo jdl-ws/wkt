@@ -97,7 +97,7 @@ a{ color:inherit; text-decoration:none; }
 @media (hover:none),(pointer:coarse){ .cursor, }
 
 /* LOADER */
-.loader{ position:fixed; inset:0; background:var(--ink); z-index:10001;
+.loader{ position:fixed; inset:0; background:var(--ink); z-index:10001; will-change:transform;
   display:grid; grid-template-rows:1fr auto 1fr; padding:clamp(1rem,3vw,2rem); }
 .loader__top{ display:flex; justify-content:space-between; align-items:flex-start; }
 .loader__mark{ font-family:var(--heading-font); font-weight:700; font-size:clamp(1rem,1.6vw,1.4rem); letter-spacing:0.04em; }
@@ -376,44 +376,40 @@ h2,h3,h4{ letter-spacing:-5px; }
 .feature__left{
   flex:0 0 30%; display:flex; flex-direction:column; justify-content:center; gap:1.2rem;
 }
-.feature__ticker{
-  position:relative; height:clamp(3.2rem,5vw,4.5rem);
+.feature__carousel{
+  position:relative;
+  height:clamp(16rem,22vw,20rem);
   overflow:hidden;
+  mask-image:linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+  -webkit-mask-image:linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+}
+.feature__list{
+  display:flex; flex-direction:column; gap:0;
+  transition:transform .6s cubic-bezier(0.22,1,0.36,1);
 }
 .feature__name{
-  position:absolute; inset:0;
   display:flex; align-items:center; justify-content:space-between;
+  flex-shrink:0;
   font-family:var(--heading-font); font-weight:600;
   font-size:clamp(1.5rem,2.8vw,3rem); letter-spacing:-3px; line-height:1;
   color:var(--paper); text-decoration:none;
-  transform:translateY(110%); opacity:0;
-  transition:transform .6s cubic-bezier(0.16,1,0.3,1), opacity .45s ease;
+  opacity:0.3;
+  transition:opacity .4s cubic-bezier(0.16,1,0.3,1), color .4s cubic-bezier(0.16,1,0.3,1);
 }
-.feature__name.is-active{ transform:translateY(0); opacity:1; color:var(--paper); }
-.feature__name.is-above{ transform:translateY(-110%); opacity:0; }
 .feature__name .arr{
   width:26px; height:26px; border-radius:50%;
   border:1px solid rgba(244,239,230,0.2); color:var(--paper);
   display:grid; place-items:center; flex-shrink:0;
-  opacity:0; transform:scale(0.6);
-  transition:opacity .35s ease, transform .4s cubic-bezier(0.34,1.56,0.64,1), background .3s ease;
+  opacity:0; transform:scale(0.92);
+  transition:opacity .25s cubic-bezier(0.16,1,0.3,1), transform .3s cubic-bezier(0.16,1,0.3,1), background .25s ease;
 }
 .feature__name:hover .arr{
   opacity:1; transform:scale(1);
   background:var(--paper); color:var(--ink); border-color:var(--paper);
 }
 .feature__name .arr svg{ width:11px; height:11px; }
-.feature__counter{
-  font-family:'JetBrains Mono',monospace; font-size:var(--t-tiny);
-  letter-spacing:0.22em; color:var(--muted);
-}
-.feature__progress{
-  height:1px; background:rgba(244,239,230,0.08); position:relative;
-}
-.feature__progress span{
-  position:absolute; left:0; top:0; height:100%; background:var(--paper);
-  width:0%; transition:width .4s ease;
-}
+.feature__counter{ display:none; }
+.feature__progress{ display:none; }
 
 /* RIGHT — puzzle grid */
 .feature__images{
@@ -438,13 +434,13 @@ h2,h3,h4{ letter-spacing:-5px; }
   position:absolute; inset:-6px;
   background-size:cover; background-position:center;
   filter:grayscale(100%) contrast(1.05) brightness(0.7);
-  transition:filter .6s ease, transform .5s ease;
+  transition:filter .5s cubic-bezier(0.16,1,0.3,1), transform .4s cubic-bezier(0.16,1,0.3,1);
 }
 .feat-pz__color{
   position:absolute; inset:-6px;
   background-size:cover; background-position:center;
   clip-path:inset(0 100% 0 0);
-  transition:clip-path .85s cubic-bezier(0.16,1,0.3,1);
+  transition:clip-path .7s cubic-bezier(0.22,1,0.36,1);
   z-index:1;
 }
 .feat-pz.is-active{
@@ -456,40 +452,53 @@ h2,h3,h4{ letter-spacing:-5px; }
 
 /* MOBILE */
 @media (max-width:820px){
-  .feature{ height:auto; min-height:100vh; flex-direction:column; padding:clamp(4rem,8vw,5rem) clamp(1rem,3vw,1.5rem); }
-  .feature__inner{ flex-direction:column; height:auto; gap:1.5rem; }
-  .feature__left{ flex:none; width:100%; gap:0.8rem; }
-  .feature__ticker{ height:clamp(2rem,6vw,2.8rem); }
-  .feature__name{ font-size:clamp(1.1rem,5vw,1.6rem); letter-spacing:-1px; }
-  .feature__name .arr{ width:20px; height:20px; }
-  .feature__name .arr svg{ width:9px; height:9px; }
-  .feature__images{ flex:none; width:100%; height:50vh; grid-template-columns:1fr 1fr; grid-template-rows:1fr 0.7fr 1fr; }
-  .feat-pz:nth-child(1){ grid-column:1; grid-row:1; }
-  .feat-pz:nth-child(2){ grid-column:2; grid-row:1; }
-  .feat-pz:nth-child(3){ grid-column:1/3; grid-row:2; }
-  .feat-pz:nth-child(4){ grid-column:1; grid-row:3; }
-  .feat-pz:nth-child(5){ grid-column:2; grid-row:3; }
-  .feat-pz:nth-child(6){ display:none; }
+  .feature{ height:auto; min-height:100vh; flex-direction:column; padding:clamp(3rem,5vw,4rem) clamp(0.6rem,2vw,1rem); }
+  .feature__inner{ flex-direction:column; height:auto; gap:0; }
+  /* Mobile: show only active name (first child after DOM rotation) */
+  .feature__left{ flex:none; width:100%; gap:0.4rem; }
+  .feature__carousel{
+    height:auto; overflow:visible;
+    mask-image:none; -webkit-mask-image:none;
+  }
+  .feature__list{ gap:0; }
+  .feature__name{
+    font-size:clamp(1.3rem,6.5vw,1.9rem); letter-spacing:-1px;
+    padding:0.5rem 0;
+    display:none !important;  /* hide all */
+  }
+  .feature__name:first-child{
+    display:flex !important; opacity:1 !important; /* show only active */
+  }
+  .feature__name:first-child .arr{
+    opacity:1 !important; transform:scale(1) !important;
+    background:var(--paper); color:var(--ink); border-color:var(--paper);
+  }
+  .feature__name .arr{ width:28px; height:28px; }
+  .feature__name .arr svg{ width:12px; height:12px; }
+  .feature__counter{ display:none; }
+  .feature__progress{ display:none; }
+  /* Mobile images: active image large, rest in 2-col grid below */
+  .feature__images{
+    flex:none; width:100%; margin-top:0.6rem;
+    height:auto;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:auto;
+    gap:3px;
+  }
+  /* Active image spans full width */
+  .feat-pz{ aspect-ratio:4/5; }
+  .feat-pz.is-active{
+    grid-column:1 / -1 !important;
+    grid-row:auto !important;
+    aspect-ratio:3/4;
+    order:-1; /* force active to top */
+  }
+  .feat-pz:not(.is-active){ grid-column:auto !important; grid-row:auto !important; }
 }
 
 
 
-/* Magazine reveal animations */
-.mag-the{
-  display:inline-block; opacity:0; transform:translateX(80px);
-  transition:opacity .7s cubic-bezier(0.16,1,0.3,1), transform .8s cubic-bezier(0.16,1,0.3,1);
-}
-.mag-the.is-revealed{ opacity:1; transform:translateX(0); }
-.mag-letter{
-  display:inline-block; opacity:0; transform:translateY(18px);
-  transition:opacity .5s cubic-bezier(0.16,1,0.3,1), transform .6s cubic-bezier(0.16,1,0.3,1);
-}
-.mag-letter.is-revealed{ opacity:1; transform:translateY(0); }
-.mag-line{
-  display:block; opacity:0; transform:translateY(16px);
-  transition:opacity .6s cubic-bezier(0.16,1,0.3,1), transform .7s cubic-bezier(0.16,1,0.3,1);
-}
-.mag-line.is-revealed{ opacity:1; transform:translateY(0); }
 /* ===================== MAGAZINE ===================== */
 .magazine{ grid-template-rows:auto 1fr; gap:clamp(2rem,4vw,3.5rem); position:relative; }
 .magazine__head{ display:grid; grid-template-columns:1fr; gap:1rem; max-width:70ch; }
@@ -591,10 +600,7 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
 
 <!-- LOADER -->
 <div class="loader" aria-hidden="true">
-  <div class="loader__top">
-    <div class="loader__mark" style="opacity:0;height:0;overflow:hidden;">WOTKNOT</div>
-    <div class="loader__meta">Vol. III<br/>Lagos / London / Houston</div>
-  </div>
+  <div class="loader__top"></div>
   <div class="loader__center">
     <div class="loader__num" data-loader-num>00</div>
     <div class="loader__bar"><i data-loader-bar></i></div>
@@ -702,16 +708,18 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
   <section id="featuring" class="section feature" data-pillar="default" data-section>
     <div class="feature__inner">
       <div class="feature__left">
-        <div class="eyebrow">Featuring · This Quarter</div>
-        <div class="feature__ticker">
-            <a href="/featuring/artist-1" class="feature__name is-active" data-feat-name="0">Artist One<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
+        
+        <div class="feature__carousel">
+            <div class="feature__list" data-feat-list>
+            <a href="/featuring/artist-1" class="feature__name" data-feat-name="0">Artist One<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
             <a href="/featuring/artist-2" class="feature__name" data-feat-name="1">Artist Two<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
             <a href="/featuring/artist-3" class="feature__name" data-feat-name="2">Artist Three<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
             <a href="/featuring/artist-4" class="feature__name" data-feat-name="3">Artist Four<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
             <a href="/featuring/artist-5" class="feature__name" data-feat-name="4">Artist Five<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
             <a href="/featuring/artist-6" class="feature__name" data-feat-name="5">Artist Six<span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span></a>
-        </div>
-        <div class="feature__counter"><span data-feat-counter>01</span> / 06</div>
+            </div>
+          </div>
+          <div class="feature__counter"><span data-feat-counter>01</span> / 06</div>
         <div class="feature__progress"><span data-feat-bar></span></div>
       </div>
       <div class="feature__images">
@@ -747,12 +755,12 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
   <section id="magazine" class="section magazine" data-pillar="default" data-section>
     <div class="magazine__head">
       <div class="eyebrow" data-hover="Four pillars">The Magazine · Four Pillars</div>
-      <h2 class="mag-h2"><span class="mag-the" data-mag-the>THE</span> <em><span class="mag-word" data-mag-word>MAGAZINE</span></em></h2>
-      <p class="magazine__lead">
+      <h2 data-split>THE <em>MAGAZINE</em></h2>
+      <p class="magazine__lead" data-fade-in>
         A magazine is not a feed. It is a room. We make rooms for the music we love,
         the art we argue with, the clothes we live in, and the lives we are still becoming.
       </p>
-      <div class="magazine__cta">
+      <div class="magazine__cta" data-fade-in>
         <a href="/magazine" class="cta-btn" data-hover="Magazine" aria-label="Explore Issues — WOTKNOT MAG">
           <span class="cta-btn__face cta-btn__face--default">
             <span class="cta-btn__label">Explore Issues</span>
@@ -855,7 +863,7 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
   function runLoader(){
     return new Promise(resolve=>{
       if(reduce){ numEl.textContent='100'; barEl.style.width='100%'; document.body.classList.add('is-loaded');
-        loader.style.transition='opacity .6s ease'; loader.style.opacity='0';
+        loader.style.transition='transform .6s ease'; loader.style.transform='translateY(-100vh)';
         setTimeout(()=>{ loader.style.display='none'; resolve(); },400); return; }
       let n=0,si=0;
       const tick=()=>{
@@ -864,8 +872,8 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
         if(n%18<4&&si<statuses.length-1){ si++; statusEl.textContent=statuses[si]; }
         if(n<100) setTimeout(tick,60+Math.random()*60);
         else{ statusEl.textContent='Welcome.';
-          setTimeout(()=>{ loader.style.transition='transform 1s cubic-bezier(0.77,0,0.18,1), opacity 0.6s ease';
-            loader.style.transform='translateY(-100%)'; loader.style.opacity='0'; document.body.classList.add('is-loaded');
+          setTimeout(()=>{ loader.style.transition='transform 1.2s cubic-bezier(0.76,0,0.24,1)';
+            loader.style.transform='translateY(-100vh)'; document.body.classList.add('is-loaded');
             setTimeout(()=>{ loader.style.display='none'; resolve(); },700); },350); }
       }; tick();
     });
@@ -1107,70 +1115,87 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
      name list reveals; hover a name => its image colorizes and
      zooms OUT 3%, all others zoom IN 3% (and dim).
      ============================================================ */
-  /* FEATURING v5 — wheel + touch driven ticker + puzzle + magnetic hover */
-  const featNames = Array.from(document.querySelectorAll('[data-feat-name]'));
+  /* FEATURING v5 — rotating carousel + puzzle + magnetic hover */
+  const featList = document.querySelector('[data-feat-list]');
   const featImgs = Array.from(document.querySelectorAll('[data-feat-img]'));
   const featSection = document.getElementById('featuring');
   const featBar = document.querySelector('[data-feat-bar]');
   const featCounter = document.querySelector('[data-feat-counter]');
-  let featStep = 0;
-  let featCooldown = false;
+  let featCycle = 0;
+  let featBusy = false;
 
-  function setFeatActive(idx){
-    featStep = idx;
-    featNames.forEach((a,i) => {
-      a.classList.remove('is-active','is-above');
-      if(i < idx) a.classList.add('is-above');
-      else if(i === idx) a.classList.add('is-active');
-    });
-    featImgs.forEach((el,i) => el.classList.toggle('is-active', i === idx));
-    if(featCounter) featCounter.textContent = String(idx + 1).padStart(2,'0');
-    if(featBar) featBar.style.width = ((idx + 1) / 6 * 100) + '%';
+  function featUpdateActive(){
+    if(!featList) return;
+    const items = Array.from(featList.children);
+    items.forEach((el,i) => { el.style.opacity = i === 0 ? '1' : '0.3'; });
+    const activeIdx = parseInt(items[0].dataset.featName);
+    featImgs.forEach((el,i) => el.classList.toggle('is-active', i === activeIdx));
+    if(featCounter) featCounter.textContent = String(activeIdx + 1).padStart(2,'0');
+    if(featBar) featBar.style.width = ((featCycle + 1) / 6 * 100) + '%';
   }
 
-  function featAdvance(dir){
-    if(featCooldown) return false;
-    if(dir > 0 && featStep < 5){ featStep++; setFeatActive(featStep); }
-    else if(dir < 0 && featStep > 0){ featStep--; setFeatActive(featStep); }
-    else return false; // at boundary — let scroll pass
-    featCooldown = true;
-    setTimeout(() => { featCooldown = false; }, 550);
-    return true; // consumed
+  function featForward(){
+    if(featBusy || featCycle >= 5) return false;
+    const itemH = featList.children[0].offsetHeight;
+    featList.style.transition = 'transform .6s cubic-bezier(0.22,1,0.36,1)';
+    featList.style.transform = 'translateY(-' + itemH + 'px)';
+    featBusy = true;
+    featCycle++;
+    setTimeout(() => {
+      featList.style.transition = 'none';
+      featList.appendChild(featList.children[0]);
+      featList.style.transform = 'translateY(0)';
+      featList.offsetHeight;
+      featUpdateActive();
+      featBusy = false;
+    }, 670);
+    return true;
   }
 
-  // wheel capture
+  function featBackward(){
+    if(featBusy || featCycle <= 0) return false;
+    const itemH = featList.children[0].offsetHeight;
+    featList.style.transition = 'none';
+    featList.insertBefore(featList.children[featList.children.length - 1], featList.children[0]);
+    featList.style.transform = 'translateY(-' + itemH + 'px)';
+    featList.offsetHeight;
+    featList.style.transition = 'transform .6s cubic-bezier(0.22,1,0.36,1)';
+    featList.style.transform = 'translateY(0)';
+    featBusy = true;
+    featCycle--;
+    setTimeout(() => { featUpdateActive(); featBusy = false; }, 670);
+    return true;
+  }
+
+  featUpdateActive();
+
+  // wheel
   if(featSection){
     featSection.addEventListener('wheel', function(e){
       const r = featSection.getBoundingClientRect();
       const vh = window.innerHeight;
-      const inView = r.top < vh * 0.3 && r.bottom > vh * 0.7;
-      if(!inView) return;
-      if(featCooldown){ e.preventDefault(); return; }
-      const dir = e.deltaY > 0 ? 1 : -1;
-      if(featAdvance(dir)) e.preventDefault();
+      if(r.top > vh * 0.3 || r.bottom < vh * 0.7) return;
+      if(featBusy){ e.preventDefault(); return; }
+      if(e.deltaY > 0 ? featForward() : featBackward()) e.preventDefault();
     }, {passive:false});
-
-    // touch/swipe support
-    let touchY = 0;
-    featSection.addEventListener('touchstart', function(e){
+    // touch
+    let tY = 0;
+    featSection.addEventListener('touchstart', e => {
       const r = featSection.getBoundingClientRect();
-      const vh = window.innerHeight;
-      if(r.top < vh * 0.3 && r.bottom > vh * 0.7) touchY = e.touches[0].clientY;
+      if(r.top < innerHeight * 0.3 && r.bottom > innerHeight * 0.7) tY = e.touches[0].clientY;
     }, {passive:true});
-    featSection.addEventListener('touchmove', function(e){
-      if(!touchY) return;
-      const dy = touchY - e.touches[0].clientY;
+    featSection.addEventListener('touchmove', e => {
+      if(!tY) return;
+      const dy = tY - e.touches[0].clientY;
       if(Math.abs(dy) > 40){
-        if(featAdvance(dy > 0 ? 1 : -1)){
-          e.preventDefault();
-          touchY = e.touches[0].clientY;
-        } else { touchY = 0; }
+        if(dy > 0 ? featForward() : featBackward()){ e.preventDefault(); tY = e.touches[0].clientY; }
+        else tY = 0;
       }
     }, {passive:false});
-    featSection.addEventListener('touchend', () => { touchY = 0; });
+    featSection.addEventListener('touchend', () => { tY = 0; });
   }
 
-  // magnetic hover on puzzle pieces
+  // magnetic hover
   if(!isTouch){
     featImgs.forEach(pz => {
       const img = pz.querySelector('.feat-pz__img');
@@ -1193,84 +1218,6 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-
   function updateFeaturing(){}
 
 
-  /* MAGAZINE — luxury editorial reveal */
-  function revealMagazine(){
-    const theEl = document.querySelector('[data-mag-the]');
-    const wordEl = document.querySelector('[data-mag-word]');
-    const lead = document.querySelector('.magazine__lead');
-    const cta = document.querySelector('.magazine__cta');
-
-    // split MAGAZINE into letters
-    if(wordEl && !wordEl.dataset._split){
-      wordEl.dataset._split = '1';
-      const text = wordEl.textContent;
-      wordEl.textContent = '';
-      text.split('').forEach(ch => {
-        const s = document.createElement('span');
-        s.className = 'mag-letter';
-        s.textContent = ch;
-        wordEl.appendChild(s);
-      });
-    }
-    const letters = wordEl ? Array.from(wordEl.querySelectorAll('.mag-letter')) : [];
-
-    // split lead into lines (sentences)
-    if(lead && !lead.dataset._split){
-      lead.dataset._split = '1';
-      const text = lead.textContent.trim();
-      const sentences = text.split(/(?<=[.!?,])\s+/);
-      lead.textContent = '';
-      sentences.forEach(s => {
-        const span = document.createElement('span');
-        span.className = 'mag-line';
-        span.textContent = s + ' ';
-        lead.appendChild(span);
-      });
-    }
-    const lines = lead ? Array.from(lead.querySelectorAll('.mag-line')) : [];
-
-    // choreography: THE first, MAGAZINE at 60%, body after, CTA last
-    let t = 0;
-    // THE — slides from right
-    if(theEl) setTimeout(() => theEl.classList.add('is-revealed'), t);
-    // MAGAZINE letters — stagger starting at 60% of THE's duration (~480ms)
-    t = 480;
-    letters.forEach((l,i) => {
-      setTimeout(() => l.classList.add('is-revealed'), t + i * 55);
-    });
-    // body lines — after headline is mostly done
-    t = 480 + letters.length * 55 + 100;
-    lines.forEach((l,i) => {
-      setTimeout(() => l.classList.add('is-revealed'), t + i * 120);
-    });
-    // CTA — last
-    if(cta){
-      cta.style.opacity = '0';
-      cta.style.transform = 'translateY(14px)';
-      cta.style.transition = 'opacity .6s cubic-bezier(0.16,1,0.3,1), transform .7s cubic-bezier(0.16,1,0.3,1)';
-      const ctaDelay = t + lines.length * 120 + 80;
-      setTimeout(() => { cta.style.opacity = '1'; cta.style.transform = 'translateY(0)'; }, ctaDelay);
-    }
-  }
-
-  // trigger when magazine section enters view
-  let magRevealed = false;
-  const magObs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if(e.isIntersecting && e.intersectionRatio > 0.25 && !magRevealed){
-        magRevealed = true;
-        if(reduce){ // skip animation for reduced motion
-          document.querySelectorAll('.mag-the,.mag-letter,.mag-line,.magazine__cta').forEach(el => {
-            el.style.opacity = '1'; el.style.transform = 'none';
-            el.classList.add('is-revealed');
-          });
-        } else { revealMagazine(); }
-        magObs.disconnect();
-      }
-    });
-  }, {threshold:[0.25,0.5]});
-  const magSection = document.getElementById('magazine');
-  if(magSection) magObs.observe(magSection);
 
   /* FADE OBSERVER */
   function observeFade(){
