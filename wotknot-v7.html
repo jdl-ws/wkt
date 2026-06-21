@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="description" content="WOTKNOT — A quarterly study of the four pillars that shape culture: Music. Art. Fashion. Lifestyle."/>
+<title>WOTKNOT — Music. Art. Fashion. Lifestyle.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Montserrat:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   WOTKNOT MAG · v7 — Full Motion Edition
+   ============================================================ */
+:root{
+  --ink:#07070a; --paper:#f4efe6; --paper-dim:#c9c2b3;
+  --rule:rgba(244,239,230,0.12); --muted:rgba(244,239,230,0.45);
+  --accent:#f4efe6; --accent-soft:rgba(244,239,230,0.12); --accent-glow:rgba(244,239,230,0.18);
+  --orange:#ff6a1a;
+  --music:#c8102e; --music-soft:rgba(200,16,46,0.14);
+  --art:#b6ff3c;   --art-soft:rgba(182,255,60,0.10);
+  --fashion:#d9b87a; --fashion-soft:rgba(217,184,122,0.12);
+  --lifestyle:#5b8cff; --lifestyle-soft:rgba(91,140,255,0.12);
+
+  --t-display:clamp(2.25rem,6.5vw,6.5rem);
+  --t-body:clamp(0.95rem,1.05vw,1.1rem);
+  --t-cap:clamp(0.7rem,0.78vw,0.82rem);
+  --t-tiny:clamp(0.62rem,0.7vw,0.72rem);
+
+  --ease-out:cubic-bezier(0.16,1,0.3,1);
+  --ease-elastic:cubic-bezier(0.34,1.56,0.64,1);
+  --ease-editorial:cubic-bezier(0.77,0,0.18,1);
+  --heading-font:'Montserrat','Inter',-apple-system,sans-serif;
+  --nav-font:'Montserrat','Inter',sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{margin:0;padding:0;overflow-x:hidden;}
+body{
+  margin:0;padding:0;background:var(--ink);color:var(--paper);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  font-weight:400;font-size:var(--t-body);line-height:1.5;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;letter-spacing:-0.01em;
+}
+h1{font-family:var(--heading-font);letter-spacing:-0.055em;}
+h2{letter-spacing:-0.04em;}
+h3{letter-spacing:-0.025em;}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+::selection{background:var(--orange);color:var(--ink);}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:var(--t-tiny);text-transform:uppercase;letter-spacing:0.22em;color:var(--muted);font-weight:400;}
+.word{display:inline-block;overflow:hidden;vertical-align:bottom;}
+.word > span,.word > em > span{display:inline-block;will-change:transform;}
+*{-webkit-tap-highlight-color:transparent;}
+@media (hover:none){*{cursor:auto !important;}}
+
+/* ---- GRAIN ---- */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:9998;opacity:0.1;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.65 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size:240px;animation:grainShift 0.9s steps(6) infinite;}
+@keyframes grainShift{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,3%)}80%{transform:translate(3%,1%)}100%{transform:translate(0,0)}}
+.aurora{position:fixed;inset:-10%;pointer-events:none;z-index:0;
+  background:radial-gradient(80% 60% at 20% 30%,var(--accent-glow),transparent 60%),radial-gradient(60% 50% at 80% 80%,var(--accent-soft),transparent 70%);
+  transition:background 1.4s var(--ease-editorial);filter:blur(40px) saturate(120%);opacity:0.8;}
+
+/* ---- SCROLL PROGRESS ---- */
+.progress-bar{position:fixed;top:0;left:0;width:100%;height:1px;z-index:9999;background:var(--accent);transform-origin:left;transform:scaleX(0);pointer-events:none;}
+
+/* ---- LOADER ---- */
+.loader{position:fixed;inset:0;background:var(--ink);z-index:10001;will-change:transform;display:grid;grid-template-rows:1fr auto 1fr;padding:clamp(1rem,3vw,2rem);}
+.loader__top{display:flex;justify-content:space-between;align-items:flex-start;}
+.loader__center{display:flex;align-items:center;justify-content:center;gap:clamp(1rem,3vw,3rem);}
+.loader__num{font-family:var(--heading-font);font-size:clamp(5rem,14vw,12rem);font-weight:500;letter-spacing:-0.06em;line-height:1;}
+.loader__bar{width:clamp(140px,22vw,320px);height:1px;background:rgba(244,239,230,0.15);position:relative;overflow:hidden;}
+.loader__bar i{position:absolute;left:0;top:0;bottom:0;background:var(--paper);width:0%;transition:width .6s var(--ease-editorial);}
+.loader__bottom{display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:var(--t-tiny);text-transform:uppercase;letter-spacing:0.22em;color:var(--muted);}
+body.is-loaded .loader{pointer-events:none;}
+
+/* ---- PAGE PUSH-UP ---- */
+.scroller{transform:translateY(48px);opacity:0;transition:transform 1.1s cubic-bezier(0.16,1,0.3,1) .15s,opacity .9s cubic-bezier(0.16,1,0.3,1) .1s;}
+.nav,.hud,.social-fab{transform:translateY(32px);opacity:0;transition:transform 1s cubic-bezier(0.16,1,0.3,1) .25s,opacity .8s cubic-bezier(0.16,1,0.3,1) .2s;}
+body.is-loaded .scroller{transform:translateY(0);opacity:1;}
+body.is-loaded .nav,body.is-loaded .hud,body.is-loaded .social-fab{transform:translateY(0);opacity:1;}
+
+/* ---- NAV ---- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:clamp(1rem,2vw,1.6rem) clamp(1.25rem,3vw,2.5rem);mix-blend-mode:difference;color:var(--paper);}
+.nav__brand{font-family:var(--heading-font);font-weight:500;font-size:clamp(1.15rem,1.5vw,1.55rem);letter-spacing:0.02em;justify-self:start;display:inline-flex;align-items:center;gap:0.35rem;opacity:0;pointer-events:none;}
+.nav__brand sup{font-family:'JetBrains Mono',monospace;font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;opacity:0.7;}
+.nav__center{justify-self:center;display:flex;gap:clamp(1.2rem,2.4vw,2.6rem);font-family:var(--nav-font);font-size:var(--t-tiny);text-transform:uppercase;letter-spacing:0.24em;font-weight:500;transition:opacity .5s var(--ease-out),transform .5s var(--ease-out);}
+.nav__center.is-hidden{opacity:0;pointer-events:none;transform:translateY(-6px);}
+.nav__center a{position:relative;padding:.5rem .85rem;border-radius:100px;isolation:isolate;transition:color .4s var(--ease-out),transform .5s var(--ease-elastic);}
+.nav__center a::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:100px;background:rgba(244,239,230,0.10);border:1px solid rgba(244,239,230,0.18);backdrop-filter:blur(10px) saturate(140%);-webkit-backdrop-filter:blur(10px) saturate(140%);opacity:0;transform:scale(0.7);transition:opacity .45s,transform .55s;}
+.nav__center a:hover::before{opacity:1;transform:scale(1);}
+.nav__right{justify-self:end;display:flex;align-items:center;gap:1rem;}
+.dotmenu{all:unset;width:34px;height:34px;cursor:pointer;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:4px;place-items:center;transition:transform .5s var(--ease-elastic);}
+.dotmenu:hover{transform:scale(1.12) rotate(-4deg);}
+.dotmenu .d{width:5px;height:5px;border-radius:50%;background:currentColor;transition:transform .55s var(--ease-elastic),opacity .4s var(--ease-out);}
+.hero-logo-fixed{position:fixed;top:0;left:0;z-index:201;font-family:var(--heading-font);font-weight:300;line-height:1;white-space:nowrap;pointer-events:none;mix-blend-mode:difference;color:var(--paper);transform-origin:left top;will-change:transform;}
+.hero-logo-fixed a{pointer-events:auto;}
+@media(max-width:860px){.nav__center{display:none;}.nav{grid-template-columns:1fr auto;}}
+
+/* ---- MOBILE OVERLAY ---- */
+.menu-overlay{position:fixed;inset:0;z-index:190;background:rgba(7,7,10,0.96);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .55s var(--ease-out);}
+.menu-overlay.open{opacity:1;pointer-events:auto;}
+body.overlay-open .hero-logo-fixed,body.overlay-open .nav__brand{opacity:0!important;}
+.menu-overlay ul{list-style:none;margin:0;padding:0;display:grid;gap:clamp(.5rem,2vw,1.2rem);text-align:center;}
+.menu-overlay li{overflow:hidden;}
+.menu-overlay a{font-family:var(--heading-font);font-weight:500;font-size:clamp(2.2rem,9vw,4.5rem);letter-spacing:-0.025em;display:inline-block;transform:translateY(120%);transition:color .4s var(--ease-out);}
+.menu-overlay a:hover{color:var(--orange);}
+
+/* ---- HUD ---- */
+.hud{position:fixed;right:clamp(1rem,2.5vw,2.5rem);top:50%;transform:translateY(-50%);z-index:90;display:flex;flex-direction:column;gap:20px;mix-blend-mode:difference;color:var(--paper);}
+.hud::before{content:"";position:absolute;right:0;top:8px;bottom:8px;width:1px;background:linear-gradient(to bottom,transparent,rgba(244,239,230,0.15) 20%,rgba(244,239,230,0.15) 80%,transparent);}
+.hud button{all:unset;display:flex;align-items:center;gap:14px;justify-content:flex-end;font-family:var(--nav-font);font-size:9px;letter-spacing:0.28em;text-transform:uppercase;font-weight:500;opacity:.3;transition:opacity .5s,transform .4s;cursor:pointer;}
+.hud button:hover{opacity:.7;transform:translateX(-4px);}
+.hud button .pip{display:block;width:6px;height:6px;border-radius:50%;border:1px solid currentColor;background:transparent;transition:background .5s,transform .4s;flex-shrink:0;}
+.hud button.active{opacity:1;}
+.hud button.active .pip{background:var(--accent);border-color:var(--accent);transform:scale(1.3);}
+@media(max-width:760px){.hud{display:none;}}
+
+/* ---- SOCIAL FAB ---- */
+.social-fab{position:fixed;right:clamp(1rem,2.5vw,2.5rem);bottom:clamp(1rem,2.5vw,2.5rem);z-index:120;display:flex;align-items:center;flex-direction:row-reverse;gap:12px;mix-blend-mode:difference;color:var(--paper);}
+.social-fab__btn{all:unset;flex:0 0 auto;width:48px;height:48px;border-radius:50%;cursor:pointer;border:1px solid var(--paper);display:grid;place-items:center;transition:transform .5s var(--ease-elastic),background .4s;}
+.social-fab__btn svg{width:18px;height:18px;}
+.social-fab.open .social-fab__btn{transform:rotate(135deg);}
+.social-fab__btn:hover{background:rgba(244,239,230,0.12);}
+.social-fab__list{display:flex;flex-direction:row;align-items:center;gap:10px;list-style:none;margin:0;padding:0;}
+.social-fab__list a{width:44px;height:44px;border-radius:50%;border:1px solid rgba(244,239,230,0.4);display:grid;place-items:center;opacity:0;transform:translateX(24px) scale(0.6);pointer-events:none;transition:opacity .4s,transform .55s var(--ease-elastic),background .35s;}
+.social-fab__list a svg{width:17px;height:17px;}
+.social-fab__list a:hover{background:var(--paper);color:var(--ink);}
+.social-fab.open .social-fab__list a{opacity:1;transform:translateX(0) scale(1);pointer-events:auto;}
+.social-fab.open .social-fab__list a:nth-child(1){transition-delay:.04s;}
+.social-fab.open .social-fab__list a:nth-child(2){transition-delay:.10s;}
+.social-fab.open .social-fab__list a:nth-child(3){transition-delay:.16s;}
+.social-fab.open .social-fab__list a:nth-child(4){transition-delay:.22s;}
+@media(max-width:760px){.social-fab{right:1rem;bottom:1rem;}}
+
+/* ============================================================
+   SECTIONS BASE
+   ============================================================ */
+.scroller{position:relative;z-index:1;}
+.section{position:relative;min-height:100vh;width:100%;display:grid;padding:clamp(5rem,9vw,8rem) clamp(1.25rem,4vw,4rem) clamp(2.5rem,5vw,4rem);}
+.section.footer{min-height:auto;}
+[data-fade-in]{opacity:0;will-change:transform,opacity;}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{height:100vh;height:100dvh;min-height:0;overflow:hidden;padding:0 clamp(1.25rem,4vw,4rem);display:grid;grid-template-rows:1fr 1fr;position:relative;}
+.hero__main{display:flex;align-items:flex-end;justify-content:flex-start;overflow:hidden;}
+/* Chars wrap for GSAP reveal */
+.hero__title{font-family:var(--heading-font);font-weight:300;font-size:clamp(3rem,13vw,230px);line-height:0.86;letter-spacing:-0.055em;margin:0;white-space:nowrap;}
+.hero__logo-fly{display:inline-block;}
+.hero__char{display:inline-block;will-change:transform;}
+.hero__bottom{display:flex;padding-right:clamp(3rem,8vw,8.5rem);align-items:flex-end;padding-bottom:clamp(2rem,4vw,3rem);}
+.hero__feat{flex:1;order:-1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;}
+.hero__right{flex:1;display:flex;flex-direction:column;}
+.hero__right .pull{font-family:'Bodoni Moda',serif;font-style:italic;font-size:clamp(1.05rem,1.55vw,1.45rem);line-height:1.6;color:var(--paper);margin:0 0 1.4rem;max-width:38ch;will-change:transform,opacity;}
+.hero__right .more{display:inline-flex;align-items:center;gap:0.6rem;width:max-content;font-family:'JetBrains Mono',monospace;font-size:var(--t-tiny);text-transform:uppercase;letter-spacing:0.2em;color:var(--paper);padding:.7rem 1.1rem;border:1px solid var(--rule);border-radius:100px;transition:border-color .4s,color .4s,background .4s;will-change:transform,opacity;}
+.hero__right .more:hover{border-color:var(--accent);color:var(--ink);background:var(--accent);}
+.hero__right .more svg{width:13px;height:13px;transition:transform .4s;}
+.hero__right .more:hover svg{transform:translateX(4px);}
+.hero__feat .featwrap{display:inline-block;text-align:center;will-change:transform,opacity;}
+.hero__feat .eyebrow{margin-bottom:.9rem;text-align:right;}
+.hero__feat .names{font-family:'Bodoni Moda',serif;font-style:italic;font-size:clamp(1.05rem,1.55vw,1.45rem);line-height:1.6;color:var(--paper-dim);text-align:center;}
+.hero__feat .names a{transition:color .35s;display:inline-block;}
+.hero__feat .names a:hover{color:var(--accent);}
+.hero__scroll{position:absolute;bottom:clamp(1.5rem,3vw,2.5rem);left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.6rem;font-family:'JetBrains Mono',monospace;font-size:var(--t-tiny);text-transform:uppercase;letter-spacing:.22em;color:var(--muted);opacity:0;}
+.hero__scroll .line{width:1px;height:clamp(28px,3.5vw,44px);background:linear-gradient(to bottom,rgba(244,239,230,0.4),transparent);transform:scaleY(0);transform-origin:top;}
+@media(max-width:820px){
+  .hero{grid-template-rows:50dvh 50dvh;}
+  .hero__title{font-size:clamp(2.4rem,15vw,5.5rem);}
+  .hero__bottom{flex-direction:column;justify-content:flex-end;padding-right:clamp(1.25rem,4vw,2rem);gap:1.25rem;}
+  .hero__right .pull{font-size:1rem;max-width:32ch;}
+  .hero__feat{align-items:flex-end;}
+  .hero__feat .names{text-align:right;font-size:1rem;}
+  .hero__scroll{display:none;}
+}
+
+/* ============================================================
+   FEATURING — THE STAGE  (horizontal scroll)
+   ============================================================ */
+.feat-section{
+  position:relative;width:100%;height:100vh;height:100dvh;
+  overflow:hidden;
+}
+.feat-track{
+  display:flex;height:100%;will-change:transform;
+}
+/* Each artist panel */
+.feat-panel{
+  position:relative;width:100vw;height:100%;flex-shrink:0;
+  display:flex;align-items:stretch;overflow:hidden;
+  background:var(--ink);
+}
+/* Left text column */
+.fp-text{
+  position:relative;z-index:3;
+  width:42%;display:flex;flex-direction:column;justify-content:center;
+  padding:clamp(4rem,8vw,8rem) clamp(2rem,5vw,5rem);
+  background:linear-gradient(to right,var(--ink) 55%,rgba(7,7,10,0) 100%);
+}
+.fp-tag{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-family:'JetBrains Mono',monospace;font-size:var(--t-tiny);
+  text-transform:uppercase;letter-spacing:0.26em;color:var(--muted);
+  margin-bottom:clamp(1.5rem,3vw,2.5rem);
+  opacity:0;transform:translateY(16px);/* GSAP animates */
+}
+.fp-tag .fp-tag-dot{width:4px;height:4px;border-radius:50%;background:var(--accent);}
+/* Name — each word is a line with overflow:hidden clip */
+.fp-name{
+  margin:0 0 clamp(1.5rem,3vw,2.5rem);
+  font-family:var(--heading-font);font-weight:900;
+  font-size:clamp(3.5rem,7.5vw,9rem);
+  line-height:0.88;letter-spacing:-0.045em;
+}
+.fp-line{display:block;overflow:hidden;padding-bottom:0.06em;}
+.fp-inner{display:block;transform:translateY(110%);will-change:transform;}/* GSAP animates */
+.fp-desc{
+  font-family:'Bodoni Moda',serif;font-style:italic;
+  font-size:clamp(1rem,1.5vw,1.4rem);color:var(--paper-dim);line-height:1.55;
+  max-width:32ch;margin:0 0 clamp(1.5rem,3vw,2.5rem);
+  opacity:0;transform:translateY(20px);/* GSAP animates */
+}
+.fp-rule{width:clamp(40px,4vw,60px);height:1px;background:rgba(244,239,230,0.2);margin-bottom:clamp(1.2rem,2.5vw,2rem);transform:scaleX(0);transform-origin:left;/* GSAP animates */}
+.fp-link{
+  display:inline-flex;align-items:center;gap:.6rem;cursor:pointer;
+  font-family:'JetBrains Mono',monospace;font-size:var(--t-tiny);
+  text-transform:uppercase;letter-spacing:.22em;color:var(--paper);
+  opacity:0;/* GSAP animates */
+  transition:color .35s,gap .35s;
+}
+.fp-link svg{width:14px;height:14px;transition:transform .35s;}
+.fp-link:hover{color:var(--orange);}
+.fp-link:hover svg{transform:translateX(5px);}
+
+/* Right — image */
+.fp-visual{
+  position:absolute;right:0;top:0;bottom:0;width:62%;overflow:hidden;
+}
+.fp-bw,.fp-color{
+  position:absolute;inset:-6px;
+  background-size:cover;background-position:center top;
+}
+.fp-bw{filter:grayscale(100%) contrast(1.08) brightness(0.72);}
+.fp-color{clip-path:inset(0 100% 0 0);/* GSAP scrubs this */}
+/* Dark gradient that bleeds text area into image */
+.fp-visual::before{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(to right,var(--ink) 0%,rgba(7,7,10,0.25) 35%,transparent 65%);
+}
+
+/* Ghost number */
+.fp-ghost{
+  position:absolute;right:-0.05em;bottom:-0.12em;z-index:1;
+  font-family:var(--heading-font);font-weight:900;
+  font-size:clamp(14rem,32vw,36rem);line-height:1;
+  letter-spacing:-0.05em;color:transparent;
+  -webkit-text-stroke:1px rgba(244,239,230,0.045);
+  pointer-events:none;user-select:none;will-change:transform;
+}
+
+/* Progress indicator bar */
+.feat-ui{
+  position:absolute;bottom:clamp(1.5rem,3vw,2.5rem);left:0;right:0;
+  z-index:10;padding:0 clamp(2rem,5vw,5rem);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.feat-counter{font-family:'JetBrains Mono',monospace;font-size:var(--t-tiny);letter-spacing:.2em;color:var(--muted);}
+.feat-counter em{font-style:normal;color:var(--paper);}
+.feat-dots{display:flex;gap:8px;align-items:center;}
+.feat-dot{width:5px;height:5px;border-radius:50%;border:1px solid rgba(244,239,230,0.25);background:transparent;transition:background .45s,border-color .45s,transform .45s;cursor:pointer;}
+.feat-dot.is-active{background:var(--paper);border-color:var(--paper);transform:scale(1.5);}
+/* Animated scroll arrow */
+.feat-arrow{display:flex;align-items:center;gap:.75rem;font-family:'JetBrains Mono',monospace;font-size:var(--t-tiny);letter-spacing:.22em;color:var(--muted);text-transform:uppercase;}
+.feat-arrow-line{width:48px;height:1px;background:rgba(244,239,230,0.2);position:relative;overflow:hidden;}
+.feat-arrow-line::after{content:"";position:absolute;left:-100%;top:0;bottom:0;width:100%;background:var(--paper);animation:arrowSlide 2s ease infinite;}
+@keyframes arrowSlide{0%{left:-100%}55%,100%{left:100%}}
+
+/* Panel progress scrubber line */
+.feat-scrub{position:absolute;bottom:0;left:0;right:0;z-index:11;height:2px;background:rgba(244,239,230,0.08);}
+.feat-scrub-fill{height:100%;background:var(--paper);transform-origin:left;transform:scaleX(0);transition:transform .1s linear;}
+
+/* Mobile: stack vertically */
+@media(max-width:820px){
+  .feat-section{height:auto;overflow:visible;}
+  .feat-track{flex-direction:column;transform:none!important;}
+  .feat-panel{width:100%;height:100svh;flex-shrink:0;}
+  .fp-text{width:100%;background:linear-gradient(to top,var(--ink) 0%,rgba(7,7,10,0.6) 60%,transparent);position:absolute;bottom:0;left:0;right:0;padding:1.5rem;}
+  .fp-visual{width:100%;}
+  .fp-ghost{display:none;}
+  .fp-name{font-size:clamp(2.8rem,10vw,4.5rem);}
+  .feat-arrow{display:none;}
+  .fp-inner,.fp-tag,.fp-desc,.fp-link,.fp-rule{opacity:1!important;transform:none!important;}
+}
+
+/* ============================================================
+   MAGAZINE
+   ============================================================ */
+.magazine{grid-template-rows:auto 1fr;gap:clamp(2rem,4vw,3.5rem);position:relative;}
+.magazine__head{display:grid;grid-template-columns:1fr;gap:1rem;max-width:70ch;}
+.magazine__head .eyebrow{margin-bottom:.4rem;}
+.magazine__head h2{font-family:var(--heading-font);font-weight:700;font-size:var(--t-display);line-height:.95;letter-spacing:-0.04em;margin:0;}
+.magazine__head h2 em{font-style:italic;color:var(--accent);font-family:'Bodoni Moda',serif;}
+.magazine__head > p{color:var(--paper-dim);max-width:52ch;margin:.5rem 0 0;line-height:1.65;}
+.magazine__cta{margin-top:clamp(1.5rem,3vw,2.5rem);display:flex;align-items:center;gap:2rem;flex-wrap:wrap;}
+
+/* ---- MAGAZINE CTA BUTTON WRAP ---- */
+.mag-btn-wrap{position:relative;display:inline-flex;align-items:center;}
+.mag-pg{
+  position:absolute;right:calc(100% - 24px);top:50%;
+  width:46px;height:60px;border-radius:4px;
+  border:1px solid rgba(244,239,230,0.18);
+  transform-origin:center right;pointer-events:none;will-change:transform;
+}
+.mag-pg::after{content:"";position:absolute;left:7px;right:7px;top:11px;height:1px;background:rgba(244,239,230,0.18);box-shadow:0 8px 0 rgba(244,239,230,0.11),0 16px 0 rgba(244,239,230,0.06);}
+.mg-a{z-index:3;background:linear-gradient(145deg,rgba(244,239,230,0.1),rgba(244,239,230,0.03));}
+.mg-b{z-index:2;background:linear-gradient(145deg,rgba(200,16,46,0.08),rgba(200,16,46,0.02));}
+.mg-c{z-index:1;background:linear-gradient(145deg,rgba(91,140,255,0.07),rgba(91,140,255,0.01));}
+
+/* CTA BUTTON */
+.cta-btn{
+  display:inline-grid;place-items:center;
+  font-family:var(--nav-font);font-size:var(--t-tiny);font-weight:500;
+  text-transform:uppercase;letter-spacing:.22em;
+  color:var(--ink);background:var(--paper);
+  padding:1.1rem 2rem;border-radius:100px;border:1px solid var(--paper);
+  position:relative;overflow:hidden;isolation:isolate;cursor:pointer;
+  transition:background .5s,color .5s,transform .45s,box-shadow .45s;
+  will-change:transform;
+}
+.cta-btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--orange);transform:translateY(101%);transition:transform .85s var(--ease-out);}
+.cta-btn__face{grid-area:1/1;display:inline-flex;align-items:center;gap:.7rem;transition:opacity .6s,transform .8s;}
+.cta-btn__face svg{width:16px;height:16px;}
+.cta-btn__face--hover{opacity:0;transform:translateY(60%);}
+.cta-btn:hover{color:var(--paper);background:transparent;transform:translateY(-2px);box-shadow:0 16px 36px -16px rgba(255,106,26,0.65);}
+.cta-btn:hover::before{transform:translateY(0);}
+.cta-btn:hover .cta-btn__face--default{opacity:0;transform:translateY(-60%);}
+.cta-btn:hover .cta-btn__face--hover{opacity:1;transform:translateY(0);}
+.cta-btn:focus-visible{outline:2px solid var(--accent);outline-offset:5px;}
+
+/* PILLARS */
+.magazine__pillars{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--rule);align-self:end;will-change:transform,opacity;}
+.magazine__pillars > a{
+  padding:clamp(1.5rem,2.4vw,2.4rem) clamp(1rem,1.6vw,1.6rem);
+  border-right:1px solid var(--rule);display:grid;gap:.75rem;align-content:start;
+  position:relative;isolation:isolate;cursor:pointer;
+  border-left:2px solid transparent;
+  transition:border-left-color .45s,background .45s;
+}
+.magazine__pillars > a:last-child{border-right:none;}
+.magazine__pillars > a::before{content:"";position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity .45s;}
+.magazine__pillars > a:hover::before{opacity:1;}
+.magazine__pillars > a[data-pillar="music"]::before{background:var(--music-soft);}
+.magazine__pillars > a[data-pillar="art"]::before{background:var(--art-soft);}
+.magazine__pillars > a[data-pillar="fashion"]::before{background:var(--fashion-soft);}
+.magazine__pillars > a[data-pillar="lifestyle"]::before{background:var(--lifestyle-soft);}
+.magazine__pillars > a[data-pillar="music"]:hover{border-left-color:var(--music);}
+.magazine__pillars > a[data-pillar="art"]:hover{border-left-color:var(--art);}
+.magazine__pillars > a[data-pillar="fashion"]:hover{border-left-color:var(--fashion);}
+.magazine__pillars > a[data-pillar="lifestyle"]:hover{border-left-color:var(--lifestyle);}
+.magazine__pillars .n{font-family:'JetBrains Mono',monospace;font-size:var(--t-tiny);letter-spacing:.22em;color:var(--muted);}
+.magazine__pillars h3{font-family:var(--heading-font);font-weight:700;font-size:clamp(1.4rem,2.4vw,2.6rem);margin:0;letter-spacing:-0.025em;transition:color .4s;}
+.magazine__pillars > a[data-pillar="music"]:hover h3{color:var(--music);}
+.magazine__pillars > a[data-pillar="art"]:hover h3{color:var(--art);}
+.magazine__pillars > a[data-pillar="fashion"]:hover h3{color:var(--fashion);}
+.magazine__pillars > a[data-pillar="lifestyle"]:hover h3{color:var(--lifestyle);}
+.magazine__pillars p{font-size:var(--t-cap);color:var(--muted);line-height:1.55;margin:0;}
+@media(max-width:760px){
+  .magazine__pillars{grid-template-columns:1fr 1fr;}
+  .magazine__pillars > a:nth-child(2){border-right:none;}
+  .magazine__pillars > a:nth-child(1),.magazine__pillars > a:nth-child(2){border-bottom:1px solid var(--rule);}
+  .magazine__cta{flex-direction:column;align-items:flex-start;}
+  .cta-btn{width:100%;padding:1.2rem 1.5rem;}
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{position:relative;padding:clamp(3rem,6vw,6rem) clamp(1.25rem,4vw,4rem) clamp(1rem,2vw,2rem);border-top:1px solid var(--rule);display:block;}
+.footer__head{display:grid;grid-template-columns:1.5fr 1fr;gap:2rem;align-items:end;padding-bottom:3rem;}
+.footer__head h2{font-family:var(--heading-font);font-weight:700;font-size:clamp(2rem,6vw,6rem);line-height:.92;letter-spacing:-0.04em;margin:0;}
+.footer__head h2 em{font-style:italic;color:var(--paper-dim);font-family:'Bodoni Moda',serif;}
+.footer__form{display:grid;grid-template-columns:1fr auto;align-items:center;border-bottom:1px solid var(--rule);padding:.5rem 0;}
+.footer__form input{all:unset;width:100%;font-family:'Inter',sans-serif;font-size:clamp(.95rem,1.1vw,1.1rem);color:var(--paper);padding:.6rem 0;}
+.footer__form input::placeholder{color:var(--muted);}
+.footer__form button{all:unset;font-family:'JetBrains Mono',monospace;font-size:var(--t-tiny);letter-spacing:.22em;text-transform:uppercase;color:var(--accent);padding:.4rem .6rem;cursor:pointer;transition:color .3s;}
+.footer__form button:hover{color:var(--orange);}
+.footer__cols{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2rem;padding:2.5rem 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+.footer__cols h4{font-family:'JetBrains Mono',monospace;font-size:var(--t-tiny);text-transform:uppercase;letter-spacing:.22em;color:var(--muted);font-weight:400;margin:0 0 1rem;}
+.footer__cols ul{list-style:none;padding:0;margin:0;display:grid;gap:.5rem;}
+.footer__cols ul a{font-family:'Inter',sans-serif;font-size:clamp(.95rem,1vw,1rem);transition:color .3s;}
+.footer__cols ul a:hover{color:var(--accent);}
+.footer__cols .blurb{max-width:38ch;font-family:'Bodoni Moda',serif;font-style:italic;font-size:clamp(1.1rem,1.4vw,1.4rem);line-height:1.5;}
+.footer__bottom{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1rem;padding-top:2rem;font-family:'JetBrains Mono',monospace;font-size:var(--t-tiny);text-transform:uppercase;letter-spacing:.22em;color:var(--muted);}
+.footer__bottom .center{text-align:center;}
+.footer__bottom .right{text-align:right;}
+.footer__wordmark{margin:4rem 0 0;font-family:var(--heading-font);font-weight:300;font-size:clamp(4rem,22vw,22rem);line-height:.85;letter-spacing:-0.03em;text-align:center;background:linear-gradient(180deg,var(--paper) 0%,transparent 95%);-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none;will-change:transform,opacity;}
+@media(max-width:820px){.footer__cols > div:last-child{display:none;}}
+@media(max-width:760px){.footer__head{grid-template-columns:1fr;}.footer__cols{grid-template-columns:1fr 1fr;}}
+
+/* ---- ACCESSIBILITY ---- */
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px;}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:4px;}
+@media(prefers-reduced-motion:reduce){
+  .grain{animation:none!important;}
+  .aurora{transition:none!important;}
+  .hero__scroll,.hero__scroll .line{opacity:1!important;}
+  .scroller,.nav,.hud,.social-fab{transform:none!important;opacity:1!important;transition:none!important;}
+  .feat-arrow-line::after{animation:none!important;}
+  *{transition-duration:.001ms!important;animation-duration:.001ms!important;animation-iteration-count:1!important;}
+  [data-fade-in],.fp-inner,.fp-tag,.fp-desc,.fp-link,.fp-rule{opacity:1!important;transform:none!important;}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" aria-hidden="true"></div>
+
+<div class="loader" aria-hidden="true">
+  <div class="loader__top"></div>
+  <div class="loader__center">
+    <div class="loader__num" data-loader-num>00</div>
+    <div class="loader__bar"><i data-loader-bar></i></div>
+  </div>
+  <div class="loader__bottom">
+    <span>Loading dispatch</span>
+    <span data-loader-status>Composing typography…</span>
+    <span>Music · Art · Fashion · Lifestyle</span>
+  </div>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="aurora" aria-hidden="true"></div>
+
+<header class="nav">
+  <span class="nav__brand" aria-hidden="true" data-brand>WOTKNOT<sup>® mag</sup></span>
+  <nav class="nav__center" aria-label="Primary" data-menu-center>
+    <a href="#hero">Home</a>
+    <a href="#featuring">Featuring</a>
+    <a href="#magazine">Magazine</a>
+    <a href="#magazine">Pillars</a>
+    <a href="#subscribe">Subscribe</a>
+  </nav>
+  <div class="nav__right">
+    <button class="dotmenu" data-dotmenu aria-label="Open menu" aria-expanded="false">
+      <span class="d" data-pos="0-0"></span><span class="d" data-pos="0-1"></span><span class="d" data-pos="0-2"></span>
+      <span class="d" data-pos="1-0"></span><span class="d" data-pos="1-1"></span><span class="d" data-pos="1-2"></span>
+      <span class="d" data-pos="2-0"></span><span class="d" data-pos="2-1"></span><span class="d" data-pos="2-2"></span>
+    </button>
+  </div>
+</header>
+
+<div class="hero-logo-fixed" data-logo-fixed style="opacity:0;"><a href="#hero">WOTKNOT</a></div>
+
+<div class="menu-overlay" data-overlay aria-hidden="true">
+  <ul>
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#featuring">Featuring</a></li>
+    <li><a href="#magazine">Magazine</a></li>
+    <li><a href="#magazine">The Pillars</a></li>
+    <li><a href="#subscribe">Subscribe</a></li>
+  </ul>
+</div>
+
+<aside class="hud" aria-label="Section indicator">
+  <button data-jump="hero" class="active"><span class="pip"></span>01 · Cover</button>
+  <button data-jump="featuring"><span class="pip"></span>02 · Featuring</button>
+  <button data-jump="magazine"><span class="pip"></span>03 · Magazine</button>
+</aside>
+
+<div class="social-fab" data-social-fab>
+  <button class="social-fab__btn" data-social-toggle aria-label="Show socials" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14"/></svg>
+  </button>
+  <ul class="social-fab__list">
+    <li><a href="https://www.instagram.com/wotknotmag/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+    </a></li>
+    <li><a href="https://www.youtube.com/@wotknotmag" target="_blank" rel="noopener" aria-label="YouTube">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.5l5 2.5-5 2.5z" fill="currentColor" stroke="none"/></svg>
+    </a></li>
+    <li><a href="#" aria-label="TikTok">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 4v9.5a3.5 3.5 0 1 1-3-3.46"/><path d="M14 4c.5 2.5 2 4 4.5 4.2"/></svg>
+    </a></li>
+    <li><a href="#" aria-label="Spotify">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M7.5 10c3-.8 6-.5 8.5 1M8 13c2.4-.6 4.8-.3 6.8 1M8.5 15.6c1.8-.4 3.6-.2 5.2.8"/></svg>
+    </a></li>
+  </ul>
+</div>
+
+<main class="scroller">
+
+<!-- ============================================================ 01 · HERO -->
+<section id="hero" class="hero" data-section data-pillar="default">
+  <div class="hero__main">
+    <h1 class="hero__title" aria-label="WOTKNOT">
+      <span class="hero__logo-fly" data-logo-fly>WOTKNOT</span>
+    </h1>
+  </div>
+  <div class="hero__bottom">
+    <div class="hero__right">
+      <p class="pull">"A quarterly study of the four pillars that shape culture and inspire everyday living."</p>
+      <a href="#magazine" class="more">
+        Know more
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+    <div class="hero__feat">
+      <div class="featwrap">
+        <div class="eyebrow">Featuring</div>
+        <div class="names">
+          <a href="#featuring">Aṣa</a> · <a href="#featuring">Tems</a> · <a href="#featuring">Skepta</a><br/>
+          <a href="#featuring">Doja Cat</a> · <a href="#featuring">Bree Runway</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero__scroll" aria-hidden="true">
+    <span>Scroll</span>
+    <span class="line"></span>
+  </div>
+</section>
+
+<!-- ============================================================ 02 · FEATURING -->
+<section id="featuring" class="feat-section" data-section data-pillar="default" aria-label="Featuring">
+  <div class="feat-track" id="featTrack">
+
+    <!-- PANEL 1 -->
+    <article class="feat-panel" data-panel="0" data-cat-color="music">
+      <div class="fp-text">
+        <div class="fp-tag"><span class="fp-tag-dot"></span>Music</div>
+        <h2 class="fp-name">
+          <span class="fp-line"><span class="fp-inner">Aṣa</span></span>
+        </h2>
+        <div class="fp-rule"></div>
+        <p class="fp-desc">Afrofolk's quiet revolution — redefining the space between tradition and soul.</p>
+        <a href="#" class="fp-link">Read Feature
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+      <div class="fp-visual">
+        <div class="fp-bw" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:20% center;"></div>
+        <div class="fp-color" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:20% center;"></div>
+      </div>
+      <div class="fp-ghost" aria-hidden="true">01</div>
+    </article>
+
+    <!-- PANEL 2 -->
+    <article class="feat-panel" data-panel="1" data-cat-color="music">
+      <div class="fp-text">
+        <div class="fp-tag"><span class="fp-tag-dot"></span>Music</div>
+        <h2 class="fp-name">
+          <span class="fp-line"><span class="fp-inner">Tems</span></span>
+        </h2>
+        <div class="fp-rule"></div>
+        <p class="fp-desc">The voice that redefined what a generation hears — Afrobeats made eternal.</p>
+        <a href="#" class="fp-link">Read Feature
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+      <div class="fp-visual">
+        <div class="fp-bw" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:40% center;"></div>
+        <div class="fp-color" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:40% center;"></div>
+      </div>
+      <div class="fp-ghost" aria-hidden="true">02</div>
+    </article>
+
+    <!-- PANEL 3 -->
+    <article class="feat-panel" data-panel="2" data-cat-color="art">
+      <div class="fp-text">
+        <div class="fp-tag"><span class="fp-tag-dot"></span>Art</div>
+        <h2 class="fp-name">
+          <span class="fp-line"><span class="fp-inner">Skepta</span></span>
+        </h2>
+        <div class="fp-rule"></div>
+        <p class="fp-desc">North London's poet laureate turns canvas and concrete into collective memory.</p>
+        <a href="#" class="fp-link">Read Feature
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+      <div class="fp-visual">
+        <div class="fp-bw" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:60% center;"></div>
+        <div class="fp-color" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:60% center;"></div>
+      </div>
+      <div class="fp-ghost" aria-hidden="true">03</div>
+    </article>
+
+    <!-- PANEL 4 -->
+    <article class="feat-panel" data-panel="3" data-cat-color="fashion">
+      <div class="fp-text">
+        <div class="fp-tag"><span class="fp-tag-dot"></span>Fashion</div>
+        <h2 class="fp-name">
+          <span class="fp-line"><span class="fp-inner">Doja</span></span>
+          <span class="fp-line"><span class="fp-inner">Cat</span></span>
+        </h2>
+        <div class="fp-rule"></div>
+        <p class="fp-desc">Fashion's most unpredictable and consequential force — dressed in contradiction.</p>
+        <a href="#" class="fp-link">Read Feature
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+      <div class="fp-visual">
+        <div class="fp-bw" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:30% center;"></div>
+        <div class="fp-color" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:30% center;"></div>
+      </div>
+      <div class="fp-ghost" aria-hidden="true">04</div>
+    </article>
+
+    <!-- PANEL 5 -->
+    <article class="feat-panel" data-panel="4" data-cat-color="fashion">
+      <div class="fp-text">
+        <div class="fp-tag"><span class="fp-tag-dot"></span>Fashion</div>
+        <h2 class="fp-name">
+          <span class="fp-line"><span class="fp-inner">Bree</span></span>
+          <span class="fp-line"><span class="fp-inner">Runway</span></span>
+        </h2>
+        <div class="fp-rule"></div>
+        <p class="fp-desc">The future of Black British fashion, written in neon and worn with conviction.</p>
+        <a href="#" class="fp-link">Read Feature
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+      <div class="fp-visual">
+        <div class="fp-bw" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:70% center;"></div>
+        <div class="fp-color" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:70% center;"></div>
+      </div>
+      <div class="fp-ghost" aria-hidden="true">05</div>
+    </article>
+
+    <!-- PANEL 6 -->
+    <article class="feat-panel" data-panel="5" data-cat-color="lifestyle">
+      <div class="fp-text">
+        <div class="fp-tag"><span class="fp-tag-dot"></span>Lifestyle</div>
+        <h2 class="fp-name">
+          <span class="fp-line"><span class="fp-inner">SZA</span></span>
+        </h2>
+        <div class="fp-rule"></div>
+        <p class="fp-desc">On solitude, ceremony, and the quiet architecture of a desire that cannot be named.</p>
+        <a href="#" class="fp-link">Read Feature
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+      <div class="fp-visual">
+        <div class="fp-bw" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:50% center;"></div>
+        <div class="fp-color" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:50% center;"></div>
+      </div>
+      <div class="fp-ghost" aria-hidden="true">06</div>
+    </article>
+
+  </div><!-- /feat-track -->
+
+  <!-- Progress UI -->
+  <div class="feat-ui" aria-hidden="true">
+    <div style="display:flex;align-items:center;gap:1.5rem;">
+      <span class="feat-counter"><em id="featCurrentNum">01</em>&thinsp;/&thinsp;06</span>
+      <div class="feat-dots" id="featDots">
+        <span class="feat-dot is-active" data-pdot="0"></span>
+        <span class="feat-dot" data-pdot="1"></span>
+        <span class="feat-dot" data-pdot="2"></span>
+        <span class="feat-dot" data-pdot="3"></span>
+        <span class="feat-dot" data-pdot="4"></span>
+        <span class="feat-dot" data-pdot="5"></span>
+      </div>
+    </div>
+    <div class="feat-arrow">
+      Scroll <span class="feat-arrow-line"></span>
+    </div>
+  </div>
+  <div class="feat-scrub" aria-hidden="true"><div class="feat-scrub-fill" id="featScrubFill"></div></div>
+</section>
+
+<!-- ============================================================ 03 · MAGAZINE -->
+<section id="magazine" class="section magazine" data-section data-pillar="default">
+  <div class="magazine__head">
+    <div class="eyebrow">03 / The Magazine · Four Pillars</div>
+    <h2><span class="word"><span>THE</span></span> <span class="word"><span style="font-style:italic;font-family:'Bodoni Moda',serif;color:var(--accent)">MAGAZINE</span></span></h2>
+    <p class="magazine__lead" data-fade-in>
+      A magazine is not a feed. It is a room. We make rooms for the music we love,
+      the art we argue with, the clothes we live in, and the lives we are still becoming.
+    </p>
+    <div class="magazine__cta" data-fade-in>
+      <!-- 2D animated magazine stack -->
+      <div class="mag-btn-wrap">
+        <span class="mag-pg mg-c" aria-hidden="true"></span>
+        <span class="mag-pg mg-b" aria-hidden="true"></span>
+        <span class="mag-pg mg-a" aria-hidden="true"></span>
+        <a href="/magazine" class="cta-btn" aria-label="Explore Issues — WOTKNOT MAG">
+          <span class="cta-btn__face cta-btn__face--default">
+            <span>Explore Issues</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+          <span class="cta-btn__face cta-btn__face--hover" aria-hidden="true">
+            <span>WOTKNOT MAG</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2.5 3h2.2l2.1 11.2a1.6 1.6 0 0 0 1.6 1.3h8.4a1.6 1.6 0 0 0 1.6-1.2l1.5-6.8H6"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="magazine__pillars">
+    <a href="#" data-pillar="music"><span class="n">01</span><h3>Music</h3><p>The pulse — what we play, who we listen to, the records we return to.</p></a>
+    <a href="#" data-pillar="art"><span class="n">02</span><h3>Art</h3><p>The argument — paintings, sculpture, ceramics, and the studios behind them.</p></a>
+    <a href="#" data-pillar="fashion"><span class="n">03</span><h3>Fashion</h3><p>The silhouette — designers, editorials, and the way we dress for our own lives.</p></a>
+    <a href="#" data-pillar="lifestyle"><span class="n">04</span><h3>Lifestyle</h3><p>The practice — travel, food, books, and the slow furniture of meaning.</p></a>
+  </div>
+</section>
+
+<!-- ============================================================ 04 · FOOTER -->
+<footer id="subscribe" class="footer section" data-section data-pillar="default">
+  <div class="footer__head">
+    <h2 data-fade-in>Receive every <em>dispatch</em>.<br/>Four times a year.</h2>
+    <form class="footer__form" onsubmit="event.preventDefault();">
+      <input type="email" placeholder="your@email — for the dispatch" aria-label="Email address">
+      <button type="submit">Subscribe →</button>
+    </form>
+  </div>
+  <div class="footer__cols">
+    <div>
+      <h4>The Magazine</h4>
+      <p class="blurb">A celebration of the four pillars that shape culture and inspire everyday living: Music, Art, Fashion, Lifestyle.</p>
+    </div>
+    <div>
+      <h4>Pages</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms &amp; Conditions</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Follow</h4>
+      <ul>
+        <li><a href="https://www.instagram.com/wotknotmag/" target="_blank" rel="noopener">Instagram ↗</a></li>
+        <li><a href="https://www.youtube.com/@wotknotmag" target="_blank" rel="noopener">YouTube ↗</a></li>
+        <li><a href="#">TikTok</a></li>
+        <li><a href="#">Spotify</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <div>© WOTKNOT Magazine</div>
+    <div class="center">Printed quietly · Lagos / London / Houston</div>
+    <div class="right">Music · Art · Fashion · Lifestyle</div>
+  </div>
+  <div class="footer__wordmark" aria-hidden="true">WOTKNOT</div>
+</footer>
+
+</main><!-- /scroller -->
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script>
+(() => {
+'use strict';
+const reduce  = matchMedia('(prefers-reduced-motion:reduce)').matches;
+const isTouch = matchMedia('(hover:none),(pointer:coarse)').matches;
+const isMobile = () => window.matchMedia('(max-width:820px)').matches;
+
+/* ============================================================
+   THEME
+   ============================================================ */
+const themes = {
+  default:  { accent:'#f4efe6', soft:'rgba(244,239,230,0.12)', glow:'rgba(244,239,230,0.18)' },
+  music:    { accent:'#c8102e', soft:'rgba(200,16,46,0.14)',   glow:'rgba(200,16,46,0.32)'   },
+  art:      { accent:'#b6ff3c', soft:'rgba(182,255,60,0.10)',  glow:'rgba(182,255,60,0.28)'  },
+  fashion:  { accent:'#d9b87a', soft:'rgba(217,184,122,0.12)', glow:'rgba(217,184,122,0.26)' },
+  lifestyle:{ accent:'#5b8cff', soft:'rgba(91,140,255,0.12)',  glow:'rgba(91,140,255,0.28)'  },
+};
+function setTheme(name) {
+  const t = themes[name] || themes.default, r = document.documentElement.style;
+  r.setProperty('--accent', t.accent);
+  r.setProperty('--accent-soft', t.soft);
+  r.setProperty('--accent-glow', t.glow);
+}
+setTheme('default');
+
+/* ============================================================
+   LOADER
+   ============================================================ */
+const loader   = document.querySelector('.loader');
+const numEl    = document.querySelector('[data-loader-num]');
+const barEl    = document.querySelector('[data-loader-bar]');
+const statusEl = document.querySelector('[data-loader-status]');
+const statuses = ['Composing typography…','Inking Montserrat…','Tuning Side A…','Hanging Plate 06…','Pressing the issue…'];
+function runLoader() {
+  return new Promise(resolve => {
+    if (reduce) {
+      numEl.textContent='100'; barEl.style.width='100%';
+      document.body.classList.add('is-loaded');
+      loader.style.transition='transform .6s ease'; loader.style.transform='translateY(-100vh)';
+      setTimeout(() => { loader.style.display='none'; resolve(); }, 400);
+      return;
+    }
+    let n=0, si=0;
+    const tick = () => {
+      n += Math.max(1, Math.round((100-n)*0.06)+Math.random()*3);
+      if (n>=100) n=100;
+      numEl.textContent = String(n).padStart(2,'0');
+      barEl.style.width = n+'%';
+      if (n%18<4 && si<statuses.length-1) { si++; statusEl.textContent=statuses[si]; }
+      if (n<100) { setTimeout(tick, 60+Math.random()*60); return; }
+      statusEl.textContent = 'Welcome.';
+      setTimeout(() => {
+        loader.style.transition = 'transform 1.2s cubic-bezier(0.76,0,0.24,1)';
+        loader.style.transform = 'translateY(-100vh)';
+        document.body.classList.add('is-loaded');
+        setTimeout(() => { loader.style.display='none'; resolve(); }, 700);
+      }, 350);
+    };
+    tick();
+  });
+}
+
+/* ============================================================
+   SCROLL PROGRESS
+   ============================================================ */
+const progressBar = document.querySelector('.progress-bar');
+function updateProgress() {
+  const d = document.documentElement;
+  progressBar.style.transform = 'scaleX('+Math.min(1, d.scrollTop/(d.scrollHeight-d.clientHeight))+')';
+}
+
+/* ============================================================
+   DOT MENU
+   ============================================================ */
+const dotBtn     = document.querySelector('[data-dotmenu]');
+const navCenter  = document.querySelector('[data-menu-center]');
+const menuLinks  = Array.from(navCenter.querySelectorAll('a'));
+const overlay    = document.querySelector('[data-overlay]');
+const overlayLinks = Array.from(overlay.querySelectorAll('a'));
+const dots = {}; dotBtn.querySelectorAll('.d').forEach(d => dots[d.dataset.pos]=d);
+const arrowHidden = ['1-0','2-1'];
+let menuShown = false;
+
+function renderDots() {
+  Object.values(dots).forEach(d => { d.style.opacity='1'; d.style.transform='translate(0,0)'; });
+  if (menuShown) {
+    arrowHidden.forEach(p => { dots[p].style.opacity='0'; dots[p].style.transform='scale(0)'; });
+    dots['0-0'].style.transform='translate(-1px,-1px)'; dots['0-1'].style.transform='translate(0,-1px)';
+    dots['0-2'].style.transform='translate(1px,-1px) scale(1.2)'; dots['1-1'].style.transform='translate(0.5px,0)';
+    dots['1-2'].style.transform='translate(1px,0)'; dots['2-0'].style.transform='translate(-1px,1px)';
+    dots['2-2'].style.transform='translate(1px,1px)';
+  }
+}
+function openMenuDesktop() {
+  navCenter.classList.remove('is-hidden');
+  menuLinks.forEach((a,i) => { a.style.transition=`opacity .5s cubic-bezier(0.34,1.56,0.64,1) ${i*55}ms, transform .65s cubic-bezier(0.34,1.56,0.64,1) ${i*55}ms`; a.style.transform='translateX(0)'; a.style.opacity='1'; });
+}
+function closeMenuDesktop() {
+  menuLinks.forEach((a,i) => { const k=menuLinks.length-1-i; a.style.transition=`opacity .45s cubic-bezier(0.34,1.56,0.64,1) ${k*55}ms, transform .6s cubic-bezier(0.34,1.56,0.64,1) ${k*55}ms`; a.style.transform=`translateX(${28+i*10}px)`; a.style.opacity='0'; });
+  setTimeout(() => { if (!menuShown) navCenter.classList.add('is-hidden'); }, 500);
+}
+function openOverlay() {
+  overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); document.body.classList.add('overlay-open');
+  overlayLinks.forEach((a,i) => a.animate([{transform:'translateY(120%)'},{transform:'translateY(0%)'}],{duration:850,delay:120+i*70,easing:'cubic-bezier(0.22,1.4,0.36,1)',fill:'forwards'}));
+}
+function closeOverlay() {
+  overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); document.body.classList.remove('overlay-open');
+  overlayLinks.forEach(a => a.style.transform='translateY(120%)');
+}
+function showMenu() { menuShown=true; dotBtn.setAttribute('aria-expanded','true'); dotBtn.setAttribute('aria-label','Close menu'); renderDots(); if (isMobile()) openOverlay(); else openMenuDesktop(); }
+function hideMenu() { menuShown=false; dotBtn.setAttribute('aria-expanded','false'); dotBtn.setAttribute('aria-label','Open menu'); renderDots(); if (isMobile()) closeOverlay(); else closeMenuDesktop(); }
+dotBtn.addEventListener('click', () => menuShown?hideMenu():showMenu());
+overlayLinks.forEach(a => a.addEventListener('click', hideMenu));
+addEventListener('keydown', e => { if (e.key==='Escape'&&menuShown) hideMenu(); });
+addEventListener('resize', () => {
+  if (isMobile()) { navCenter.classList.add('is-hidden'); if (!menuShown) closeOverlay(); }
+  else { closeOverlay(); if (menuShown) { navCenter.classList.remove('is-hidden'); openMenuDesktop(); } }
+});
+
+/* ============================================================
+   SOCIAL FAB
+   ============================================================ */
+const socialFab = document.querySelector('[data-social-fab]');
+const socialToggle = document.querySelector('[data-social-toggle]');
+if (socialFab && socialToggle) {
+  let fabOpen = false;
+  const setFab = open => { fabOpen=open; socialFab.classList.toggle('open',open); socialToggle.setAttribute('aria-expanded',String(open)); socialToggle.setAttribute('aria-label',open?'Hide socials':'Show socials'); };
+  socialToggle.addEventListener('click', () => setFab(!fabOpen));
+  document.addEventListener('click', e => { if (fabOpen&&!socialFab.contains(e.target)) setFab(false); });
+  addEventListener('keydown', e => { if (e.key==='Escape'&&fabOpen) setFab(false); });
+}
+
+/* ============================================================
+   HERO LOGO DOCK
+   ============================================================ */
+const heroSection = document.getElementById('hero');
+const flyEl       = document.querySelector('[data-logo-fly]');
+const fixedLogo   = document.querySelector('[data-logo-fixed]');
+const navBrand    = document.querySelector('[data-brand]');
+let dock = null;
+function measureDock() {
+  if (!flyEl||!navBrand||!fixedLogo) { dock=null; return; }
+  const fr=flyEl.getBoundingClientRect(), br=navBrand.getBoundingClientRect();
+  const startFont=parseFloat(getComputedStyle(flyEl).fontSize);
+  const endFont=parseFloat(getComputedStyle(navBrand).fontSize);
+  if (fr.width===0||br.width===0) { dock=null; return; }
+  dock={startLeft:fr.left,startTop:fr.top+scrollY,startFont,endLeft:br.left,endTop:br.top,endFont};
+  fixedLogo.style.fontSize=startFont+'px'; fixedLogo.style.fontWeight='300';
+}
+function onScrollDock() {
+  if (!flyEl||reduce) { if (reduce&&fixedLogo) fixedLogo.style.opacity='1'; return; }
+  if (!dock) measureDock(); if (!dock) return;
+  const r=heroSection.getBoundingClientRect(), h=r.height;
+  const p=Math.min(1,Math.max(0,-r.top/(h*0.70)));
+  const ease = p<0.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+  const scale=1+(dock.endFont/dock.startFont-1)*ease;
+  const startTopVp=dock.startTop-scrollY;
+  fixedLogo.style.opacity='1'; fixedLogo.style.left='0px'; fixedLogo.style.top='0px';
+  fixedLogo.style.fontSize=dock.startFont+'px';
+  fixedLogo.style.fontWeight=ease>0.8?'500':'300';
+  fixedLogo.style.transform=`translate(${dock.startLeft+(dock.endLeft-dock.startLeft)*ease}px,${startTopVp+(dock.endTop-startTopVp)*ease}px) scale(${scale.toFixed(4)})`;
+  flyEl.style.opacity='0';
+  document.body.classList.toggle('logo-docked',ease>0.9);
+}
+
+/* ============================================================
+   SECTION OBSERVER (HUD)
+   ============================================================ */
+const sections   = Array.from(document.querySelectorAll('[data-section]'));
+const hudButtons = Array.from(document.querySelectorAll('.hud button'));
+let activeId = null, ready = false;
+function activate(section) {
+  if (!ready||!section||section.id===activeId) return;
+  activeId=section.id; setTheme(section.dataset.pillar||'default');
+  hudButtons.forEach(b => b.classList.toggle('active',b.dataset.jump===section.id));
+}
+const io = new IntersectionObserver(entries => {
+  let best=null, bestR=0;
+  entries.forEach(e => { if (e.intersectionRatio>bestR) { bestR=e.intersectionRatio; best=e.target; } });
+  if (best&&bestR>0.3) activate(best);
+}, { threshold:[0.3,0.55,0.75] });
+sections.forEach(s => io.observe(s));
+hudButtons.forEach(b => b.addEventListener('click', () => {
+  const t=document.getElementById(b.dataset.jump);
+  if (t) t.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
+}));
+
+/* ============================================================
+   FADE OBSERVER (non-GSAP elements)
+   ============================================================ */
+function observeFade() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting||entry.intersectionRatio<0.15) return;
+      const el=entry.target; if (el.dataset._faded) return; el.dataset._faded='1';
+      if (reduce) { el.style.opacity='1'; el.style.transform='translateY(0)'; }
+      else {
+        el.animate([{opacity:0,transform:'translateY(28px)'},{opacity:1,transform:'translateY(0)'}],
+          {duration:1000,easing:'cubic-bezier(0.16,1,0.3,1)',fill:'forwards'});
+        el.style.opacity='1';
+      }
+      obs.unobserve(el);
+    });
+  }, {threshold:[0.15,0.3],rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('[data-fade-in]').forEach(el => obs.observe(el));
+}
+
+/* ============================================================
+   MAGNETIC BUTTONS
+   ============================================================ */
+function magnetic(el, str=0.22) {
+  if (isTouch||reduce) return;
+  el.addEventListener('mousemove', e => {
+    const r=el.getBoundingClientRect();
+    el.style.transform=`translate(${(e.clientX-(r.left+r.width/2))*str}px,${(e.clientY-(r.top+r.height/2))*str}px)`;
+  });
+  el.addEventListener('mouseleave', () => el.style.transform='translate(0,0)');
+  el.style.transition='transform .5s cubic-bezier(0.34,1.56,0.64,1)';
+}
+document.querySelectorAll('.hero__right .more,.dotmenu,.footer__form button,.hud button,.cta-btn').forEach(el => magnetic(el,0.2));
+
+/* ============================================================
+   LEGACY SCROLL HANDLER
+   ============================================================ */
+let scrollTicking = false;
+function onScroll() {
+  if (scrollTicking) return; scrollTicking=true;
+  requestAnimationFrame(() => { onScrollDock(); updateProgress(); scrollTicking=false; });
+}
+addEventListener('scroll', onScroll, {passive:true});
+addEventListener('resize', () => { dock=null; onScrollDock(); });
+
+/* ============================================================
+   GSAP ANIMATIONS — fire after loader resolves
+   ============================================================ */
+function initGSAP() {
+  if (reduce) return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ---- 0. Shared char-split helper ---- */
+  function splitChars(el) {
+    const text = el.textContent;
+    el.textContent = '';
+    el.style.overflow = 'hidden';
+    return text.split('').map(ch => {
+      const span = document.createElement('span');
+      span.className = 'hero__char';
+      span.textContent = ch === ' ' ? ' ' : ch;
+      el.appendChild(span);
+      return span;
+    });
+  }
+
+  /* ---- 1. HERO ENTRANCE (fires immediately after loader) ---- */
+  const flySpan = document.querySelector('[data-logo-fly]');
+  if (flySpan) {
+    const chars = splitChars(flySpan);
+    gsap.from(chars, { y:'110%', duration:1.3, stagger:0.045, ease:'power4.out', delay:0.1 });
+  }
+  gsap.from('.hero__right .pull', { y:40, opacity:0, duration:1.1, ease:'power3.out', delay:0.6 });
+  gsap.from('.hero__right .more', { y:24, opacity:0, duration:0.9, ease:'back.out(1.4)', delay:0.85 });
+  gsap.from('.hero__feat .featwrap', { y:32, opacity:0, duration:0.9, ease:'power3.out', delay:0.75 });
+  gsap.from('.hero__scroll', { opacity:0, duration:1, ease:'power2.out', delay:2.2,
+    onComplete: () => {
+      document.querySelector('.hero__scroll')?.style.setProperty('opacity','1');
+      gsap.to('.hero__scroll .line', { scaleY:1, duration:0.8, ease:'power2.out', repeat:-1, yoyo:true, repeatDelay:0.3, transformOrigin:'top' });
+    }
+  });
+
+  /* ---- 2. HERO → scroll parallax ---- */
+  gsap.to('.hero__main', {
+    y: -80, opacity: 0,
+    scrollTrigger: { trigger:'#hero', start:'top top', end:'80% top', scrub:1.2 }
+  });
+  gsap.to('.aurora', {
+    y: 50,
+    scrollTrigger: { trigger:'#hero', start:'top top', end:'bottom top', scrub:1 }
+  });
+
+  /* ---- 3. FEATURING — HORIZONTAL SCROLL ---- */
+  const featSection = document.getElementById('featuring');
+  const featTrack   = document.getElementById('featTrack');
+  const panels      = gsap.utils.toArray('.feat-panel');
+  const totalPanels = panels.length;
+  const dots        = document.querySelectorAll('.feat-dot');
+  const counterEl   = document.getElementById('featCurrentNum');
+  const scrubFill   = document.getElementById('featScrubFill');
+
+  if (!isMobile() && featTrack && panels.length) {
+    const totalWidth = () => featTrack.scrollWidth - window.innerWidth;
+
+    /* Collect panel 0 elements for onEnter animation */
+    const p0 = panels[0];
+    const p0tag    = p0.querySelector('.fp-tag');
+    const p0inners = p0.querySelectorAll('.fp-inner');
+    const p0rule   = p0.querySelector('.fp-rule');
+    const p0desc   = p0.querySelector('.fp-desc');
+    const p0link   = p0.querySelector('.fp-link');
+    const p0color  = p0.querySelector('.fp-color');
+    const p0bw     = p0.querySelector('.fp-bw');
+    let p0done = false;
+
+    function animatePanel0() {
+      if (p0done) return; p0done = true;
+      if (p0tag)          gsap.to(p0tag,    { y:0, opacity:1, duration:0.7, ease:'power3.out', delay:0.1 });
+      if (p0inners.length) gsap.to(p0inners, { y:'0%', duration:1.2, ease:'power4.out', stagger:0.1, delay:0.25 });
+      if (p0rule)         gsap.to(p0rule,   { scaleX:1, duration:0.8, ease:'power3.out', delay:0.5 });
+      if (p0desc)         gsap.to(p0desc,   { y:0, opacity:1, duration:0.9, ease:'power3.out', delay:0.6 });
+      if (p0link)         gsap.to(p0link,   { opacity:1, duration:0.7, ease:'power3.out', delay:0.8 });
+    }
+
+    const featTween = gsap.to(featTrack, {
+      x: () => -totalWidth(),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: featSection,
+        start: 'top top',
+        end: () => `+=${totalWidth()}`,
+        pin: true,
+        scrub: 1.2,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onEnter: () => animatePanel0(),
+        onUpdate: self => {
+          if (scrubFill) scrubFill.style.transform = `scaleX(${self.progress})`;
+          const idx = Math.min(totalPanels-1, Math.floor(self.progress * totalPanels + 0.5));
+          dots.forEach((d,i) => d.classList.toggle('is-active', i===idx));
+          if (counterEl) counterEl.textContent = String(idx+1).padStart(2,'0');
+          /* Ghost parallax + panel 0 color wipe driven by raw progress */
+          panels.forEach((p,i) => {
+            const ghost = p.querySelector('.fp-ghost');
+            if (ghost) { const rel = self.progress - i/totalPanels; ghost.style.transform = `translateX(${rel*-60}px)`; }
+          });
+          /* Panel 0: color wipe tied to first panel's scroll share */
+          if (p0color) {
+            const wipe = Math.min(1, self.progress * totalPanels * 1.4);
+            p0color.style.clipPath = `inset(0 ${Math.max(0,(1-wipe)*100).toFixed(1)}% 0 0)`;
+          }
+          if (p0bw && !p0bwDone) {
+            const sc = 1.05 - 0.05 * Math.min(1, self.progress * totalPanels * 2);
+            p0bw.style.transform = `scale(${sc.toFixed(4)})`;
+          }
+        }
+      }
+    });
+
+    let p0bwDone = false;
+    const featST = featTween.scrollTrigger;
+
+    /* Panels 1-5 — containerAnimation reveals */
+    panels.forEach((panel, i) => {
+      if (i === 0) return; /* handled above */
+      const inners = panel.querySelectorAll('.fp-inner');
+      const tag    = panel.querySelector('.fp-tag');
+      const desc   = panel.querySelector('.fp-desc');
+      const rule   = panel.querySelector('.fp-rule');
+      const link   = panel.querySelector('.fp-link');
+      const color  = panel.querySelector('.fp-color');
+      const bw     = panel.querySelector('.fp-bw');
+      const cfg    = { containerAnimation: featST };
+
+      if (color) gsap.fromTo(color,
+        { clipPath:'inset(0 100% 0 0)' },
+        { clipPath:'inset(0 0% 0 0)', ease:'power2.inOut',
+          scrollTrigger: { ...cfg, trigger:panel, start:'left right', end:'left center', scrub:0.8 }
+        }
+      );
+      if (bw) gsap.from(bw, { scale:1.05, ease:'none',
+        scrollTrigger: { ...cfg, trigger:panel, start:'left right', end:'left left', scrub:0.6 }
+      });
+      const textST = { ...cfg, trigger:panel, start:'left 90%', toggleActions:'play none none reverse' };
+      if (tag)          gsap.to(tag,    { y:0, opacity:1, duration:0.7, ease:'power3.out', scrollTrigger:textST });
+      if (inners.length) gsap.to(inners, { y:'0%', duration:1.1, ease:'power4.out', stagger:0.1, scrollTrigger:textST, delay:0.1 });
+      if (rule)         gsap.to(rule,   { scaleX:1, duration:0.8, ease:'power3.out', scrollTrigger:textST, delay:0.28 });
+      if (desc)         gsap.to(desc,   { y:0, opacity:1, duration:0.9, ease:'power3.out', scrollTrigger:textST, delay:0.38 });
+      if (link)         gsap.to(link,   { opacity:1, duration:0.7, ease:'power3.out', scrollTrigger:textST, delay:0.55 });
+    });
+
+    /* Dot clicks — deferred so featST is fully resolved */
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        if (!featST) return;
+        const ratio  = totalPanels > 1 ? i / (totalPanels - 1) : 0;
+        const target = featST.start + ratio * (featST.end - featST.start);
+        window.scrollTo({ top: target, behavior: 'smooth' });
+      });
+    });
+
+  } else {
+    /* Mobile: reveal everything immediately */
+    document.querySelectorAll('.fp-inner,.fp-tag,.fp-desc,.fp-link,.fp-rule').forEach(el => {
+      el.style.opacity='1'; el.style.transform='none';
+    });
+  }
+
+  /* ---- 4. MAGAZINE SECTION ---- */
+  /* Section eyebrow slide */
+  gsap.from('.magazine__head .eyebrow', {
+    y:20, opacity:0, duration:0.8, ease:'power3.out',
+    scrollTrigger:{ trigger:'.magazine__head', start:'top 82%', toggleActions:'play none none none' }
+  });
+  /* Magazine h2 word reveal */
+  gsap.from('.magazine__head h2 .word > span', {
+    y:'110%', duration:1.1, stagger:0.1, ease:'power4.out',
+    scrollTrigger:{ trigger:'.magazine__head', start:'top 78%', toggleActions:'play none none none' }
+  });
+  /* Pillar cards — stagger in from below with a slight scale */
+  gsap.from('.magazine__pillars > a', {
+    y:70, opacity:0, duration:1, ease:'power3.out', stagger:0.1,
+    scrollTrigger:{ trigger:'.magazine__pillars', start:'top 85%', toggleActions:'play none none none' }
+  });
+
+  /* ---- 5. MAGAZINE CTA — BUTTON HOVER PAGES ---- */
+  const magWrap = document.querySelector('.mag-btn-wrap');
+  if (magWrap && !reduce) {
+    const pages = gsap.utils.toArray('.mag-pg');
+    /* Stacked behind button's left edge in default state */
+    gsap.set(pages, { y:'-50%', rotation:(i)=>i*3, x:(i)=>i*2, transformOrigin:'center right' });
+
+    const hoverTl = gsap.timeline({ paused:true, defaults:{ ease:'back.out(1.5)' } });
+    hoverTl
+      .to(pages[0], { rotation:-10, x:-18, duration:0.38 }, 0)
+      .to(pages[1], { rotation:-24, x:-40, duration:0.44 }, 0.05)
+      .to(pages[2], { rotation:-40, x:-64, duration:0.50 }, 0.10);
+
+    magWrap.addEventListener('mouseenter', () => hoverTl.play());
+    magWrap.addEventListener('mouseleave', () => hoverTl.reverse());
+  }
+
+  /* ---- 6. FOOTER ---- */
+  /* Wordmark rise */
+  gsap.from('.footer__wordmark', {
+    y:100, opacity:0,
+    scrollTrigger:{ trigger:'.footer__wordmark', start:'top 92%', end:'top 55%', scrub:1.5 }
+  });
+  /* Footer head stagger */
+  gsap.from('.footer__head > *', {
+    y:40, opacity:0, stagger:0.18, duration:1, ease:'power3.out',
+    scrollTrigger:{ trigger:'.footer__head', start:'top 82%', toggleActions:'play none none none' }
+  });
+  /* Footer cols */
+  gsap.from('.footer__cols > div', {
+    y:30, opacity:0, stagger:0.12, duration:0.9, ease:'power3.out',
+    scrollTrigger:{ trigger:'.footer__cols', start:'top 85%', toggleActions:'play none none none' }
+  });
+
+  /* ---- 7. HORIZONTAL scroll progress ↔ window progress sync ---- */
+  ScrollTrigger.addEventListener('refresh', () => { dock=null; onScrollDock(); });
+}
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+navCenter.classList.add('is-hidden');
+renderDots();
+
+runLoader().then(() => {
+  ready = true;
+  observeFade();
+  measureDock(); onScrollDock();
+
+  if (!reduce && fixedLogo) {
+    fixedLogo.animate([{opacity:0},{opacity:1}],{duration:900,delay:120,easing:'cubic-bezier(0.16,1,0.3,1)',fill:'both'});
+  }
+  if (fixedLogo) fixedLogo.style.opacity='1';
+  if (flyEl) flyEl.style.opacity='0';
+  activate(document.getElementById('hero'));
+  onScrollDock();
+
+  if (!isMobile()) { menuShown=true; renderDots(); openMenuDesktop(); dotBtn.setAttribute('aria-expanded','true'); dotBtn.setAttribute('aria-label','Close menu'); }
+
+  /* Init GSAP after browser has settled */
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      initGSAP();
+    });
+  });
+
+  if (document.fonts?.ready) document.fonts.ready.then(() => { dock=null; onScrollDock(); if(typeof ScrollTrigger!=='undefined') ScrollTrigger.refresh(); });
+  setTimeout(() => { dock=null; onScrollDock(); if(typeof ScrollTrigger!=='undefined') ScrollTrigger.refresh(); }, 800);
+});
+
+})();
+</script>
+</body>
+</html>
