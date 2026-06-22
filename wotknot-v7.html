@@ -74,10 +74,11 @@ a{color:inherit;text-decoration:none;}
 .loader__bottom{display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:var(--t-tiny);text-transform:uppercase;letter-spacing:0.22em;color:var(--muted);}
 body.is-loaded .loader{pointer-events:none;}
 
-/* PAGE PUSH-UP */
-.scroller{transform:translateY(48px);opacity:0;transition:transform 1.1s cubic-bezier(0.16,1,0.3,1) .15s,opacity .9s cubic-bezier(0.16,1,0.3,1) .1s;}
-.nav,.social-fab{transform:translateY(32px);opacity:0;transition:transform 1s cubic-bezier(0.16,1,0.3,1) .25s,opacity .8s cubic-bezier(0.16,1,0.3,1) .2s;}
-body.is-loaded .scroller{transform:translateY(0);opacity:1;}
+/* PAGE PUSH-UP — the page sits one viewport below and rises into place,
+   pushing the loader up and off the top as one continuous column. */
+.scroller{transform:translateY(100vh);transition:transform 1.05s cubic-bezier(0.76,0,0.24,1);}
+.nav,.social-fab{transform:translateY(32px);opacity:0;transition:transform 1s cubic-bezier(0.16,1,0.3,1) .55s,opacity .8s cubic-bezier(0.16,1,0.3,1) .5s;}
+body.is-loaded .scroller{transform:translateY(0);}
 body.is-loaded .nav,body.is-loaded .social-fab{transform:translateY(0);opacity:1;}
 
 /* NAV */
@@ -98,14 +99,41 @@ body.is-loaded .nav,body.is-loaded .social-fab{transform:translateY(0);opacity:1
 .hero-logo-fixed a{pointer-events:auto;}
 @media(max-width:860px){.nav__center{display:none;}.nav{grid-template-columns:1fr auto;}}
 
-/* MOBILE OVERLAY */
-.menu-overlay{position:fixed;inset:0;z-index:190;background:rgba(7,7,10,0.96);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .55s var(--ease-out);}
-.menu-overlay.open{opacity:1;pointer-events:auto;}
+/* ═══════════════════════════════════════════
+   STAGGERED MENU (mobile) — React Bits port, themed to WOTKNOT
+   ═══════════════════════════════════════════ */
+.sm{position:fixed;inset:0;z-index:230;pointer-events:none;visibility:hidden;background:rgba(7,7,10,0);transition:background .5s var(--ease-out),visibility 0s linear .5s;}
+.sm.open{visibility:visible;pointer-events:auto;background:rgba(7,7,10,0.5);transition:background .5s var(--ease-out);}
+.sm-prelayers{position:absolute;top:0;right:0;bottom:0;width:min(460px,100%);pointer-events:none;z-index:1;}
+.sm-prelayer{position:absolute;inset:0;will-change:transform;}
+.sm-panel{position:absolute;top:0;right:0;height:100%;width:min(460px,100%);background:#0e0e12;display:flex;flex-direction:column;padding:clamp(5rem,14vh,7rem) clamp(1.5rem,6vw,3rem) clamp(2rem,5vh,3rem);overflow-y:auto;z-index:2;pointer-events:auto;will-change:transform;box-shadow:-40px 0 80px -40px rgba(0,0,0,0.7);}
+.sm-panel-inner{flex:1;display:flex;flex-direction:column;gap:1.5rem;}
+.sm-panel-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:clamp(.1rem,1vh,.5rem);}
+.sm-panel-itemWrap{position:relative;overflow:hidden;line-height:1;}
+.sm-panel-item{position:relative;display:inline-block;text-decoration:none;color:var(--paper);font-family:var(--heading-font);font-weight:300;font-size:clamp(2.2rem,9vw,3.4rem);line-height:1.06;letter-spacing:-0.03em;text-transform:uppercase;padding-right:1.6em;transition:color .3s var(--ease-out);}
+.sm-panel-itemLabel{display:inline-block;will-change:transform;transform-origin:50% 100%;}
+@media(hover:hover) and (pointer:fine){.sm-panel-item:hover{color:var(--orange);}}
+.sm-panel-list[data-numbering]{counter-reset:smItem;}
+.sm-panel-list[data-numbering] .sm-panel-item::after{counter-increment:smItem;content:counter(smItem,decimal-leading-zero);position:absolute;top:0.45em;right:0.2em;font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:400;letter-spacing:0.1em;color:var(--orange);pointer-events:none;user-select:none;opacity:var(--sm-num-opacity,0);}
+.sm-socials{margin-top:auto;padding-top:1.75rem;display:flex;flex-direction:column;gap:.9rem;border-top:1px solid var(--rule);}
+.sm-socials-title{margin:0;font-family:'JetBrains Mono',monospace;font-size:var(--t-tiny);text-transform:uppercase;letter-spacing:.22em;font-weight:400;color:var(--muted);}
+.sm-socials-list{list-style:none;margin:0;padding:0;display:flex;flex-flow:row wrap;align-items:center;gap:.5rem 1.4rem;}
+.sm-socials-link{font-family:var(--heading-font);font-size:1.05rem;font-weight:400;color:var(--paper);text-decoration:none;transition:color .3s var(--ease-out),opacity .3s var(--ease-out);}
+@media(hover:hover) and (pointer:fine){
+  .sm-socials-list:hover .sm-socials-link:not(:hover){opacity:.4;}
+  .sm-socials-link:hover{color:var(--orange);}
+}
+/* Fallback when GSAP is unavailable / reduced-motion: plain CSS slide.
+   Only the fallback sets a base transform — GSAP owns positioning otherwise. */
+.sm--css .sm-panel,.sm--css .sm-prelayer{transform:translateX(100%);transition:transform .5s var(--ease-out);}
+.sm--css.open .sm-panel,.sm--css.open .sm-prelayer{transform:translateX(0);}
+.sm--css.open .sm-panel-itemLabel{transform:none;}
+.sm--css.open .sm-panel-list[data-numbering] .sm-panel-item{--sm-num-opacity:1;}
+.sm--css.open .sm-socials-title,.sm--css.open .sm-socials-link{opacity:1;}
+/* While the menu is open: keep the 9-dot reachable to close, hide competing chrome */
 body.overlay-open .hero-logo-fixed,body.overlay-open .nav__brand{opacity:0!important;}
-.menu-overlay ul{list-style:none;margin:0;padding:0;display:grid;gap:clamp(.5rem,2vw,1.2rem);text-align:center;}
-.menu-overlay li{overflow:hidden;}
-.menu-overlay a{font-family:var(--heading-font);font-weight:500;font-size:clamp(2.2rem,9vw,4.5rem);letter-spacing:-0.025em;display:inline-block;transform:translateY(120%);transition:color .4s var(--ease-out);}
-.menu-overlay a:hover{color:var(--orange);}
+body.overlay-open .nav{z-index:240;}
+body.overlay-open .social-fab,body.overlay-open .section-nav{opacity:0!important;pointer-events:none;}
 
 /* SOCIAL FAB */
 .social-fab{position:fixed;right:clamp(1rem,2.5vw,2.5rem);bottom:clamp(1rem,2.5vw,2.5rem);z-index:120;display:flex;align-items:center;flex-direction:row-reverse;gap:12px;mix-blend-mode:difference;color:var(--paper);}
@@ -392,13 +420,32 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 
 <div class="hero-logo-fixed" data-logo-fixed style="opacity:0;"><a href="#hero">WOTKNOT</a></div>
 
-<div class="menu-overlay" data-overlay aria-hidden="true">
-  <ul>
-    <li><a href="#hero">Home</a></li>
-    <li><a href="#featuring">Featuring</a></li>
-    <li><a href="#magazine">Magazine</a></li>
-    <li><a href="#subscribe">Subscribe</a></li>
-  </ul>
+<!-- STAGGERED MENU (mobile) — opened by the 9-dot icon -->
+<div class="sm" data-sm data-position="right" aria-hidden="true">
+  <div class="sm-prelayers" aria-hidden="true">
+    <div class="sm-prelayer" style="background:#17171c"></div>
+    <div class="sm-prelayer" style="background:#0e0e12"></div>
+  </div>
+  <aside class="sm-panel" id="sm-panel" aria-label="Menu" aria-hidden="true">
+    <div class="sm-panel-inner">
+      <ul class="sm-panel-list" role="list" data-numbering>
+        <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#hero" aria-label="Home"><span class="sm-panel-itemLabel">Home</span></a></li>
+        <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#featuring" aria-label="Featuring"><span class="sm-panel-itemLabel">Featuring</span></a></li>
+        <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#magazine" aria-label="Magazine"><span class="sm-panel-itemLabel">Magazine</span></a></li>
+        <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#magazine" aria-label="Pillars"><span class="sm-panel-itemLabel">Pillars</span></a></li>
+        <li class="sm-panel-itemWrap"><a class="sm-panel-item" href="#subscribe" aria-label="Subscribe"><span class="sm-panel-itemLabel">Subscribe</span></a></li>
+      </ul>
+      <div class="sm-socials" aria-label="Social links">
+        <h3 class="sm-socials-title">Socials</h3>
+        <ul class="sm-socials-list" role="list">
+          <li><a class="sm-socials-link" href="https://www.instagram.com/wotknotmag/" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a class="sm-socials-link" href="https://www.youtube.com/@wotknotmag" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a class="sm-socials-link" href="#">TikTok</a></li>
+          <li><a class="sm-socials-link" href="#">Spotify</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
 </div>
 
 <div class="social-fab" data-social-fab>
@@ -568,8 +615,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 
 </main>
 
-<!-- Lenis: smooth scroll (progressive enhancement; page works fully without it) -->
+<!-- Lenis: smooth scroll · GSAP: staggered menu (both progressive enhancements) -->
 <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
 (() => {
 'use strict';
@@ -602,10 +650,10 @@ function runLoader() {
       if (n<100) { setTimeout(tick, 60+Math.random()*60); return; }
       statusEl.textContent = 'Welcome.';
       setTimeout(() => {
-        loader.style.transition = 'transform 1.2s cubic-bezier(0.76,0,0.24,1)';
-        loader.style.transform = 'translateY(-100vh)';
+        loader.style.transition = 'transform 1.05s cubic-bezier(0.76,0,0.24,1)';
+        loader.style.transform = 'translateY(-100%)';
         document.body.classList.add('is-loaded');
-        setTimeout(() => { loader.style.display='none'; resolve(); }, 700);
+        setTimeout(() => { loader.style.display='none'; resolve(); }, 1050);
       }, 350);
     };
     tick();
@@ -616,8 +664,18 @@ function runLoader() {
 const dotBtn     = document.querySelector('[data-dotmenu]');
 const navCenter  = document.querySelector('[data-menu-center]');
 const menuLinks  = Array.from(navCenter.querySelectorAll('a'));
-const overlay    = document.querySelector('[data-overlay]');
-const overlayLinks = Array.from(overlay.querySelectorAll('a'));
+/* Staggered mobile menu refs (React Bits port) */
+const sm            = document.querySelector('[data-sm]');
+const smPanel       = sm.querySelector('.sm-panel');
+const smPre         = Array.from(sm.querySelectorAll('.sm-prelayer'));
+const smItems       = Array.from(sm.querySelectorAll('.sm-panel-itemLabel'));
+const smNums        = Array.from(sm.querySelectorAll('.sm-panel-list[data-numbering] .sm-panel-item'));
+const smSocialTitle = sm.querySelector('.sm-socials-title');
+const smSocialLinks = Array.from(sm.querySelectorAll('.sm-socials-link'));
+const smLinks       = Array.from(sm.querySelectorAll('.sm-panel-item'));
+const SM_GSAP       = !reduce && !!window.gsap;
+let smTl = null;
+if (SM_GSAP) { gsap.set([smPanel, ...smPre], { xPercent: 100 }); } else { sm.classList.add('sm--css'); }
 const dots = {}; dotBtn.querySelectorAll('.d').forEach(d => dots[d.dataset.pos]=d);
 let menuShown = false;
 
@@ -634,18 +692,53 @@ function closeMenuDesktop() {
   menuLinks.forEach((a,i) => { const k=menuLinks.length-1-i; a.style.transition='opacity .45s cubic-bezier(0.34,1.56,0.64,1) '+k*55+'ms, transform .6s cubic-bezier(0.34,1.56,0.64,1) '+k*55+'ms'; a.style.transform='translateX('+(28+i*10)+'px)'; a.style.opacity='0'; });
   setTimeout(() => { if (!menuShown) navCenter.classList.add('is-hidden'); }, 500);
 }
+/* Staggered open/close — prelayers sweep in, panel follows, items + socials stagger up */
 function openOverlay() {
-  overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); document.body.classList.add('overlay-open');
-  overlayLinks.forEach((a,i) => a.animate([{transform:'translateY(120%)'},{transform:'translateY(0%)'}],{duration:850,delay:120+i*70,easing:'cubic-bezier(0.22,1.4,0.36,1)',fill:'forwards'}));
+  document.body.classList.add('overlay-open');
+  sm.classList.add('open'); sm.setAttribute('aria-hidden','false'); smPanel.setAttribute('aria-hidden','false');
+  if (typeof lenis !== 'undefined' && lenis) lenis.stop();
+  if (!SM_GSAP) return;
+  smTl?.kill();
+  gsap.set([smPanel, ...smPre], { xPercent: 100 });
+  gsap.set(smItems, { yPercent: 140, rotate: 8 });
+  gsap.set(smNums, { '--sm-num-opacity': 0 });
+  if (smSocialTitle) gsap.set(smSocialTitle, { opacity: 0 });
+  gsap.set(smSocialLinks, { y: 24, opacity: 0 });
+  const tl = gsap.timeline();
+  smPre.forEach((el,i) => tl.fromTo(el, { xPercent: 100 }, { xPercent: 0, duration: 0.5, ease: 'power4.out' }, i * 0.08));
+  const pIns = smPre.length ? (smPre.length - 1) * 0.08 + 0.08 : 0;
+  const pDur = 0.65;
+  tl.fromTo(smPanel, { xPercent: 100 }, { xPercent: 0, duration: pDur, ease: 'power4.out' }, pIns);
+  const itemsStart = pIns + pDur * 0.15;
+  tl.to(smItems, { yPercent: 0, rotate: 0, duration: 1, ease: 'power4.out', stagger: { each: 0.1, from: 'start' } }, itemsStart);
+  tl.to(smNums, { duration: 0.6, ease: 'power2.out', '--sm-num-opacity': 1, stagger: { each: 0.08 } }, itemsStart + 0.1);
+  const socStart = pIns + pDur * 0.4;
+  if (smSocialTitle) tl.to(smSocialTitle, { opacity: 1, duration: 0.5, ease: 'power2.out' }, socStart);
+  tl.to(smSocialLinks, { y: 0, opacity: 1, duration: 0.55, ease: 'power3.out', stagger: { each: 0.08 }, onComplete: () => gsap.set(smSocialLinks, { clearProps: 'opacity' }) }, socStart + 0.04);
+  smTl = tl;
 }
 function closeOverlay() {
-  overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); document.body.classList.remove('overlay-open');
-  overlayLinks.forEach(a => a.style.transform='translateY(120%)');
+  document.body.classList.remove('overlay-open');
+  sm.setAttribute('aria-hidden','true'); smPanel.setAttribute('aria-hidden','true');
+  if (typeof lenis !== 'undefined' && lenis) lenis.start();
+  if (!SM_GSAP) { sm.classList.remove('open'); return; }
+  smTl?.kill();
+  smTl = gsap.to([...smPre, smPanel], {
+    xPercent: 100, duration: 0.32, ease: 'power3.in', overwrite: 'auto',
+    onComplete: () => {
+      sm.classList.remove('open');
+      gsap.set(smItems, { yPercent: 140, rotate: 8 });
+      gsap.set(smNums, { '--sm-num-opacity': 0 });
+      if (smSocialTitle) gsap.set(smSocialTitle, { opacity: 0 });
+      gsap.set(smSocialLinks, { y: 24, opacity: 0 });
+    }
+  });
 }
 function showMenu() { menuShown=true; dotBtn.setAttribute('aria-expanded','true'); dotBtn.setAttribute('aria-label','Close menu'); renderDots(); if (isMobile()) openOverlay(); else openMenuDesktop(); }
 function hideMenu() { menuShown=false; dotBtn.setAttribute('aria-expanded','false'); dotBtn.setAttribute('aria-label','Open menu'); renderDots(); if (isMobile()) closeOverlay(); else closeMenuDesktop(); }
 dotBtn.addEventListener('click', () => menuShown?hideMenu():showMenu());
-overlayLinks.forEach(a => a.addEventListener('click', hideMenu));
+smLinks.forEach(a => a.addEventListener('click', () => { if (menuShown) hideMenu(); }));
+sm.addEventListener('click', e => { if (e.target === sm && menuShown) hideMenu(); });
 addEventListener('keydown', e => { if (e.key==='Escape'&&menuShown) hideMenu(); });
 addEventListener('resize', () => {
   if (isMobile()) { navCenter.classList.add('is-hidden'); if (!menuShown) closeOverlay(); }
