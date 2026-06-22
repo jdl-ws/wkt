@@ -90,9 +90,10 @@ body.is-loaded .nav,body.is-loaded .social-fab{transform:translateY(0);opacity:1
 .nav__center a::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:100px;background:rgba(244,239,230,0.10);border:1px solid rgba(244,239,230,0.18);backdrop-filter:blur(10px) saturate(140%);-webkit-backdrop-filter:blur(10px) saturate(140%);opacity:0;transform:scale(0.7);transition:opacity .45s,transform .55s;}
 .nav__center a:hover::before{opacity:1;transform:scale(1);}
 .nav__right{justify-self:end;display:flex;align-items:center;gap:1rem;}
-.dotmenu{all:unset;width:34px;height:34px;cursor:pointer;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:4px;place-items:center;transition:transform .5s var(--ease-elastic);}
-.dotmenu:hover{transform:scale(1.12) rotate(-4deg);}
-.dotmenu .d{width:5px;height:5px;border-radius:50%;background:currentColor;transition:transform .55s var(--ease-elastic),opacity .4s var(--ease-out);}
+.dotmenu{all:unset;box-sizing:border-box;width:34px;height:34px;padding:5px;cursor:pointer;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);place-items:center;transition:transform .4s var(--ease-out);}
+.dotmenu:active{transform:scale(0.92);}
+@media(hover:hover) and (pointer:fine){.dotmenu:hover{transform:scale(1.08);}}
+.dotmenu .d{width:4.5px;height:4.5px;border-radius:50%;background:currentColor;transition:transform .4s var(--ease-out),opacity .35s var(--ease-out);}
 .hero-logo-fixed{position:fixed;top:0;left:0;z-index:201;font-family:var(--heading-font);font-weight:300;line-height:1;white-space:nowrap;pointer-events:none;mix-blend-mode:difference;color:var(--paper);transform-origin:left top;will-change:transform;}
 .hero-logo-fixed a{pointer-events:auto;}
 @media(max-width:860px){.nav__center{display:none;}.nav{grid-template-columns:1fr auto;}}
@@ -501,7 +502,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 <section id="magazine" class="section magazine">
   <div class="magazine__head" data-reveal>
     <div class="eyebrow">03 / The Magazine · Four Pillars</div>
-    <h2>THE <em>MAGAZINE</em></h2>
+    <h2>THE<br/><em>MAGAZINE</em></h2>
     <p class="magazine__desc">A magazine is not a feed. It is a room. We make rooms for the music we love, the art we argue with, the clothes we live in, and the lives we are still becoming.</p>
     <div class="magazine__cta">
       <a href="/magazine" class="cta-btn" aria-label="Explore Issues — WOTKNOT MAG">
@@ -618,18 +619,12 @@ const menuLinks  = Array.from(navCenter.querySelectorAll('a'));
 const overlay    = document.querySelector('[data-overlay]');
 const overlayLinks = Array.from(overlay.querySelectorAll('a'));
 const dots = {}; dotBtn.querySelectorAll('.d').forEach(d => dots[d.dataset.pos]=d);
-const arrowHidden = ['1-0','2-1'];
 let menuShown = false;
 
+/* Keep the apps-grid pristine: a perfectly uniform 3×3 at all times.
+   Open/close is communicated by the nav links, not by morphing the dots. */
 function renderDots() {
-  Object.values(dots).forEach(d => { d.style.opacity='1'; d.style.transform='translate(0,0)'; });
-  if (menuShown) {
-    arrowHidden.forEach(p => { dots[p].style.opacity='0'; dots[p].style.transform='scale(0)'; });
-    dots['0-0'].style.transform='translate(-1px,-1px)'; dots['0-1'].style.transform='translate(0,-1px)';
-    dots['0-2'].style.transform='translate(1px,-1px) scale(1.2)'; dots['1-1'].style.transform='translate(0.5px,0)';
-    dots['1-2'].style.transform='translate(1px,0)'; dots['2-0'].style.transform='translate(-1px,1px)';
-    dots['2-2'].style.transform='translate(1px,1px)';
-  }
+  Object.values(dots).forEach(d => { d.style.opacity='1'; d.style.transform='none'; });
 }
 function openMenuDesktop() {
   navCenter.classList.remove('is-hidden');
