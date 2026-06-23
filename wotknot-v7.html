@@ -209,6 +209,8 @@ body.is-loaded .hero__scroll .line{animation:scrollPulse 2s ease-in-out 4.5s inf
 }
 .feat-name:hover{color:var(--paper-dim);}
 .feat-name.is-active{color:var(--paper);font-weight:700;}
+/* index + category are mobile-only affordances; desktop shows the name alone */
+.feat-name__i,.feat-name__c{display:none;}
 
 .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,1.4vw,18px);}
 .feat-photo{position:relative;aspect-ratio:3/4;overflow:hidden;border-radius:clamp(4px,0.5vw,8px);cursor:pointer;}
@@ -226,12 +228,39 @@ body.is-loaded .hero__scroll .line{animation:scrollPulse 2s ease-in-out 4.5s inf
   .feat-section.is-scrollytelling{height:auto;}
   .feat-section.is-scrollytelling .feat-stage{position:static;height:auto;min-height:100vh;}
 }
+/* ── FEATURING · MOBILE — editorial index: one featured portrait + numbered list ── */
 @media(max-width:760px){
-  .feat-stage{align-items:start;min-height:auto;padding-top:clamp(5.5rem,18vw,7rem);}
-  .feat-layout{grid-template-columns:1fr;gap:clamp(1.5rem,4vw,2rem);}
-  .feat-names{flex-direction:row;flex-wrap:wrap;gap:0.2rem 1rem;}
-  .feat-name{font-size:clamp(1.2rem,5vw,1.5rem);}
-  .feat-grid{grid-template-columns:repeat(2,1fr);}
+  .feat-stage{align-items:start;min-height:auto;padding-top:clamp(5.25rem,17vw,6.5rem);padding-bottom:clamp(2.5rem,9vw,3.5rem);}
+  .feat-layout{display:flex;flex-direction:column;gap:clamp(1.5rem,5vw,2rem);max-width:560px;}
+
+  /* Featured portrait — only the active artist shows; the rest crossfade out */
+  .feat-grid{order:-1;position:relative;display:block;grid-template-columns:none;gap:0;width:100%;aspect-ratio:4/5;border-radius:12px;overflow:hidden;background:#0e0e14;}
+  .feat-photo{position:absolute;inset:0;aspect-ratio:auto;border-radius:0;opacity:0;cursor:default;pointer-events:none;transition:opacity .55s var(--ease-editorial);}
+  .feat-photo.is-active{opacity:1;}
+  .feat-photo__img{inset:0;filter:grayscale(0%) brightness(0.9) contrast(1.06) saturate(1.05);}
+  .feat-photo:hover .feat-photo__img,.feat-photo.is-active .feat-photo__img{transform:none;}
+  /* keep only the active portrait visible even after the reveal-stagger fires */
+  html.motion-ready .feat-grid.is-visible>.feat-photo{opacity:0;}
+  html.motion-ready .feat-grid.is-visible>.feat-photo.is-active{opacity:1;}
+
+  /* Numbered index list */
+  .feat-names{display:flex;flex-direction:column;gap:0;width:100%;}
+  .feat-name{
+    all:unset;cursor:pointer;box-sizing:border-box;
+    display:grid;grid-template-columns:1.6em 1fr auto;align-items:center;column-gap:0.85rem;
+    width:100%;padding:0.8rem 0.25rem;
+    font-family:var(--heading-font);font-weight:300;font-size:1.55rem;line-height:1;letter-spacing:-0.02em;
+    color:var(--paper-dim);border-bottom:1px solid var(--rule);
+    transition:color .35s var(--ease-out),background .4s var(--ease-out),padding-left .4s var(--ease-out);
+    -webkit-tap-highlight-color:transparent;
+  }
+  .feat-name:first-child{border-top:1px solid var(--rule);}
+  .feat-name__i{display:block;font-family:'JetBrains Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;color:var(--muted);transition:color .35s var(--ease-out);}
+  .feat-name__n{display:block;}
+  .feat-name__c{display:block;justify-self:end;font-family:'JetBrains Mono',monospace;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);transition:color .35s var(--ease-out);}
+  .feat-name.is-active{color:var(--paper);font-weight:400;background:linear-gradient(90deg,rgba(244,239,230,0.07),transparent 80%);padding-left:0.9rem;}
+  .feat-name.is-active .feat-name__i{color:var(--orange);}
+  .feat-name.is-active .feat-name__c{color:var(--paper-dim);}
 }
 
 /* ═══════════════════════════════════════════
@@ -514,12 +543,12 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
   <div class="feat-stage">
   <div class="feat-layout">
     <div class="feat-names" data-reveal-stagger>
-      <button class="feat-name is-active" data-feat="0" aria-pressed="true">Aṣa</button>
-      <button class="feat-name" data-feat="1" aria-pressed="false">Tems</button>
-      <button class="feat-name" data-feat="2" aria-pressed="false">Skepta</button>
-      <button class="feat-name" data-feat="3" aria-pressed="false">Doja Cat</button>
-      <button class="feat-name" data-feat="4" aria-pressed="false">Bree Runway</button>
-      <button class="feat-name" data-feat="5" aria-pressed="false">SZA</button>
+      <button class="feat-name is-active" data-feat="0" aria-pressed="true"><span class="feat-name__i">01</span><span class="feat-name__n">Aṣa</span><span class="feat-name__c">Music</span></button>
+      <button class="feat-name" data-feat="1" aria-pressed="false"><span class="feat-name__i">02</span><span class="feat-name__n">Tems</span><span class="feat-name__c">Music</span></button>
+      <button class="feat-name" data-feat="2" aria-pressed="false"><span class="feat-name__i">03</span><span class="feat-name__n">Skepta</span><span class="feat-name__c">Art</span></button>
+      <button class="feat-name" data-feat="3" aria-pressed="false"><span class="feat-name__i">04</span><span class="feat-name__n">Doja Cat</span><span class="feat-name__c">Fashion</span></button>
+      <button class="feat-name" data-feat="4" aria-pressed="false"><span class="feat-name__i">05</span><span class="feat-name__n">Bree Runway</span><span class="feat-name__c">Fashion</span></button>
+      <button class="feat-name" data-feat="5" aria-pressed="false"><span class="feat-name__i">06</span><span class="feat-name__n">SZA</span><span class="feat-name__c">Lifestyle</span></button>
     </div>
     <div class="feat-grid" data-reveal-stagger>
       <div class="feat-photo is-active" data-feat-photo="0">
