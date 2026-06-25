@@ -230,7 +230,7 @@ body.is-loaded .hero__scroll .line{animation:scrollPulse 2s ease-in-out 4.5s inf
 }
 /* ── FEATURING · MOBILE — editorial index: one featured portrait + numbered list ── */
 @media(max-width:760px){
-  .feat-stage{align-items:start;min-height:auto;padding-top:clamp(5.25rem,17vw,6.5rem);padding-bottom:clamp(2.5rem,9vw,3.5rem);}
+  .feat-stage{align-items:start;min-height:auto;padding-top:clamp(5.25rem,17vw,6.5rem);padding-bottom:var(--fab-safe);}
   .feat-layout{display:flex;flex-direction:column;gap:clamp(1.5rem,5vw,2rem);max-width:560px;}
 
   /* Featured portrait — only the active artist shows; the rest crossfade out */
@@ -552,22 +552,22 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
     </div>
     <div class="feat-grid" data-reveal-stagger>
       <div class="feat-photo is-active" data-feat-photo="0">
-        <div class="feat-photo__img" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:20% center;"></div>
+        <div class="feat-photo__img" style="background-image:url('https://pan-african-music-production.fra1.digitaloceanspaces.com/wp-content/uploads/2022/03/Asa_PressShot-13_04_v2.jpg');background-position:center top;"></div>
       </div>
       <div class="feat-photo" data-feat-photo="1">
-        <div class="feat-photo__img" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:40% center;"></div>
+        <div class="feat-photo__img" style="background-image:url('https://cdn.thenationonlineng.net/wp-content/uploads/2023/07/04164649/Tems.png');background-position:center top;"></div>
       </div>
       <div class="feat-photo" data-feat-photo="2">
-        <div class="feat-photo__img" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:60% center;"></div>
+        <div class="feat-photo__img" style="background-image:url('https://i.scdn.co/image/ab6761610000e5ebdb7e42a0c4dced06214fcdb6');background-position:center;"></div>
       </div>
       <div class="feat-photo" data-feat-photo="3">
-        <div class="feat-photo__img" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:30% center;"></div>
+        <div class="feat-photo__img" style="background-image:url('https://www.billboard.com/wp-content/uploads/2025/08/doja-cat-pwf-2025-billboard-1800.jpg?w=1024');background-position:center top;"></div>
       </div>
       <div class="feat-photo" data-feat-photo="4">
-        <div class="feat-photo__img" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:70% center;"></div>
+        <div class="feat-photo__img" style="background-image:url('https://media.vogue.co.uk/photos/666bfaab96731f9c089299a3/2:3/w_1024%2Cc_limit/FraserTaylor_7_press.jpg');background-position:center top;"></div>
       </div>
       <div class="feat-photo" data-feat-photo="5">
-        <div class="feat-photo__img" style="background-image:url('https://thenotesphere.com/wp-content/uploads/Joliden-Holiday-9330_2-1-scaled.jpeg');background-position:50% center;"></div>
+        <div class="feat-photo__img" style="background-image:url('https://cdn-p.smehost.net/sites/005297e5d91d4996984e966fac4389ea/wp-content/uploads/2019/10/Sza.png');background-position:center top;"></div>
       </div>
     </div>
   </div>
@@ -673,7 +673,7 @@ function runLoader() {
     const tick = () => {
       n += Math.max(1, Math.round((100-n)*0.06)+Math.random()*3);
       if (n>=100) n=100;
-      numEl.textContent = String(n).padStart(2,'0');
+      numEl.textContent = String(Math.round(n)).padStart(2,'0');
       barEl.style.width = n+'%';
       if (n%18<4 && si<statuses.length-1) { si++; statusEl.textContent=statuses[si]; }
       if (n<100) { setTimeout(tick, 60+Math.random()*60); return; }
